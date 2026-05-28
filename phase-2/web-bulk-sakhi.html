@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Bulk Sakhi Onboarding — Step 1</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<style>
+  body { width: 1440px; min-height: 900px; background: var(--surface-1); display: grid; grid-template-columns: var(--web-sidebar-width) 1fr; grid-template-rows: var(--web-topbar-height) 1fr; grid-template-areas: "side top" "side main"; }
+  .topbar-wrap { grid-area: top; }
+  .side-wrap { grid-area: side; }
+  .main-wrap { grid-area: main; padding: var(--space-6); overflow-y: auto; }
+
+  /* Stepper */
+  .stepper {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-6);
+    padding: var(--space-4) var(--space-5);
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    gap: var(--space-2);
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex: 1;
+  }
+  .step .step-circle {
+    width: 32px; height: 32px;
+    border-radius: var(--radius-full);
+    background: var(--surface-2);
+    color: var(--ink-500);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: var(--w-bold);
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .step.active .step-circle { background: var(--brand-primary); color: white; }
+  .step.completed .step-circle { background: var(--status-success); color: white; }
+  .step .step-text {
+    flex: 1; min-width: 0;
+  }
+  .step .step-label { font-size: 11px; color: var(--ink-500); text-transform: uppercase; letter-spacing: 0.05em; font-weight: var(--w-semibold); }
+  .step .step-title { font-size: 14px; font-weight: var(--w-semibold); color: var(--ink-900); }
+  .step.completed .step-title { color: var(--status-success); }
+  .step.active .step-title { color: var(--brand-primary); }
+  .step-divider {
+    flex: 0 0 40px;
+    height: 2px;
+    background: var(--surface-3);
+    margin: 0 var(--space-2);
+  }
+  .step.completed + .step-divider { background: var(--status-success); }
+
+  /* Big form layout */
+  .form-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-5);
+  }
+  .form-main {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-6);
+  }
+  .form-side {
+    display: flex; flex-direction: column; gap: var(--space-4);
+  }
+  .help-card {
+    background: var(--status-info-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+  }
+  .help-card .material-symbols-rounded { color: var(--status-info); flex-shrink: 0; }
+  .help-card h4 { margin: 0 0 var(--space-2); font-size: 14px; color: var(--status-info-ink); }
+  .help-card p { margin: 0; font-size: 13px; color: var(--status-info-ink); line-height: 1.5; }
+  .help-card ul { margin: var(--space-2) 0 0; padding-left: var(--space-5); font-size: 13px; color: var(--status-info-ink); line-height: 1.6; }
+
+  .scope-preview {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-4);
+  }
+  .scope-preview h4 { margin: 0 0 var(--space-3); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-500); font-weight: var(--w-semibold); }
+  .breadcrumb-scope { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .breadcrumb-scope .seg {
+    background: var(--surface-2);
+    padding: 6px 10px;
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    font-weight: var(--w-medium);
+    color: var(--ink-700);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .breadcrumb-scope .seg.set { background: var(--brand-primary-50); color: var(--brand-primary); }
+  .breadcrumb-scope .arrow { color: var(--ink-300); font-size: 18px; }
+
+  .footer-actions {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: var(--space-6);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--surface-3);
+  }
+</style>
+<script src="../shared/wireframe-nav.js" defer></script>
+</head>
+<body>
+
+<div class="screen-id-badge">P2-M4-S01</div>
+
+<div class="topbar-wrap">
+  <div class="web-topbar">
+    <div class="brand">Mein Pragati</div>
+    <div class="crisil-mark">A CRISIL Foundation initiative</div>
+    <div class="right">
+      <div class="refresh-badge"><span class="material-symbols-rounded">schedule</span> Last refreshed 09:38</div>
+      <button class="icon-btn"><span class="material-symbols-rounded">notifications</span></button>
+      <div class="avatar avatar-sm">SS</div>
+    </div>
+  </div>
+</div>
+
+<div class="side-wrap">
+  <div class="web-sidebar" style="height: calc(100vh - var(--web-topbar-height));">
+    <div class="user-block">
+      <div class="avatar">SS</div>
+      <div>
+        <div class="name">Sandeep Singh</div>
+        <div class="role">NGO Partner — SeSTA</div>
+      </div>
+    </div>
+    <nav>
+      <a class="nav-item"><span class="material-symbols-rounded">dashboard</span> Dashboard</a>
+      <a class="nav-item" data-link-to="P1-M16-S01"><span class="material-symbols-rounded">bar_chart</span> Sakhi Transactions</a>
+      <a class="nav-item"><span class="material-symbols-rounded">groups</span> Household Resilience</a>
+      <a class="nav-item"><span class="material-symbols-rounded">person</span> FO Details</a>
+      <a class="nav-item"><span class="material-symbols-rounded">apartment</span> Centre Details</a>
+      <a class="nav-item active"><span class="material-symbols-rounded">people</span> Sakhi Details</a>
+      <a class="nav-item"><span class="material-symbols-rounded">currency_rupee</span> Expense</a>
+      <a class="nav-item"><span class="material-symbols-rounded">event_note</span> Reports</a>
+      <a class="nav-item"><span class="material-symbols-rounded">chat</span> Feedback</a>
+      <a class="nav-item"><span class="material-symbols-rounded">forum</span> Messages</a>
+    </nav>
+    <div class="pinned">
+      <a class="nav-item"><span class="material-symbols-rounded">settings</span> Setting</a>
+      <a class="nav-item"><span class="material-symbols-rounded">logout</span> Logout</a>
+    </div>
+  </div>
+</div>
+
+<div class="main-wrap">
+
+  <!-- Breadcrumb back to Sakhi Details -->
+  <div style="display: flex; gap: var(--space-2); align-items: center; margin-bottom: var(--space-3); font-size: 12px; color: var(--ink-500);">
+    <a href="#" style="color: var(--ink-500);">Sakhi Details</a>
+    <span style="color: var(--ink-300);">/</span>
+    <span style="color: var(--ink-900); font-weight: var(--w-semibold);">Bulk onboarding</span>
+  </div>
+
+  <div class="page-header">
+    <div class="title-block">
+      <div class="title">Bulk Sakhi Onboarding</div>
+      <div class="subtitle">Upload Sakhis in bulk via CSV. NGO admin only — FO mobile app no longer creates Sakhis.</div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-tertiary"><span class="material-symbols-rounded">help</span> How it works</button>
+      <button class="btn btn-secondary"><span class="material-symbols-rounded">close</span> Cancel</button>
+    </div>
+  </div>
+
+  <!-- Stepper -->
+  <div class="stepper">
+    <div class="step active">
+      <div class="step-circle">1</div>
+      <div class="step-text">
+        <div class="step-label">Step 1 of 4</div>
+        <div class="step-title">Scope</div>
+      </div>
+    </div>
+    <div class="step-divider"></div>
+    <div class="step">
+      <div class="step-circle">2</div>
+      <div class="step-text">
+        <div class="step-label">Step 2</div>
+        <div class="step-title">Download template</div>
+      </div>
+    </div>
+    <div class="step-divider"></div>
+    <div class="step">
+      <div class="step-circle">3</div>
+      <div class="step-text">
+        <div class="step-label">Step 3</div>
+        <div class="step-title">Validate</div>
+      </div>
+    </div>
+    <div class="step-divider"></div>
+    <div class="step">
+      <div class="step-circle">4</div>
+      <div class="step-text">
+        <div class="step-label">Step 4</div>
+        <div class="step-title">Confirm &amp; commit</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form layout -->
+  <div class="form-layout">
+    <!-- Main form -->
+    <div class="form-main">
+      <div style="margin-bottom: var(--space-5);">
+        <h2 style="margin: 0 0 var(--space-2); font-size: 20px; font-weight: var(--w-semibold);">Set the geography for this batch</h2>
+        <p style="margin: 0; font-size: 13px; color: var(--ink-500); line-height: 1.5;">
+          Pick the state, district, block and FO this batch of Sakhis belongs to. Every row in your CSV will be created under this scope — you can run multiple batches if you need different geographies.
+        </p>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="label">State <span class="req">*</span></label>
+          <div class="field-input">Assam</div>
+          <div class="helper">You have access to: Assam, Rajasthan</div>
+        </div>
+        <div class="field">
+          <label class="label">District <span class="req">*</span></label>
+          <div class="field-input">Barpeta</div>
+          <div class="helper">Scoped to your assignment</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="label">Block <span class="req">*</span></label>
+          <div class="field-input">Bhabanipur</div>
+          <div class="helper">10 centres available · 18 villages</div>
+        </div>
+        <div class="field">
+          <label class="label">FO (Field Officer) <span class="req">*</span></label>
+          <div class="field-input">Dhaniram Deka <span style="font-size: 12px; color: var(--ink-500);">· 18 current Sakhis</span></div>
+          <div class="helper">Sakhis in this batch will report to this FO</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Batch label <span style="font-size: 11px; color: var(--ink-300);">(optional, for your reference)</span></label>
+        <input type="text" placeholder="e.g. Jan 2026 Bhabanipur recruitment cohort" value="Jan 2026 Bhabanipur recruitment cohort" />
+      </div>
+
+      <div class="footer-actions">
+        <button class="btn btn-tertiary"><span class="material-symbols-rounded">arrow_back</span> Back</button>
+        <button class="btn btn-primary btn-lg" data-link-to="P2-M4-S02">Continue to Step 2 <span class="material-symbols-rounded">arrow_forward</span></button>
+      </div>
+    </div>
+
+    <!-- Side help -->
+    <div class="form-side">
+      <div class="scope-preview">
+        <h4>This batch will create Sakhis under:</h4>
+        <div class="breadcrumb-scope">
+          <span class="seg set">Assam</span>
+          <span class="arrow material-symbols-rounded">chevron_right</span>
+          <span class="seg set">Barpeta</span>
+          <span class="arrow material-symbols-rounded">chevron_right</span>
+          <span class="seg set">Bhabanipur</span>
+          <span class="arrow material-symbols-rounded">chevron_right</span>
+          <span class="seg set">FO: Dhaniram Deka</span>
+        </div>
+      </div>
+
+      <div class="help-card">
+        <span class="material-symbols-rounded">info</span>
+        <div>
+          <h4>What you'll need in Step 2</h4>
+          <p>Download the CSV template and the village master sheet. Then in Excel or Google Sheets:</p>
+          <ul>
+            <li>Add one row per Sakhi</li>
+            <li>Use village ids from the master sheet</li>
+            <li>Don't change the column order</li>
+            <li>Max 200 rows per batch</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-bordered card">
+        <div style="display: flex; gap: var(--space-3); align-items: flex-start;">
+          <span class="material-symbols-rounded" style="color: var(--status-warning);">priority_high</span>
+          <div>
+            <div style="font-size: 13px; font-weight: var(--w-semibold); margin-bottom: 4px;">Migration in progress</div>
+            <p style="margin: 0; font-size: 12px; color: var(--ink-700); line-height: 1.5;">
+              From 1 Feb 2026, FOs can no longer create Sakhis from the mobile app. All Sakhi onboarding now flows through this screen.
+              <a href="#" style="color: var(--brand-primary);">Read the rollout note →</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

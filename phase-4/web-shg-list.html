@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>SHGs — Admin module</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<style>
+  body { width: 1440px; min-height: 900px; background: var(--surface-1); display: grid; grid-template-columns: var(--web-sidebar-width) 1fr; grid-template-rows: var(--web-topbar-height) 1fr; grid-template-areas: "side top" "side main"; }
+  .topbar-wrap { grid-area: top; }
+  .side-wrap { grid-area: side; }
+  .main-wrap { grid-area: main; padding: var(--space-6); overflow-y: auto; }
+
+  .shg-name {
+    font-weight: var(--w-semibold);
+    color: var(--ink-900);
+  }
+  .shg-id {
+    font-size: 10px;
+    color: var(--ink-500);
+    font-family: var(--font-mono);
+  }
+  .linkage-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: var(--w-semibold);
+  }
+  .linkage-pill.linked { background: var(--status-success-bg); color: var(--status-success-ink); }
+  .linkage-pill.not-linked { background: var(--surface-2); color: var(--ink-500); }
+  .linkage-pill .material-symbols-rounded { font-size: 12px; }
+
+  .resilience-pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    font-weight: var(--w-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+  .resilience-pill.low { background: var(--status-danger-bg); color: var(--status-danger); }
+  .resilience-pill.med { background: var(--status-warning-bg); color: var(--status-warning); }
+  .resilience-pill.high { background: var(--status-success-bg); color: var(--status-success); }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+  }
+  .kpi-row .kpi-card { padding: var(--space-3) var(--space-4); }
+  .kpi-row .kpi-card .label { font-size: 11px; font-weight: var(--w-semibold); text-transform: uppercase; letter-spacing: 0.04em; }
+  .kpi-row .kpi-card .value { font-size: 22px; }
+
+  .migration-banner {
+    background: var(--status-warning-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-4);
+    margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--status-warning-ink);
+  }
+  .migration-banner .material-symbols-rounded { color: var(--status-warning); }
+  .migration-banner .body { flex: 1; font-size: 13px; line-height: 1.4; }
+  .migration-banner .body strong { font-weight: var(--w-semibold); }
+  .migration-banner .actions { display: flex; gap: var(--space-2); }
+</style>
+<script src="../shared/wireframe-nav.js" defer></script>
+</head>
+<body>
+
+<div class="topbar-wrap">
+  <div class="web-topbar">
+    <div class="brand">Mein Pragati</div>
+    <div class="crisil-mark">A CRISIL Foundation initiative · Admin</div>
+    <div class="right">
+      <div class="refresh-badge"><span class="material-symbols-rounded">schedule</span> Last refreshed 09:42</div>
+      <button class="icon-btn"><span class="material-symbols-rounded">notifications</span></button>
+      <div class="avatar avatar-sm">MV</div>
+    </div>
+  </div>
+</div>
+
+<div class="side-wrap">
+  <div class="web-sidebar" style="height: calc(100vh - var(--web-topbar-height));">
+    <div class="user-block">
+      <div class="avatar">MV</div>
+      <div>
+        <div class="name">Maya Vengurlekar</div>
+        <div class="role">CRISIL Foundation · Admin</div>
+      </div>
+    </div>
+    <nav>
+      <a class="nav-item" data-link-to="P4-M6-S01"><span class="material-symbols-rounded">space_dashboard</span> Programme</a>
+      <a class="nav-item"><span class="material-symbols-rounded">dashboard</span> Dashboard</a>
+      <a class="nav-item"><span class="material-symbols-rounded">person</span> Users</a>
+      <a class="nav-item"><span class="material-symbols-rounded">location_city</span> Masters</a>
+      <a class="nav-item active"><span class="material-symbols-rounded">diversity_3</span> SHGs <span style="margin-left: auto; background: var(--brand-primary-50); color: var(--brand-primary); padding: 2px 6px; border-radius: var(--radius-full); font-size: 10px; font-weight: var(--w-bold);">NEW</span></a>
+      <a class="nav-item" data-link-to="P1-M16-S01"><span class="material-symbols-rounded">bar_chart</span> Sakhi Transactions</a>
+      <a class="nav-item"><span class="material-symbols-rounded">groups</span> Household Resilience</a>
+      <a class="nav-item"><span class="material-symbols-rounded">currency_rupee</span> Budget</a>
+      <a class="nav-item"><span class="material-symbols-rounded">important_devices</span> Training Kit</a>
+      <a class="nav-item"><span class="material-symbols-rounded">event_note</span> Reports</a>
+      <a class="nav-item"><span class="material-symbols-rounded">chat</span> Feedback</a>
+      <a class="nav-item"><span class="material-symbols-rounded">forum</span> Messages</a>
+    </nav>
+    <div class="pinned">
+      <a class="nav-item"><span class="material-symbols-rounded">settings</span> Setting</a>
+      <a class="nav-item"><span class="material-symbols-rounded">logout</span> Logout</a>
+    </div>
+  </div>
+</div>
+
+<div class="main-wrap">
+
+  <div class="page-header">
+    <div class="title-block">
+      <div class="title">SHGs</div>
+      <div class="subtitle">Self-Help Groups across Assam and Rajasthan · 5,743 active</div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-secondary"><span class="material-symbols-rounded">upload</span> Bulk import</button>
+      <button class="btn btn-secondary"><span class="material-symbols-rounded">merge</span> Find duplicates</button>
+      <button class="btn btn-primary"><span class="material-symbols-rounded">add</span> New SHG</button>
+    </div>
+  </div>
+
+  <!-- Migration banner (because SHG was free-text until now) -->
+  <div class="migration-banner">
+    <span class="material-symbols-rounded">construction</span>
+    <div class="body">
+      <strong>SHG migration in progress.</strong> 8,217 beneficiary records have free-text institution names that need to be matched to formal SHG entities. 6,891 already auto-matched · 1,326 need manual review.
+    </div>
+    <div class="actions">
+      <button class="btn btn-secondary btn-sm">Open migration tool</button>
+    </div>
+  </div>
+
+  <!-- KPI row -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="icon-circle"><span class="material-symbols-rounded">diversity_3</span></div>
+      <div>
+        <div class="label">Total SHGs</div>
+        <div class="value">5,743</div>
+        <div class="sub">15,997 members</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="icon-circle"><span class="material-symbols-rounded">verified</span></div>
+      <div>
+        <div class="label">SRLM linked</div>
+        <div class="value">4,128</div>
+        <div class="sub">71.9% of total</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="icon-circle"><span class="material-symbols-rounded">currency_rupee</span></div>
+      <div>
+        <div class="label">RF received</div>
+        <div class="value">3,041</div>
+        <div class="sub">₹ 4.5 cr disbursed</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="icon-circle"><span class="material-symbols-rounded">group_work</span></div>
+      <div>
+        <div class="label">VO members</div>
+        <div class="value">3,872</div>
+        <div class="sub">across 248 VOs</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="icon-circle"><span class="material-symbols-rounded">favorite</span></div>
+      <div>
+        <div class="label">Avg resilience</div>
+        <div class="value">62</div>
+        <div class="sub">+8 vs last quarter</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter strip -->
+  <div class="filter-strip" style="background: var(--surface-0); padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-bottom: var(--space-4);">
+    <span style="font-size: 12px; color: var(--ink-500); font-weight: var(--w-semibold); text-transform: uppercase; letter-spacing: 0.05em;">Filter</span>
+    <button class="filter-chip active">All</button>
+    <button class="filter-chip">Assam</button>
+    <button class="filter-chip">Rajasthan</button>
+    <div style="width: 1px; height: 20px; background: var(--surface-3); margin: 0 var(--space-2);"></div>
+    <button class="filter-chip">SRLM linked</button>
+    <button class="filter-chip">RF received</button>
+    <button class="filter-chip">VO member</button>
+    <button class="filter-chip add"><span class="material-symbols-rounded">add</span> District</button>
+    <button class="filter-chip add"><span class="material-symbols-rounded">add</span> Federation</button>
+    <button class="filter-chip add"><span class="material-symbols-rounded">add</span> Sakhi</button>
+    <div style="flex: 1;"></div>
+    <a href="#" style="font-size: 12px; color: var(--brand-primary); font-weight: var(--w-medium);">Reset</a>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>SHG name</th>
+          <th>Village · Block</th>
+          <th>VO / Federation</th>
+          <th class="text-right">Members</th>
+          <th>Assigned Sakhi</th>
+          <th>SRLM</th>
+          <th>RF</th>
+          <th class="text-right">Resilience</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="shg-name">Manalisha SHG</div>
+            <div class="shg-id">SHG-AS-04392</div>
+          </td>
+          <td>Bahjani · Barpeta</td>
+          <td>Bahjani Mahila Sangha</td>
+          <td class="num">12</td>
+          <td>Sumitra Devi</td>
+          <td><span class="linkage-pill linked"><span class="material-symbols-rounded">check_circle</span> Yes</span></td>
+          <td><span class="linkage-pill linked"><span class="material-symbols-rounded">paid</span> ₹15k</span></td>
+          <td class="text-right"><span class="resilience-pill high">82</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="shg-name">Saraswati Mahila Samiti</div>
+            <div class="shg-id">SHG-AS-04391</div>
+          </td>
+          <td>Sorbhog · Barpeta</td>
+          <td>Sorbhog Federation</td>
+          <td class="num">10</td>
+          <td>Suranjana Das</td>
+          <td><span class="linkage-pill linked"><span class="material-symbols-rounded">check_circle</span> Yes</span></td>
+          <td><span class="linkage-pill linked"><span class="material-symbols-rounded">paid</span> ₹15k</span></td>
+          <td class="text-right"><span class="resilience-pill high">78</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="shg-name">Pragati Pushpa SHG</div>
+            <div class="shg-id">SHG-RJ-01284</div>
+          </td>
+          <td>Ajeetgarh · Sikar</td>
+          <td>Sikar Kalyan VO</td>
+          <td class="num">14</td>
+          <td>Pushpa Kanwar</td>
+          <td><span class="linkage-pill linked"><span class="material-symbols-rounded">check_circle</span> Yes</span></td>
+          <td><span class="linkage-pill not-linked">Pending</span></td>
+          <td class="text-right"><span class="resilience-pill med">66</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="shg-name">Tara Tribal Group</div>
+            <div class="shg-id">SHG-AS-04388</div>
+          </td>
+          <td>Goalpara · Goalpara</td>
+          <td>Goalpara Adivasi Sangh</td>
+          <td class="num">8</td>
+          <td>Tara Bora</td>
+          <td><span class="linkage-pill linked"><span class="material-symbols-rounded">check_circle</span> Yes</span></td>
+          <td><span class="linkage-pill linked"><span class="material-symbols-rounded">paid</span> ₹10k</span></td>
+          <td class="text-right"><span class="resilience-pill med">58</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="shg-name">Aarti Mahila SHG</div>
+            <div class="shg-id">SHG-RJ-01211</div>
+          </td>
+          <td>Ajeetgarh · Sikar</td>
+          <td>—</td>
+          <td class="num">9</td>
+          <td>Pushpa Kanwar</td>
+          <td><span class="linkage-pill not-linked">No</span></td>
+          <td><span class="linkage-pill not-linked">No</span></td>
+          <td class="text-right"><span class="resilience-pill low">34</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="shg-name">Runamoni SHG</div>
+            <div class="shg-id">SHG-AS-04297</div>
+          </td>
+          <td>Bhuragaon · Morigaon</td>
+          <td>Morigaon Mahila Sangha</td>
+          <td class="num">11</td>
+          <td>Runamoni Deka</td>
+          <td><span class="linkage-pill linked"><span class="material-symbols-rounded">check_circle</span> Yes</span></td>
+          <td><span class="linkage-pill linked"><span class="material-symbols-rounded">paid</span> ₹20k</span></td>
+          <td class="text-right"><span class="resilience-pill high">88</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="shg-name">Fatema Begum SHG</div>
+            <div class="shg-id">SHG-AS-04188</div>
+          </td>
+          <td>Mayong · Morigaon</td>
+          <td>—</td>
+          <td class="num">7</td>
+          <td>Fatema Begum</td>
+          <td><span class="linkage-pill not-linked">Pending</span></td>
+          <td><span class="linkage-pill not-linked">No</span></td>
+          <td class="text-right"><span class="resilience-pill med">52</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="shg-name">Ujjwala Roshni SHG</div>
+            <div class="shg-id">SHG-RJ-01102</div>
+          </td>
+          <td>Alwar Rural · Alwar</td>
+          <td>Alwar Mahila VO</td>
+          <td class="num">15</td>
+          <td>Aarti Bhargav</td>
+          <td><span class="linkage-pill linked"><span class="material-symbols-rounded">check_circle</span> Yes</span></td>
+          <td><span class="linkage-pill linked"><span class="material-symbols-rounded">paid</span> ₹15k</span></td>
+          <td class="text-right"><span class="resilience-pill high">75</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <div class="info">Showing 1–10 of 5,743</div>
+      <div class="pages">
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>…</button>
+        <button>575</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="screen-id-badge">P4-M5-S01</div>
+
+</body>
+</html>

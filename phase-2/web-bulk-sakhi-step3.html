@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><title>Bulk Sakhi — Step 3 Validate</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" /><link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script>
+<style>body{width:1440px;min-height:900px;background:var(--surface-1);display:grid;grid-template-columns:var(--web-sidebar-width) 1fr;grid-template-rows:var(--web-topbar-height) 1fr;grid-template-areas:"side top" "side main";}.topbar-wrap{grid-area:top;}.side-wrap{grid-area:side;}.main-wrap{grid-area:main;padding:var(--space-6);overflow-y:auto;}
+.stepper{display:flex;align-items:center;margin-bottom:var(--space-6);padding:var(--space-4) var(--space-5);background:var(--surface-0);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);gap:var(--space-2);}
+.step{display:flex;align-items:center;gap:var(--space-2);flex:1;}
+.step .step-circle{width:32px;height:32px;border-radius:99px;background:var(--surface-2);color:var(--ink-500);display:inline-flex;align-items:center;justify-content:center;font-weight:var(--w-bold);font-size:13px;flex-shrink:0;}
+.step.active .step-circle{background:var(--brand-primary);color:white;}
+.step.completed .step-circle{background:var(--status-success);color:white;}
+.step .step-text{flex:1;min-width:0;}.step .step-label{font-size:11px;color:var(--ink-500);text-transform:uppercase;letter-spacing:0.05em;font-weight:var(--w-semibold);}
+.step .step-title{font-size:14px;font-weight:var(--w-semibold);color:var(--ink-900);}.step.completed .step-title{color:var(--status-success);}.step.active .step-title{color:var(--brand-primary);}
+.step-divider{flex:0 0 40px;height:2px;background:var(--surface-3);margin:0 var(--space-2);}.step.completed + .step-divider{background:var(--status-success);}
+.summary-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-3);margin-bottom:var(--space-5);}
+.summary-card{padding:var(--space-4);background:var(--surface-0);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);border-top:4px solid;}
+.summary-card.total{border-top-color:var(--brand-primary);}.summary-card.ok{border-top-color:var(--status-success);}
+.summary-card.warn{border-top-color:var(--status-warning);}.summary-card.fail{border-top-color:var(--status-danger);}
+.summary-card .lbl{font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink-500);font-weight:var(--w-semibold);}
+.summary-card .val{font-size:32px;font-weight:var(--w-bold);line-height:1;margin-top:6px;}
+.row-status{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:var(--w-semibold);}
+.row-status.ok{background:var(--status-success-bg);color:var(--status-success-ink);}.row-status.warn{background:var(--status-warning-bg);color:var(--status-warning-ink);}.row-status.fail{background:var(--status-danger-bg);color:var(--status-danger-ink);}
+.error-text{font-size:11px;color:var(--status-danger);display:block;margin-top:2px;}
+.warn-text{font-size:11px;color:var(--status-warning);display:block;margin-top:2px;}
+</style></head>
+<body>
+<div class="screen-id-badge">P2-M4-S03</div>
+
+<div class="topbar-wrap"><div class="web-topbar"><div class="brand">Mein Pragati</div><div class="crisil-mark">A CRISIL Foundation initiative</div><div class="right"><div class="avatar avatar-sm">SS</div></div></div></div>
+
+<div class="side-wrap">
+  <div class="web-sidebar" style="height: calc(100vh - var(--web-topbar-height));">
+    <div class="user-block"><div class="avatar">SS</div><div><div class="name">Sandeep Singh</div><div class="role">NGO Partner — SeSTA</div></div></div>
+    <nav>
+      <a class="nav-item"><span class="material-symbols-rounded">dashboard</span> Dashboard</a>
+      <a class="nav-item" data-link-to="P1-M16-S01"><span class="material-symbols-rounded">bar_chart</span> Sakhi Transactions</a>
+      <a class="nav-item active"><span class="material-symbols-rounded">people</span> Sakhi Details</a>
+    </nav>
+  </div>
+</div>
+
+<div class="main-wrap">
+  <div class="page-header">
+    <div class="title-block"><div class="title">Bulk Sakhi Onboarding</div><div class="subtitle">Step 3 of 4 · Review validation results before committing</div></div>
+    <div class="actions"><button class="btn btn-secondary"><span class="material-symbols-rounded">download</span> Download error report</button></div>
+  </div>
+
+  <div class="stepper">
+    <div class="step completed"><div class="step-circle"><span class="material-symbols-rounded" style="font-size:18px;">check</span></div><div class="step-text"><div class="step-label">Step 1</div><div class="step-title">Scope</div></div></div>
+    <div class="step-divider"></div>
+    <div class="step completed"><div class="step-circle"><span class="material-symbols-rounded" style="font-size:18px;">check</span></div><div class="step-text"><div class="step-label">Step 2</div><div class="step-title">Upload</div></div></div>
+    <div class="step-divider"></div>
+    <div class="step active"><div class="step-circle">3</div><div class="step-text"><div class="step-label">Step 3 of 4</div><div class="step-title">Validate</div></div></div>
+    <div class="step-divider"></div>
+    <div class="step"><div class="step-circle">4</div><div class="step-text"><div class="step-label">Step 4</div><div class="step-title">Commit</div></div></div>
+  </div>
+
+  <div class="summary-row">
+    <div class="summary-card total"><div class="lbl">Rows in file</div><div class="val">24</div></div>
+    <div class="summary-card ok"><div class="lbl">Pass</div><div class="val" style="color:var(--status-success);">19</div></div>
+    <div class="summary-card warn"><div class="lbl">Warn</div><div class="val" style="color:var(--status-warning);">3</div></div>
+    <div class="summary-card fail"><div class="lbl">Fail</div><div class="val" style="color:var(--status-danger);">2</div></div>
+  </div>
+
+  <div class="filter-strip" style="background:var(--surface-0);padding:var(--space-3) var(--space-4);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);margin-bottom:var(--space-4);">
+    <span style="font-size:12px;color:var(--ink-500);font-weight:var(--w-semibold);text-transform:uppercase;letter-spacing:0.05em;">Show</span>
+    <button class="filter-chip active">All 24</button>
+    <button class="filter-chip">Pass (19)</button>
+    <button class="filter-chip">Warn (3)</button>
+    <button class="filter-chip">Fail (2)</button>
+    <button class="filter-chip add"><span class="material-symbols-rounded">auto_fix_high</span> Bulk fix: blank villages → district default</button>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Row</th><th>Name</th><th>Mobile</th><th>Village</th><th>Date of joining</th><th>Status</th><th>Issue</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Anita Sharma</td><td>9485 22xxxx</td><td>Bahjani</td><td>15 Jan 2026</td><td><span class="row-status ok"><span class="material-symbols-rounded" style="font-size:12px;">check</span> Pass</span></td><td>—</td></tr>
+        <tr><td>2</td><td>Bipasha Das</td><td>9876 43xxxx</td><td>Sorbhog</td><td>15 Jan 2026</td><td><span class="row-status ok"><span class="material-symbols-rounded" style="font-size:12px;">check</span> Pass</span></td><td>—</td></tr>
+        <tr style="background:var(--status-danger-bg);"><td>3</td><td>Geeta Kumari</td><td><strong style="color:var(--status-danger);">98765</strong></td><td>Bahjani</td><td>15 Jan 2026</td><td><span class="row-status fail"><span class="material-symbols-rounded" style="font-size:12px;">close</span> Fail</span></td><td><span class="error-text">Mobile must be 10 digits (got 5)</span></td></tr>
+        <tr><td>4</td><td>Kavita Devi</td><td>9123 45xxxx</td><td>Bahjani</td><td>15 Jan 2026</td><td><span class="row-status ok"><span class="material-symbols-rounded" style="font-size:12px;">check</span> Pass</span></td><td>—</td></tr>
+        <tr style="background:var(--status-warning-bg);"><td>5</td><td>Lily Boro</td><td>9988 11xxxx</td><td><strong style="color:var(--status-warning);">(empty)</strong></td><td>15 Jan 2026</td><td><span class="row-status warn"><span class="material-symbols-rounded" style="font-size:12px;">warning</span> Warn</span></td><td><span class="warn-text">Village blank — will default to district HQ village</span></td></tr>
+        <tr><td>6</td><td>Manju Saikia</td><td>9234 78xxxx</td><td>Sorbhog</td><td>15 Jan 2026</td><td><span class="row-status ok"><span class="material-symbols-rounded" style="font-size:12px;">check</span> Pass</span></td><td>—</td></tr>
+        <tr style="background:var(--status-danger-bg);"><td>7</td><td>Nita Hazarika</td><td>9988 22xxxx</td><td><strong style="color:var(--status-danger);">"Bhabanipur"</strong></td><td>15 Jan 2026</td><td><span class="row-status fail"><span class="material-symbols-rounded" style="font-size:12px;">close</span> Fail</span></td><td><span class="error-text">"Bhabanipur" is a block, not a village. Use a village ID from the master.</span></td></tr>
+        <tr><td>8</td><td>Priya Kakoty</td><td>9456 19xxxx</td><td>Bahjani</td><td>15 Jan 2026</td><td><span class="row-status ok"><span class="material-symbols-rounded" style="font-size:12px;">check</span> Pass</span></td><td>—</td></tr>
+      </tbody>
+    </table>
+    <div class="pagination"><div class="info">Showing 1–8 of 24</div><div class="pages"><button class="active">1</button><button>2</button><button>3</button></div></div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:var(--space-5);padding-top:var(--space-5);border-top:1px solid var(--surface-3);">
+    <button class="btn btn-tertiary" data-link-to="P2-M4-S02"><span class="material-symbols-rounded">arrow_back</span> Re-upload file</button>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <span style="font-size:12px;color:var(--ink-500);">2 failed rows will be skipped</span>
+      <button class="btn btn-primary btn-lg" data-link-to="P2-M4-S04">Continue with 22 valid rows <span class="material-symbols-rounded">arrow_forward</span></button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

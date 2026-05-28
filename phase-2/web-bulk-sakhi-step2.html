@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><title>Bulk Sakhi — Step 2 Download &amp; Upload</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" /><link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script>
+<style>body{width:1440px;min-height:900px;background:var(--surface-1);display:grid;grid-template-columns:var(--web-sidebar-width) 1fr;grid-template-rows:var(--web-topbar-height) 1fr;grid-template-areas:"side top" "side main";}.topbar-wrap{grid-area:top;}.side-wrap{grid-area:side;}.main-wrap{grid-area:main;padding:var(--space-6);overflow-y:auto;}
+.stepper{display:flex;align-items:center;margin-bottom:var(--space-6);padding:var(--space-4) var(--space-5);background:var(--surface-0);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);gap:var(--space-2);}
+.step{display:flex;align-items:center;gap:var(--space-2);flex:1;}
+.step .step-circle{width:32px;height:32px;border-radius:99px;background:var(--surface-2);color:var(--ink-500);display:inline-flex;align-items:center;justify-content:center;font-weight:var(--w-bold);font-size:13px;flex-shrink:0;}
+.step.active .step-circle{background:var(--brand-primary);color:white;}
+.step.completed .step-circle{background:var(--status-success);color:white;}
+.step .step-text{flex:1;min-width:0;}
+.step .step-label{font-size:11px;color:var(--ink-500);text-transform:uppercase;letter-spacing:0.05em;font-weight:var(--w-semibold);}
+.step .step-title{font-size:14px;font-weight:var(--w-semibold);color:var(--ink-900);}
+.step.completed .step-title{color:var(--status-success);}
+.step.active .step-title{color:var(--brand-primary);}
+.step-divider{flex:0 0 40px;height:2px;background:var(--surface-3);margin:0 var(--space-2);}
+.step.completed + .step-divider{background:var(--status-success);}
+.form-main{background:var(--surface-0);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:var(--space-6);}
+.dl-card{padding:var(--space-4);background:var(--surface-1);border-radius:var(--radius-md);display:flex;gap:var(--space-3);align-items:center;margin-bottom:var(--space-3);border:1px solid var(--surface-3);}
+.dl-card .icon{width:48px;height:48px;border-radius:var(--radius-md);background:var(--brand-primary-50);color:var(--brand-primary);display:inline-flex;align-items:center;justify-content:center;}
+.dl-card .body{flex:1;}
+.dl-card .body .title{font-size:14px;font-weight:var(--w-semibold);}
+.dl-card .body .meta{font-size:12px;color:var(--ink-500);margin-top:2px;}
+.drop-zone{background:var(--brand-primary-25);border:2px dashed var(--brand-primary);border-radius:var(--radius-lg);padding:var(--space-12) var(--space-6);text-align:center;color:var(--brand-primary);cursor:pointer;margin-top:var(--space-4);}
+.drop-zone .material-symbols-rounded{font-size:48px;}
+</style></head>
+<body>
+<div class="screen-id-badge">P2-M4-S02</div>
+
+<div class="topbar-wrap"><div class="web-topbar"><div class="brand">Mein Pragati</div><div class="crisil-mark">A CRISIL Foundation initiative</div><div class="right"><div class="avatar avatar-sm">SS</div></div></div></div>
+
+<div class="side-wrap">
+  <div class="web-sidebar" style="height: calc(100vh - var(--web-topbar-height));">
+    <div class="user-block"><div class="avatar">SS</div><div><div class="name">Sandeep Singh</div><div class="role">NGO Partner — SeSTA</div></div></div>
+    <nav>
+      <a class="nav-item"><span class="material-symbols-rounded">dashboard</span> Dashboard</a>
+      <a class="nav-item" data-link-to="P1-M16-S01"><span class="material-symbols-rounded">bar_chart</span> Sakhi Transactions</a>
+      <a class="nav-item active"><span class="material-symbols-rounded">people</span> Sakhi Details</a>
+    </nav>
+  </div>
+</div>
+
+<div class="main-wrap">
+
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:var(--space-3);font-size:12px;color:var(--ink-500);">
+    <a href="#" data-link-to="P2-M4-S01" style="color:var(--ink-500);">Sakhi Details</a>
+    <span style="color:var(--ink-300);">/</span><span>Bulk onboarding</span>
+  </div>
+
+  <div class="page-header">
+    <div class="title-block"><div class="title">Bulk Sakhi Onboarding</div><div class="subtitle">Step 2 of 4 · Download the template, fill it in, then upload</div></div>
+  </div>
+
+  <div class="stepper">
+    <div class="step completed"><div class="step-circle"><span class="material-symbols-rounded" style="font-size:18px;">check</span></div><div class="step-text"><div class="step-label">Step 1</div><div class="step-title">Scope</div></div></div>
+    <div class="step-divider"></div>
+    <div class="step active"><div class="step-circle">2</div><div class="step-text"><div class="step-label">Step 2 of 4</div><div class="step-title">Download &amp; Upload</div></div></div>
+    <div class="step-divider"></div>
+    <div class="step"><div class="step-circle">3</div><div class="step-text"><div class="step-label">Step 3</div><div class="step-title">Validate</div></div></div>
+    <div class="step-divider"></div>
+    <div class="step"><div class="step-circle">4</div><div class="step-text"><div class="step-label">Step 4</div><div class="step-title">Commit</div></div></div>
+  </div>
+
+  <div class="form-main">
+    <h2 style="margin:0 0 var(--space-2);font-size:20px;">Download templates, then upload your file</h2>
+    <p style="margin:0 0 var(--space-5);color:var(--ink-500);font-size:13px;line-height:1.5;">Two files to download: the empty template, and the village master reference. Fill the template in Excel or Google Sheets (one row per Sakhi), then drag the file into the box below.</p>
+
+    <div class="dl-card">
+      <div class="icon"><span class="material-symbols-rounded">description</span></div>
+      <div class="body">
+        <div class="title">Sakhi onboarding template (pre-filled with scope)</div>
+        <div class="meta">CSV · State=Assam · District=Barpeta · Block=Bhabanipur · FO=Dhaniram Deka</div>
+      </div>
+      <button class="btn btn-primary"><span class="material-symbols-rounded">download</span> Download template</button>
+    </div>
+
+    <div class="dl-card">
+      <div class="icon" style="background:var(--status-info-bg);color:var(--status-info);"><span class="material-symbols-rounded">list_alt</span></div>
+      <div class="body">
+        <div class="title">Village master reference — Bhabanipur block</div>
+        <div class="meta">CSV · 18 villages with their official IDs · Use these IDs in your CSV</div>
+      </div>
+      <button class="btn btn-secondary"><span class="material-symbols-rounded">download</span> Download villages</button>
+    </div>
+
+    <div style="padding:var(--space-3) var(--space-4);background:var(--status-info-bg);color:var(--status-info-ink);border-radius:var(--radius-md);margin-top:var(--space-4);font-size:13px;line-height:1.5;display:flex;gap:8px;">
+      <span class="material-symbols-rounded" style="flex-shrink:0;">tips_and_updates</span>
+      <span><strong>Tips:</strong> Maximum 200 rows per batch. Don't change column order. Mobile numbers must be 10 digits. If a row fails validation we'll show you exactly which field on the next step.</span>
+    </div>
+
+    <div class="drop-zone">
+      <span class="material-symbols-rounded">cloud_upload</span>
+      <h3 style="margin:var(--space-3) 0 6px;font-size:18px;">Drop the filled CSV here</h3>
+      <p style="margin:0;font-size:13px;">or <strong>click to browse</strong> · max 5 MB</p>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:var(--space-6);padding-top:var(--space-5);border-top:1px solid var(--surface-3);">
+      <button class="btn btn-tertiary" data-link-to="P2-M4-S01"><span class="material-symbols-rounded">arrow_back</span> Back to Step 1</button>
+      <button class="btn btn-primary btn-lg" data-link-to="P2-M4-S03">Continue to Step 3 · Validate <span class="material-symbols-rounded">arrow_forward</span></button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

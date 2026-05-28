@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Admin — Notification Matrix</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script>
+<style>
+  body { width: 1440px; min-height: 900px; background: var(--surface-1); display: grid; grid-template-columns: var(--web-sidebar-width) 1fr; grid-template-rows: var(--web-topbar-height) 1fr; grid-template-areas: "side top" "side main"; }
+  .topbar-wrap { grid-area: top; } .side-wrap { grid-area: side; } .main-wrap { grid-area: main; padding: var(--space-6); overflow-y: auto; }
+  .matrix-card { background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--space-5); }
+  .matrix-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+  .matrix-table th, .matrix-table td { padding: 10px var(--space-3); border-bottom: 1px solid var(--surface-3); }
+  .matrix-table thead th { background: var(--surface-2); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-700); font-weight: var(--w-semibold); position: sticky; top: 0; }
+  .matrix-table thead th.role-col { text-align: center; width: 100px; }
+  .matrix-table thead th.role-col .platform-hint { font-size: 9px; color: var(--ink-500); display: block; margin-top: 2px; font-weight: var(--w-medium); }
+  .matrix-table td.event-name { font-size: 13px; color: var(--ink-900); font-weight: var(--w-medium); }
+  .matrix-table td.event-name .sub { font-size: 11px; color: var(--ink-500); font-weight: var(--w-regular); margin-top: 2px; }
+  .matrix-table td.channels { text-align: center; }
+  .ch-row { display: flex; gap: 4px; justify-content: center; align-items: center; }
+  .ch-pill {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    background: var(--surface-2);
+    color: var(--ink-300);
+    cursor: pointer;
+  }
+  .ch-pill.on { background: var(--brand-primary); color: white; }
+  .ch-pill.partial { background: var(--brand-primary-50); color: var(--brand-primary); border: 1px solid var(--brand-primary); }
+  .legend { display: flex; gap: var(--space-4); margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--surface-3); font-size: 12px; color: var(--ink-500); }
+  .legend-item { display: flex; gap: 6px; align-items: center; }
+</style>
+</head>
+<body>
+<div class="screen-id-badge">P1-M9-S01</div>
+
+<div class="topbar-wrap"><div class="web-topbar"><div class="brand">Mein Pragati</div><div class="crisil-mark">A CRISIL Foundation initiative · Admin</div><div class="right"><div class="avatar avatar-sm">MV</div></div></div></div>
+
+<div class="side-wrap">
+  <div class="web-sidebar" style="height: calc(100vh - var(--web-topbar-height));">
+    <div class="user-block"><div class="avatar">MV</div><div><div class="name">Maya Vengurlekar</div><div class="role">CRISIL Foundation · Admin</div></div></div>
+    <nav>
+      <a class="nav-item" data-link-to="P4-M6-S01"><span class="material-symbols-rounded">space_dashboard</span> Programme</a>
+      <a class="nav-item"><span class="material-symbols-rounded">dashboard</span> Dashboard</a>
+      <a class="nav-item" data-link-to="P4-M5-S01"><span class="material-symbols-rounded">diversity_3</span> SHGs</a>
+      <a class="nav-item" data-link-to="P1-M16-S01"><span class="material-symbols-rounded">bar_chart</span> Sakhi Transactions</a>
+      <a class="nav-item active"><span class="material-symbols-rounded">notifications</span> Notifications</a>
+      <a class="nav-item"><span class="material-symbols-rounded">settings</span> Setting</a>
+    </nav>
+  </div>
+</div>
+
+<div class="main-wrap">
+  <div class="page-header">
+    <div class="title-block">
+      <div class="title">Notification Matrix</div>
+      <div class="subtitle">Set which events trigger which channels for each user role · Saved changes apply on next event fire</div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-secondary"><span class="material-symbols-rounded">history</span> Audit log</button>
+      <button class="btn btn-primary"><span class="material-symbols-rounded">save</span> Save</button>
+    </div>
+  </div>
+
+  <div style="background:var(--status-warning-bg);color:var(--status-warning-ink);padding:12px 16px;border-radius:var(--radius-md);margin-bottom:var(--space-4);font-size:13px;display:flex;gap:8px;align-items:center;">
+    <span class="material-symbols-rounded">flag</span>
+    The event list below is a starting set — pending sign-off from CRISIL on the final taxonomy.
+  </div>
+
+  <div class="matrix-card">
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Event</th>
+          <th class="role-col">Admin<span class="platform-hint">Email</span></th>
+          <th class="role-col">NGO Partner<span class="platform-hint">Web · Email</span></th>
+          <th class="role-col">FO<span class="platform-hint">App push · SMS</span></th>
+          <th class="role-col">Sakhi<span class="platform-hint">App push · SMS</span></th>
+          <th class="role-col">Beneficiary<span class="platform-hint">SMS · IVR</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="event-name">Transaction approved by NGO<div class="sub">Final approval reached</div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">💬</span><span class="ch-pill on">📞</span></div></td>
+        </tr>
+        <tr>
+          <td class="event-name">Transaction rejected<div class="sub">By FO or NGO</div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📱</span><span class="ch-pill on">💬</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">💬</span></div></td>
+        </tr>
+        <tr>
+          <td class="event-name">7-day pending threshold<div class="sub">Aggregated, not per-record</div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">💬</span></div></td>
+        </tr>
+        <tr>
+          <td class="event-name">Broadcast message received<div class="sub">From NGO or FO</div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">💬</span></div></td>
+        </tr>
+        <tr>
+          <td class="event-name">Attendance reminder<div class="sub">If not marked by 10 AM</div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">💬</span></div></td>
+        </tr>
+        <tr>
+          <td class="event-name">FHC counselling due<div class="sub">3-month re-assessment</div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">💬</span></div></td>
+        </tr>
+        <tr>
+          <td class="event-name">Window closing soon<div class="sub">3 days before month cutoff</div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">💬</span></div></td>
+        </tr>
+        <tr>
+          <td class="event-name">Weekly digest<div class="sub">Mondays 8 AM</div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📧</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill on">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">📱</span></div></td>
+          <td class="channels"><div class="ch-row"><span class="ch-pill">💬</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="legend">
+      <span class="legend-item">📧 Email</span>
+      <span class="legend-item">📱 App push</span>
+      <span class="legend-item">💬 SMS</span>
+      <span class="legend-item">📞 IVR call</span>
+      <span style="margin-left:auto;">Quiet hours apply globally: 9:30 pm — 7:00 am</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

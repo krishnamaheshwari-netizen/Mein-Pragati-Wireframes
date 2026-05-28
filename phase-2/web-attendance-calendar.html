@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><title>Attendance — Calendar per FO</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" /><link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script>
+<style>body{width:1440px;min-height:900px;background:var(--surface-1);display:grid;grid-template-columns:var(--web-sidebar-width) 1fr;grid-template-rows:var(--web-topbar-height) 1fr;grid-template-areas:"side top" "side main";}.topbar-wrap{grid-area:top;}.side-wrap{grid-area:side;}.main-wrap{grid-area:main;padding:var(--space-6);overflow-y:auto;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.cal-header{font-size:11px;text-transform:uppercase;color:var(--ink-500);font-weight:var(--w-semibold);text-align:center;padding:6px 0;}
+.cal-cell{aspect-ratio:1;background:var(--surface-2);border-radius:var(--radius-md);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;position:relative;}
+.cal-cell.present{background:var(--status-success-bg);color:var(--status-success-ink);font-weight:var(--w-semibold);cursor:pointer;}
+.cal-cell.absent{background:var(--status-danger-bg);color:var(--status-danger-ink);font-weight:var(--w-semibold);}
+.cal-cell.off{background:var(--surface-1);color:var(--ink-300);}
+.cal-cell.today{box-shadow:0 0 0 2px var(--brand-primary);font-weight:var(--w-bold);}
+.cal-cell.future{background:var(--surface-1);color:var(--ink-300);opacity:0.5;}
+.cal-cell .time{font-size:9px;opacity:0.8;}
+.detail-card{background:var(--surface-0);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:var(--space-5);margin-top:var(--space-5);}
+</style></head>
+<body>
+<div class="screen-id-badge">P2-M3-S04</div>
+
+<div class="topbar-wrap"><div class="web-topbar"><div class="brand">Mein Pragati</div><div class="crisil-mark">A CRISIL Foundation initiative</div><div class="right"><div class="avatar avatar-sm">SS</div></div></div></div>
+
+<div class="side-wrap">
+  <div class="web-sidebar" style="height: calc(100vh - var(--web-topbar-height));">
+    <div class="user-block"><div class="avatar">SS</div><div><div class="name">Sandeep Singh</div><div class="role">NGO Partner — SeSTA</div></div></div>
+    <nav>
+      <a class="nav-item"><span class="material-symbols-rounded">dashboard</span> Dashboard</a>
+      <a class="nav-item" data-link-to="P1-M16-S01"><span class="material-symbols-rounded">bar_chart</span> Sakhi Transactions</a>
+      <a class="nav-item active" data-link-to="P2-M3-S03"><span class="material-symbols-rounded">how_to_reg</span> Attendance</a>
+    </nav>
+  </div>
+</div>
+
+<div class="main-wrap">
+
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:var(--space-3);font-size:12px;color:var(--ink-500);">
+    <a href="#" data-link-to="P2-M3-S03" style="color:var(--ink-500);">Attendance</a>
+    <span style="color:var(--ink-300);">/</span>
+    <span style="color:var(--ink-900);font-weight:var(--w-semibold);">Dhaniram Deka</span>
+  </div>
+
+  <div class="page-header">
+    <div class="title-block">
+      <div class="title">Dhaniram Deka · Attendance</div>
+      <div class="subtitle">Morigaon · 18 Sakhis · 96% attendance this month</div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-secondary"><span class="material-symbols-rounded">chevron_left</span> Dec 2025</button>
+      <button class="btn btn-secondary">Jan 2026</button>
+      <button class="btn btn-secondary">Feb 2026 <span class="material-symbols-rounded">chevron_right</span></button>
+    </div>
+  </div>
+
+  <div class="card" style="padding:var(--space-5);">
+    <h3 style="margin:0 0 var(--space-4);font-size:16px;">January 2026</h3>
+
+    <div class="cal-grid">
+      <div class="cal-header">Sun</div><div class="cal-header">Mon</div><div class="cal-header">Tue</div><div class="cal-header">Wed</div><div class="cal-header">Thu</div><div class="cal-header">Fri</div><div class="cal-header">Sat</div>
+
+      <!-- Week 1 -->
+      <div class="cal-cell off"></div>
+      <div class="cal-cell off"></div>
+      <div class="cal-cell off"></div>
+      <div class="cal-cell present">1<span class="time">09:08</span></div>
+      <div class="cal-cell present">2<span class="time">09:12</span></div>
+      <div class="cal-cell present">3<span class="time">09:30</span></div>
+      <div class="cal-cell off">4<span class="time">Sun</span></div>
+
+      <!-- Week 2 -->
+      <div class="cal-cell off">5<span class="time">Sun</span></div>
+      <div class="cal-cell present">6<span class="time">09:02</span></div>
+      <div class="cal-cell present">7<span class="time">09:21</span></div>
+      <div class="cal-cell present">8<span class="time">08:54</span></div>
+      <div class="cal-cell present">9<span class="time">09:18</span></div>
+      <div class="cal-cell absent">10</div>
+      <div class="cal-cell off">11<span class="time">Sun</span></div>
+
+      <!-- Week 3 -->
+      <div class="cal-cell off">12<span class="time">Sun</span></div>
+      <div class="cal-cell present">13<span class="time">09:14</span></div>
+      <div class="cal-cell present">14<span class="time">09:08</span></div>
+      <div class="cal-cell present">15<span class="time">09:22</span></div>
+      <div class="cal-cell present">16<span class="time">09:30</span></div>
+      <div class="cal-cell present">17<span class="time">09:14</span></div>
+      <div class="cal-cell off">18<span class="time">Sun</span></div>
+
+      <!-- Week 4 -->
+      <div class="cal-cell off">19<span class="time">Sun</span></div>
+      <div class="cal-cell present">20<span class="time">09:02</span></div>
+      <div class="cal-cell present">21<span class="time">09:11</span></div>
+      <div class="cal-cell present">22<span class="time">08:58</span></div>
+      <div class="cal-cell present">23<span class="time">09:26</span></div>
+      <div class="cal-cell present">24<span class="time">09:48</span></div>
+      <div class="cal-cell off">25<span class="time">Sun</span></div>
+
+      <!-- Week 5 -->
+      <div class="cal-cell off">26<span class="time">R-day</span></div>
+      <div class="cal-cell present">27<span class="time">09:14</span></div>
+      <div class="cal-cell present today">28<span class="time">09:14</span></div>
+      <div class="cal-cell future">29</div>
+      <div class="cal-cell future">30</div>
+      <div class="cal-cell future">31</div>
+      <div class="cal-cell off"></div>
+    </div>
+
+    <div style="display:flex;gap:var(--space-4);margin-top:var(--space-4);padding-top:var(--space-3);border-top:1px solid var(--surface-3);font-size:12px;color:var(--ink-700);">
+      <span style="display:flex;gap:6px;align-items:center;"><span style="width:14px;height:14px;background:var(--status-success-bg);border-radius:3px;"></span> Present (22)</span>
+      <span style="display:flex;gap:6px;align-items:center;"><span style="width:14px;height:14px;background:var(--status-danger-bg);border-radius:3px;"></span> Absent (1)</span>
+      <span style="display:flex;gap:6px;align-items:center;"><span style="width:14px;height:14px;background:var(--surface-1);border-radius:3px;"></span> Sunday / holiday</span>
+      <span style="display:flex;gap:6px;align-items:center;"><span style="width:14px;height:14px;border:2px solid var(--brand-primary);border-radius:3px;"></span> Today</span>
+    </div>
+  </div>
+
+  <!-- Selected day detail -->
+  <div class="detail-card">
+    <h3 style="margin:0 0 var(--space-3);">13 January · 09:14</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+      <div>
+        <div style="font-size:11px;text-transform:uppercase;color:var(--ink-500);font-weight:var(--w-semibold);margin-bottom:4px;">Marked at</div>
+        <div style="font-size:14px;font-weight:var(--w-medium);">Bahjani village, Barpeta district</div>
+        <div style="font-size:12px;color:var(--ink-500);font-family:var(--font-mono);">26.2517° N, 92.3382° E</div>
+      </div>
+      <div>
+        <div style="font-size:11px;text-transform:uppercase;color:var(--ink-500);font-weight:var(--w-semibold);margin-bottom:4px;">Device</div>
+        <div style="font-size:14px;font-weight:var(--w-medium);">Samsung Galaxy M21 · Android 11</div>
+        <div style="font-size:12px;color:var(--ink-500);">App version 2.0.4</div>
+      </div>
+    </div>
+    <div style="margin-top:var(--space-4);height:160px;background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--ink-500);">
+      <span class="material-symbols-rounded" style="font-size:32px;">map</span>
+      &nbsp; Map preview · Bahjani, Barpeta
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

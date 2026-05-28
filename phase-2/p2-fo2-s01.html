@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=375, initial-scale=1" />
+<title>FO — Training Records list</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script><style>
+body { width: 375px; min-height: 812px; background: var(--surface-1); }
+.content { padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); padding-bottom: 90px; }
+.field-card { background: var(--surface-0); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); box-shadow: var(--shadow-sm); }
+.lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-500); font-weight: var(--w-semibold); margin-bottom: 6px; }
+.val { font-size: 14px; color: var(--ink-900); }
+.list-card { background: var(--surface-0); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; }
+.list-card .row { padding: var(--space-3) var(--space-4); border-top: 1px solid var(--surface-3); display: flex; gap: var(--space-3); align-items: center; }
+.list-card .row:first-child { border-top: none; }
+.list-card .row .icon-box { width: 36px; height: 36px; border-radius: var(--radius-md); background: var(--brand-primary-50); color: var(--brand-primary); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.list-card .row .body { flex: 1; min-width: 0; }
+.list-card .row .title { font-size: 13px; font-weight: var(--w-semibold); color: var(--ink-900); }
+.list-card .row .meta { font-size: 11px; color: var(--ink-500); margin-top: 2px; }
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface-0); padding: var(--space-3) var(--space-4); border-top: 1px solid var(--surface-3); display: flex; gap: var(--space-2); }
+.bottom-bar .btn { flex: 1; }
+.fab { position: fixed; right: var(--space-4); bottom: var(--space-6); }
+.hero { background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-700) 100%); color: white; padding: var(--space-5) var(--space-4); margin: -16px -16px var(--space-3); border-radius: 0; position: relative; overflow: hidden; }
+.hero::after { content: ''; position: absolute; right: -40px; top: -40px; width: 140px; height: 140px; background: rgba(255,255,255,0.08); border-radius: 50%; }
+.hero .meta-lbl { font-size: 11px; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.05em; font-weight: var(--w-semibold); }
+.hero .big { font-size: 32px; font-weight: var(--w-bold); line-height: 1; margin: 6px 0; }
+.hero .sub { font-size: 13px; opacity: 0.9; }
+.kpi-row-m { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+.kpi-card-m { background: var(--surface-0); border-radius: var(--radius-md); padding: var(--space-3); box-shadow: var(--shadow-sm); text-align: center; }
+.kpi-card-m .num { font-size: 22px; font-weight: var(--w-bold); color: var(--ink-900); }
+.kpi-card-m .lbl-k { font-size: 10px; color: var(--ink-500); text-transform: uppercase; letter-spacing: 0.04em; font-weight: var(--w-semibold); margin-top: 4px; }
+.section-head-m { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-500); font-weight: var(--w-semibold); padding: var(--space-2) 0; }
+input.field-input-m, textarea.field-input-m { width: 100%; border: 1px solid var(--ink-100); border-radius: var(--radius-md); padding: 10px var(--space-3); font-family: inherit; font-size: 14px; outline: none; }
+input.field-input-m:focus, textarea.field-input-m:focus { border-color: var(--brand-primary); }
+textarea.field-input-m { min-height: 80px; resize: vertical; }
+.radio-group-m { display: flex; gap: 6px; flex-wrap: wrap; }
+.radio-item-m { padding: 8px 14px; border: 1px solid var(--ink-100); border-radius: var(--radius-md); font-size: 13px; color: var(--ink-700); }
+.radio-item-m.selected { border-color: var(--brand-primary); background: var(--brand-primary-50); color: var(--brand-primary); font-weight: var(--w-medium); }
+</style></head><body><div class="screen-id-badge">P2-FO2-S01</div><div class="mobile-statusbar"><span>9:41</span><span class="right"><span class="material-symbols-rounded">signal_cellular_4_bar</span><span class="material-symbols-rounded">wifi</span><span class="material-symbols-rounded">battery_full</span></span></div><div class="mobile-appbar"><div class="title">Training Records</div><button class="icon-btn"><span class="material-symbols-rounded">filter_alt</span></button></div><div class="content"><div class="kpi-row-m"><div class="kpi-card-m"><div class="num">12</div><div class="lbl-k">Sessions this year</div></div><div class="kpi-card-m"><div class="num">10</div><div class="lbl-k">Approved</div></div></div><div class="section-head-m">This month</div><div class="list-card"><div class="row"><div class="icon-box"><span class="material-symbols-rounded">school</span></div><div class="body"><div class="title">PMJJBY refresher · 18 Jan</div><div class="meta">8 Sakhis attended · 1 photo</div></div><span class="pill pill-success"><span class="dot"></span> Approved</span></div><div class="row"><div class="icon-box"><span class="material-symbols-rounded">school</span></div><div class="body"><div class="title">KCC walkthrough · 11 Jan</div><div class="meta">6 Sakhis attended · 2 photos</div></div><span class="pill pill-warning"><span class="dot"></span> Pending NGO</span></div></div><div class="section-head-m">Earlier</div><div class="list-card"><div class="row"><div class="icon-box"><span class="material-symbols-rounded">school</span></div><div class="body"><div class="title">FHC counselling refresher · 28 Dec</div><div class="meta">9 Sakhis · 3 photos</div></div><span class="pill pill-success"><span class="dot"></span> Approved</span></div><div class="row"><div class="icon-box"><span class="material-symbols-rounded">school</span></div><div class="body"><div class="title">Fraud awareness · 14 Dec</div><div class="meta">7 Sakhis · 1 photo</div></div><span class="pill pill-success"><span class="dot"></span> Approved</span></div></div></div><a href="#" class="btn-fab fab" data-link-to="P2-FO2-S02"><span class="material-symbols-rounded">add</span></a></body></html>

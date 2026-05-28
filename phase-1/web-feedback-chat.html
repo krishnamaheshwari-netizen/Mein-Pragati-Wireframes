@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Feedback — chat with status</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script>
+<style>
+  body { width: 1440px; min-height: 900px; background: var(--surface-1); display: grid; grid-template-columns: var(--web-sidebar-width) 1fr; grid-template-rows: var(--web-topbar-height) 1fr; grid-template-areas: "side top" "side main"; }
+  .topbar-wrap { grid-area: top; } .side-wrap { grid-area: side; } .main-wrap { grid-area: main; padding: var(--space-6); overflow-y: auto; }
+  .feedback-layout { display: grid; grid-template-columns: 380px 1fr; gap: var(--space-4); height: calc(100vh - 240px); }
+  .threads-pane { background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; display: flex; flex-direction: column; }
+  .thread-search { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--surface-3); display: flex; gap: var(--space-2); align-items: center; }
+  .thread-search input { flex: 1; padding: 8px 12px; border: 1px solid var(--ink-100); border-radius: var(--radius-md); font-size: 13px; }
+  .thread-list { flex: 1; overflow-y: auto; }
+  .thread-item { padding: var(--space-3) var(--space-4); display: flex; gap: 10px; border-bottom: 1px solid var(--surface-3); cursor: pointer; }
+  .thread-item:hover { background: var(--surface-1); }
+  .thread-item.active { background: var(--brand-primary-50); border-left: 3px solid var(--brand-primary); padding-left: calc(var(--space-4) - 3px); }
+  .thread-item .av { width: 36px; height: 36px; border-radius: 50%; background: var(--brand-primary); color: white; display: inline-flex; align-items: center; justify-content: center; font-weight: var(--w-semibold); font-size: 12px; flex-shrink: 0; }
+  .thread-item .body { flex: 1; min-width: 0; }
+  .thread-item .top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
+  .thread-item .name { font-size: 13px; font-weight: var(--w-semibold); color: var(--ink-900); }
+  .thread-item .time { font-size: 10px; color: var(--ink-500); }
+  .thread-item .preview { font-size: 11px; color: var(--ink-500); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .thread-item .status-row { display: flex; gap: 6px; margin-top: 4px; align-items: center; font-size: 10px; }
+  .chat-pane { background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; overflow: hidden; }
+  .chat-head { padding: var(--space-4); border-bottom: 1px solid var(--surface-3); display: flex; justify-content: space-between; align-items: center; }
+  .chat-head .left { display: flex; gap: var(--space-3); align-items: center; }
+  .chat-head .av { width: 40px; height: 40px; border-radius: 50%; background: var(--brand-primary); color: white; display: inline-flex; align-items: center; justify-content: center; font-weight: var(--w-semibold); }
+  .chat-head h3 { margin: 0; font-size: 16px; }
+  .chat-head .sub { font-size: 12px; color: var(--ink-500); }
+  .chat-body { flex: 1; padding: var(--space-4); overflow-y: auto; display: flex; flex-direction: column; gap: var(--space-3); }
+  .bubble { max-width: 70%; padding: var(--space-3); border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 4px; }
+  .bubble .meta-row { display: flex; gap: 8px; align-items: center; }
+  .bubble .name { font-size: 11px; font-weight: var(--w-semibold); }
+  .bubble .time { font-size: 10px; color: var(--ink-500); }
+  .bubble .text { font-size: 14px; line-height: 1.4; }
+  .bubble.from { align-self: flex-start; background: var(--surface-2); }
+  .bubble.from .name { color: var(--ink-700); }
+  .bubble.from .text { color: var(--ink-900); }
+  .bubble.to { align-self: flex-end; background: var(--brand-primary); color: white; }
+  .bubble.to .name { color: rgba(255,255,255,0.85); }
+  .bubble.to .time { color: rgba(255,255,255,0.7); }
+  .status-control { padding: var(--space-3) var(--space-4); background: var(--surface-1); border-top: 1px solid var(--surface-3); display: flex; gap: 8px; align-items: center; }
+  .status-control .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-500); font-weight: var(--w-semibold); }
+  .seg-control button.active.read { background: var(--surface-0); color: var(--ink-900); }
+  .seg-control button.active.action { background: var(--brand-primary); color: white; }
+  .seg-control button.active.pending { background: var(--status-warning); color: white; }
+  .chat-input { padding: var(--space-3) var(--space-4); border-top: 1px solid var(--surface-3); display: flex; gap: var(--space-2); align-items: center; }
+  .chat-input input { flex: 1; padding: 10px var(--space-3); border: 1px solid var(--ink-100); border-radius: var(--radius-md); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="screen-id-badge">P1-M17-S01</div>
+
+<div class="topbar-wrap"><div class="web-topbar"><div class="brand">Mein Pragati</div><div class="crisil-mark">A CRISIL Foundation initiative</div><div class="right"><div class="avatar avatar-sm">SS</div></div></div></div>
+
+<div class="side-wrap">
+  <div class="web-sidebar" style="height: calc(100vh - var(--web-topbar-height));">
+    <div class="user-block"><div class="avatar">SS</div><div><div class="name">Sandeep Singh</div><div class="role">NGO Partner — SeSTA</div></div></div>
+    <nav>
+      <a class="nav-item"><span class="material-symbols-rounded">dashboard</span> Dashboard</a>
+      <a class="nav-item" data-link-to="P1-M16-S01"><span class="material-symbols-rounded">bar_chart</span> Sakhi Transactions</a>
+      <a class="nav-item active"><span class="material-symbols-rounded">chat</span> Feedback <span style="margin-left:auto;background:var(--status-warning);color:white;padding:2px 6px;border-radius:var(--radius-full);font-size:11px;font-weight:var(--w-bold);">7</span></a>
+      <a class="nav-item" data-link-to="P1-M2-S01"><span class="material-symbols-rounded">forum</span> Messages</a>
+    </nav>
+  </div>
+</div>
+
+<div class="main-wrap">
+  <div class="page-header">
+    <div class="title-block"><div class="title">Feedback</div><div class="subtitle">Two-way chat with FOs and Sakhis · Status tracking on every message</div></div>
+    <div class="actions"><button class="btn btn-secondary"><span class="material-symbols-rounded">download</span> Export</button></div>
+  </div>
+
+  <div class="feedback-layout">
+
+    <div class="threads-pane">
+      <div class="thread-search">
+        <span class="material-symbols-rounded" style="color:var(--ink-500);font-size:18px;">search</span>
+        <input placeholder="Search by name or content…" />
+      </div>
+
+      <div class="thread-list">
+        <div class="thread-item active">
+          <div class="av">SD</div>
+          <div class="body">
+            <div class="top"><span class="name">Sumitra Devi</span><span class="time">2h ago</span></div>
+            <div class="preview">Sir, app keeps crashing when I try to upload evidence photo. Tried…</div>
+            <div class="status-row"><span class="pill pill-warning" style="font-size:9px;padding:1px 6px;"><span class="dot"></span> Pending</span><span style="color:var(--ink-500);">Sakhi</span></div>
+          </div>
+        </div>
+        <div class="thread-item">
+          <div class="av">DD</div>
+          <div class="body">
+            <div class="top"><span class="name">Dhaniram Deka</span><span class="time">5h ago</span></div>
+            <div class="preview">Need clarification on the new FHC counselling script section 4...</div>
+            <div class="status-row"><span class="pill pill-info" style="font-size:9px;padding:1px 6px;"><span class="dot"></span> Action taken</span><span style="color:var(--ink-500);">FO</span></div>
+          </div>
+        </div>
+        <div class="thread-item">
+          <div class="av">SD</div>
+          <div class="body">
+            <div class="top"><span class="name">Suranjana Das</span><span class="time">Yesterday</span></div>
+            <div class="preview">When I add a beneficiary the village dropdown shows only 3 villages…</div>
+            <div class="status-row"><span class="pill pill-success" style="font-size:9px;padding:1px 6px;"><span class="dot"></span> Read</span><span style="color:var(--ink-500);">Sakhi</span></div>
+          </div>
+        </div>
+        <div class="thread-item">
+          <div class="av">PK</div>
+          <div class="body">
+            <div class="top"><span class="name">Pushpa Kanwar</span><span class="time">2 days ago</span></div>
+            <div class="preview">Hindi में reset password का link नहीं आ रहा है, please help.</div>
+            <div class="status-row"><span class="pill pill-success" style="font-size:9px;padding:1px 6px;"><span class="dot"></span> Action taken</span><span style="color:var(--ink-500);">Sakhi</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-pane">
+      <div class="chat-head">
+        <div class="left">
+          <div class="av">SD</div>
+          <div>
+            <h3>Sumitra Devi</h3>
+            <div class="sub">Sakhi · Bahjani village, Barpeta · ID SK-AS-001284</div>
+          </div>
+        </div>
+        <div class="actions" style="display:flex;gap:8px;">
+          <button class="icon-btn" style="border-radius:var(--radius-md);"><span class="material-symbols-rounded">person</span></button>
+          <button class="icon-btn" style="border-radius:var(--radius-md);"><span class="material-symbols-rounded">more_vert</span></button>
+        </div>
+      </div>
+
+      <div class="chat-body">
+        <div class="bubble from">
+          <div class="meta-row"><span class="name">Sumitra Devi</span><span class="time">28 Jan · 07:14</span></div>
+          <div class="text">Sir, app keeps crashing when I try to upload evidence photo. Tried 3 times today already. Photo is 1.4 MB.</div>
+        </div>
+        <div class="bubble from">
+          <div class="meta-row"><span class="name">Sumitra Devi</span><span class="time">28 Jan · 07:15</span></div>
+          <div class="text">When I open the transaction again the photo is missing. This is for Rina Kalita PMJJBY.</div>
+        </div>
+        <div class="bubble to">
+          <div class="meta-row"><span class="name">You</span><span class="time">28 Jan · 09:42</span></div>
+          <div class="text">Namaste Sumitra ji. We checked — looks like a network timeout (your photo is fine, just took too long to upload). Please try once on WiFi at the centre or use the smaller compression option in Settings.</div>
+        </div>
+        <div class="bubble to">
+          <div class="meta-row"><span class="name">You</span><span class="time">28 Jan · 09:43</span></div>
+          <div class="text">If it still fails by tomorrow, I'll share a workaround with Dhaniram-ji. कोई दिक़्क़त हो तो call कीजिए।</div>
+        </div>
+      </div>
+
+      <div class="status-control">
+        <span class="lbl">Status</span>
+        <div class="seg-control">
+          <button>Unread</button>
+          <button class="active read">Read</button>
+          <button>Action taken</button>
+          <button class="pending">Pending</button>
+        </div>
+        <span style="margin-left:auto;font-size:11px;color:var(--ink-500);">Changed by Sandeep Singh at 09:42</span>
+      </div>
+
+      <div class="chat-input">
+        <button class="icon-btn"><span class="material-symbols-rounded" style="color:var(--ink-500);">attach_file</span></button>
+        <input placeholder="Type your reply…" />
+        <button class="btn btn-primary btn-sm"><span class="material-symbols-rounded">send</span></button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

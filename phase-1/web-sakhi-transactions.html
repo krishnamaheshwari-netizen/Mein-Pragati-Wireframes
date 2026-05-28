@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Sakhi Transactions — new filters + columns</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<style>
+  body { width: 1440px; min-height: 900px; background: var(--surface-1); display: grid; grid-template-columns: var(--web-sidebar-width) 1fr; grid-template-rows: var(--web-topbar-height) 1fr; grid-template-areas: "side top" "side main"; }
+  .topbar-wrap { grid-area: top; }
+  .side-wrap { grid-area: side; }
+  .main-wrap { grid-area: main; padding: var(--space-6); overflow-y: auto; }
+
+  .scheme-tag { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: var(--radius-sm); font-weight: var(--w-medium); }
+  .scheme-tag.scheme { background: rgba(26, 62, 119, 0.1); color: var(--chart-1); }
+  .scheme-tag.services { background: rgba(0, 176, 240, 0.1); color: var(--chart-4); }
+  .scheme-tag.awareness { background: rgba(213, 56, 20, 0.1); color: var(--chart-3); }
+
+  .evidence-thumb {
+    width: 32px; height: 32px;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--ink-100), var(--surface-3));
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--ink-500);
+    cursor: pointer;
+  }
+  .evidence-thumb:hover { box-shadow: var(--shadow-md); }
+  .evidence-thumb .material-symbols-rounded { font-size: 16px; }
+
+  .multi-filter {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    margin-bottom: var(--space-4);
+    box-shadow: var(--shadow-sm);
+  }
+  .filter-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+  .filter-grid .field { margin-bottom: 0; }
+  .filter-grid .field .label { font-size: 12px; }
+  .filter-grid .field input,
+  .filter-grid .field .field-input { padding: 8px var(--space-3); font-size: 13px; }
+
+  .selected-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--space-3); align-items: center; }
+  .selected-chips .label { font-size: 11px; color: var(--ink-500); margin-right: var(--space-2); text-transform: uppercase; letter-spacing: 0.05em; font-weight: var(--w-semibold); }
+  .selected-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    background: var(--brand-primary-50);
+    color: var(--brand-primary);
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    font-weight: var(--w-medium);
+  }
+  .selected-chip .material-symbols-rounded { font-size: 14px; cursor: pointer; }
+
+  .filter-toggle-row {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+</style>
+<script src="../shared/wireframe-nav.js" defer></script>
+</head>
+<body>
+
+<div class="screen-id-badge">P1-M16-S01</div>
+
+<!-- Top bar -->
+<div class="topbar-wrap">
+  <div class="web-topbar">
+    <div class="brand">Mein Pragati</div>
+    <div class="crisil-mark">A CRISIL Foundation initiative</div>
+    <div class="right">
+      <div class="refresh-badge"><span class="material-symbols-rounded">schedule</span> Last refreshed 09:38</div>
+      <button class="icon-btn"><span class="material-symbols-rounded">notifications</span></button>
+      <div class="avatar avatar-sm">PD</div>
+    </div>
+  </div>
+</div>
+
+<!-- Sidebar (NGO Partner role) -->
+<div class="side-wrap">
+  <div class="web-sidebar" style="height: calc(100vh - var(--web-topbar-height));">
+    <div class="user-block">
+      <div class="avatar">SS</div>
+      <div>
+        <div class="name">Sandeep Singh</div>
+        <div class="role">NGO Partner — SeSTA</div>
+      </div>
+    </div>
+    <nav>
+      <a class="nav-item"><span class="material-symbols-rounded">dashboard</span> Dashboard</a>
+      <a class="nav-item active"><span class="material-symbols-rounded">bar_chart</span> Sakhi Transactions</a>
+      <a class="nav-item"><span class="material-symbols-rounded">groups</span> Household Resilience</a>
+      <a class="nav-item"><span class="material-symbols-rounded">person</span> FO Details</a>
+      <a class="nav-item"><span class="material-symbols-rounded">apartment</span> Centre Details</a>
+      <a class="nav-item"><span class="material-symbols-rounded">people</span> Sakhi Details</a>
+      <a class="nav-item"><span class="material-symbols-rounded">currency_rupee</span> Expense</a>
+      <a class="nav-item"><span class="material-symbols-rounded">event_note</span> Reports</a>
+      <a class="nav-item"><span class="material-symbols-rounded">chat</span> Feedback</a>
+      <a class="nav-item" data-link-to="P1-M2-S01"><span class="material-symbols-rounded">forum</span> Messages <span style="margin-left: auto; background: white; color: var(--brand-primary); padding: 2px 6px; border-radius: var(--radius-full); font-size: 11px; font-weight: var(--w-bold);">3</span></a>
+    </nav>
+    <div class="pinned">
+      <a class="nav-item"><span class="material-symbols-rounded">settings</span> Setting</a>
+      <a class="nav-item"><span class="material-symbols-rounded">logout</span> Logout</a>
+    </div>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main-wrap">
+  <div class="page-header">
+    <div class="title-block">
+      <div class="title">Sakhi Transactions</div>
+      <div class="subtitle">Showing last 2 months approved &amp; rejected + all pending — 247 transactions</div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-secondary"><span class="material-symbols-rounded">download</span> Download</button>
+      <button class="btn btn-secondary"><span class="material-symbols-rounded">filter_list</span> More filters</button>
+    </div>
+  </div>
+
+  <!-- Multi-choice filters -->
+  <div class="multi-filter">
+    <div class="filter-toggle-row">
+      <div class="flex gap-2 items-center">
+        <span style="font-size: 13px; font-weight: var(--w-semibold);">Quick filters</span>
+        <button class="filter-chip">All time</button>
+        <button class="filter-chip active">Last 2 months + pending</button>
+        <button class="filter-chip">Pending only</button>
+        <button class="filter-chip">Rejected only</button>
+      </div>
+      <a href="#" style="font-size: 13px; color: var(--brand-primary); font-weight: var(--w-medium);">Reset all</a>
+    </div>
+
+    <div class="filter-grid">
+      <div class="field">
+        <label class="label">Beneficiary</label>
+        <div class="field-input" style="padding: 8px var(--space-3); font-size: 13px;">Search name or mobile…</div>
+      </div>
+      <div class="field">
+        <label class="label">District</label>
+        <div class="field-input" style="padding: 8px var(--space-3); font-size: 13px;">2 selected</div>
+      </div>
+      <div class="field">
+        <label class="label">Block</label>
+        <div class="field-input" style="padding: 8px var(--space-3); font-size: 13px;">3 selected</div>
+      </div>
+      <div class="field">
+        <label class="label">Scheme</label>
+        <div class="field-input" style="padding: 8px var(--space-3); font-size: 13px;">PMJJBY + 2 more</div>
+      </div>
+      <div class="field">
+        <label class="label">FO Name</label>
+        <div class="field-input" style="padding: 8px var(--space-3); font-size: 13px;">All</div>
+      </div>
+      <div class="field">
+        <label class="label">Status</label>
+        <div class="field-input" style="padding: 8px var(--space-3); font-size: 13px;">Pending + Approved</div>
+      </div>
+    </div>
+
+    <div class="selected-chips">
+      <span class="label">Active</span>
+      <span class="selected-chip">Barpeta <span class="material-symbols-rounded">close</span></span>
+      <span class="selected-chip">Nalbari <span class="material-symbols-rounded">close</span></span>
+      <span class="selected-chip">PMJJBY <span class="material-symbols-rounded">close</span></span>
+      <span class="selected-chip">PMSBY <span class="material-symbols-rounded">close</span></span>
+      <span class="selected-chip">APY <span class="material-symbols-rounded">close</span></span>
+      <span class="selected-chip">Pending <span class="material-symbols-rounded">close</span></span>
+      <span class="selected-chip">Approved <span class="material-symbols-rounded">close</span></span>
+    </div>
+  </div>
+
+  <!-- Data table -->
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width: 40px;">#</th>
+          <th>ID</th>
+          <th>Beneficiary</th>
+          <th>Scheme</th>
+          <th>Sakhi · FO</th>
+          <th>Block · Village</th>
+          <th>Meeting</th>
+          <th class="text-right">Remuneration</th>
+          <th style="width: 60px;">Evidence</th>
+          <th>Status</th>
+          <th style="width: 60px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-500);">TX-25127</td>
+          <td><div style="font-weight: var(--w-semibold);">Rina Kalita</div><div style="font-size: 11px; color: var(--ink-500);">9485 67xxxx</div></td>
+          <td><span class="scheme-tag scheme">Scheme</span> PMJJBY</td>
+          <td><div>Sumitra Devi</div><div style="font-size: 11px; color: var(--ink-500);">Dhaniram Deka</div></td>
+          <td><div>Barpeta</div><div style="font-size: 11px; color: var(--ink-500);">Bahjani</div></td>
+          <td class="num">12 Jan 26</td>
+          <td class="num"><strong>₹ 436</strong></td>
+          <td><div class="evidence-thumb"><span class="material-symbols-rounded">image</span></div></td>
+          <td><span class="pill pill-warning"><span class="dot"></span> Pending by FO</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-500);">TX-25126</td>
+          <td><div style="font-weight: var(--w-semibold);">Anjali Bora</div><div style="font-size: 11px; color: var(--ink-500);">9876 32xxxx</div></td>
+          <td><span class="scheme-tag services">Services</span> Account opening</td>
+          <td><div>Sumitra Devi</div><div style="font-size: 11px; color: var(--ink-500);">Dhaniram Deka</div></td>
+          <td><div>Barpeta</div><div style="font-size: 11px; color: var(--ink-500);">Sorbhog</div></td>
+          <td class="num">11 Jan 26</td>
+          <td class="num"><strong>₹ 200</strong></td>
+          <td><div class="evidence-thumb"><span class="material-symbols-rounded">image</span></div></td>
+          <td><span class="pill pill-warning"><span class="dot"></span> Pending by NGO</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-500);">TX-25125</td>
+          <td><div style="font-weight: var(--w-semibold);">Geeta Devi</div><div style="font-size: 11px; color: var(--ink-500);">9123 45xxxx</div></td>
+          <td><span class="scheme-tag scheme">Scheme</span> PMSBY</td>
+          <td><div>Sumitra Devi</div><div style="font-size: 11px; color: var(--ink-500);">Dhaniram Deka</div></td>
+          <td><div>Barpeta</div><div style="font-size: 11px; color: var(--ink-500);">Bahjani</div></td>
+          <td class="num">8 Jan 26</td>
+          <td class="num"><strong>₹ 500</strong></td>
+          <td><div class="evidence-thumb"><span class="material-symbols-rounded">image</span></div></td>
+          <td><span class="pill pill-danger"><span class="dot"></span> Rejected by NGO</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-500);">TX-25118</td>
+          <td><div style="font-weight: var(--w-semibold);">Pushpa Kanwar</div><div style="font-size: 11px; color: var(--ink-500);">9988 11xxxx</div></td>
+          <td><span class="scheme-tag scheme">Scheme</span> APY</td>
+          <td><div>Kavita Sharma</div><div style="font-size: 11px; color: var(--ink-500);">Rajesh Kumar</div></td>
+          <td><div>Sikar</div><div style="font-size: 11px; color: var(--ink-500);">Ajeetgarh</div></td>
+          <td class="num">5 Jan 26</td>
+          <td class="num"><strong>₹ 1,400</strong></td>
+          <td><div class="evidence-thumb"><span class="material-symbols-rounded">image</span></div></td>
+          <td><span class="pill pill-success"><span class="dot"></span> Approved</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-500);">TX-25117</td>
+          <td><div style="font-weight: var(--w-semibold);">Fatema Begum</div><div style="font-size: 11px; color: var(--ink-500);">9234 78xxxx</div></td>
+          <td><span class="scheme-tag awareness">Awareness</span> Fraud awareness</td>
+          <td><div>Sumitra Devi</div><div style="font-size: 11px; color: var(--ink-500);">Dhaniram Deka</div></td>
+          <td><div>Morigaon</div><div style="font-size: 11px; color: var(--ink-500);">Mayong</div></td>
+          <td class="num">3 Jan 26</td>
+          <td class="num"><strong>₹ 0</strong></td>
+          <td><div class="evidence-thumb"><span class="material-symbols-rounded">image</span></div></td>
+          <td><span class="pill pill-success"><span class="dot"></span> Approved</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-500);">TX-25109</td>
+          <td><div style="font-weight: var(--w-semibold);">Monalisha SHG</div><div style="font-size: 11px; color: var(--ink-500);">Group transaction</div></td>
+          <td><span class="scheme-tag services">Services</span> KCC application</td>
+          <td><div>Suranjana Das</div><div style="font-size: 11px; color: var(--ink-500);">Dhaniram Deka</div></td>
+          <td><div>Kamrup</div><div style="font-size: 11px; color: var(--ink-500);">Hajo</div></td>
+          <td class="num">28 Dec 25</td>
+          <td class="num"><strong>₹ 720</strong></td>
+          <td><div class="evidence-thumb"><span class="material-symbols-rounded">image</span></div></td>
+          <td><span class="pill pill-success"><span class="dot"></span> Approved</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-500);">TX-25101</td>
+          <td><div style="font-weight: var(--w-semibold);">Runamoni Deka</div><div style="font-size: 11px; color: var(--ink-500);">9445 99xxxx</div></td>
+          <td><span class="scheme-tag scheme">Scheme</span> Livestock insurance</td>
+          <td><div>Suranjana Das</div><div style="font-size: 11px; color: var(--ink-500);">Dhaniram Deka</div></td>
+          <td><div>Morigaon</div><div style="font-size: 11px; color: var(--ink-500);">Bhuragaon</div></td>
+          <td class="num">22 Dec 25</td>
+          <td class="num"><strong>₹ 380</strong></td>
+          <td><div class="evidence-thumb"><span class="material-symbols-rounded">image</span></div></td>
+          <td><span class="pill pill-danger"><span class="dot"></span> Rejected by FO</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-500);">TX-25099</td>
+          <td><div style="font-weight: var(--w-semibold);">Aarti Bhargav</div><div style="font-size: 11px; color: var(--ink-500);">9356 22xxxx</div></td>
+          <td><span class="scheme-tag scheme">Scheme</span> Bhamashah</td>
+          <td><div>Kavita Sharma</div><div style="font-size: 11px; color: var(--ink-500);">Rajesh Kumar</div></td>
+          <td><div>Sikar</div><div style="font-size: 11px; color: var(--ink-500);">Ajeetgarh</div></td>
+          <td class="num">19 Dec 25</td>
+          <td class="num"><strong>₹ 60</strong></td>
+          <td><div class="evidence-thumb"><span class="material-symbols-rounded">image</span></div></td>
+          <td><span class="pill pill-success"><span class="dot"></span> Approved</span></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <div class="info">Showing 1–10 of 247</div>
+      <div class="pages">
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>…</button>
+        <button>25</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

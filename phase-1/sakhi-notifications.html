@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=375, initial-scale=1" />
+<title>Sakhi — Notifications (aggregated)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script>
+<style>
+  body { width: 375px; min-height: 812px; background: var(--surface-1); }
+  .seg-wrap { padding: var(--space-3) var(--space-4); background: var(--surface-0); border-bottom: 1px solid var(--surface-3); }
+  .seg-strip { display: flex; background: var(--surface-2); border-radius: var(--radius-md); padding: 3px; }
+  .seg-strip button { flex: 1; padding: 6px; font-size: 12px; font-weight: var(--w-medium); color: var(--ink-700); border-radius: 6px; }
+  .seg-strip button.active { background: var(--surface-0); color: var(--ink-900); box-shadow: var(--shadow-sm); }
+  .day-head { padding: var(--space-3) var(--space-4) var(--space-2); font-size: 11px; text-transform: uppercase; color: var(--ink-500); letter-spacing: 0.05em; font-weight: var(--w-semibold); }
+  .notif-card { background: var(--surface-0); padding: var(--space-3) var(--space-4); display: flex; gap: var(--space-3); border-bottom: 1px solid var(--surface-3); }
+  .notif-card.unread { background: var(--brand-primary-25); position: relative; }
+  .notif-card.unread::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--brand-primary); }
+  .notif-card .icon-box { width: 40px; height: 40px; border-radius: var(--radius-full); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .notif-card .icon-box.danger { background: var(--status-danger-bg); color: var(--status-danger); }
+  .notif-card .icon-box.warning { background: var(--status-warning-bg); color: var(--status-warning); }
+  .notif-card .icon-box.info { background: var(--status-info-bg); color: var(--status-info); }
+  .notif-card .icon-box.success { background: var(--status-success-bg); color: var(--status-success); }
+  .notif-card .body { flex: 1; min-width: 0; }
+  .notif-card .body .title { font-size: 14px; font-weight: var(--w-semibold); color: var(--ink-900); margin-bottom: 2px; }
+  .notif-card .body .desc { font-size: 12px; color: var(--ink-700); line-height: 1.4; }
+  .notif-card .body .time { font-size: 10px; color: var(--ink-500); margin-top: 6px; display: flex; gap: 6px; align-items: center; }
+</style>
+</head>
+<body>
+<div class="screen-id-badge">P1-M9-S02</div>
+
+<div class="mobile-statusbar"><span>9:41</span><span class="right"><span class="material-symbols-rounded">signal_cellular_4_bar</span><span class="material-symbols-rounded">wifi</span><span class="material-symbols-rounded">battery_full</span></span></div>
+
+<div class="mobile-appbar">
+  <button class="icon-btn" data-link-to="DHW-1"><span class="material-symbols-rounded">arrow_back</span></button>
+  <div class="title">Notifications</div>
+  <button class="icon-btn"><span class="material-symbols-rounded">done_all</span></button>
+</div>
+
+<div class="seg-wrap">
+  <div class="seg-strip">
+    <button class="active">All</button>
+    <button>Unread (3)</button>
+    <button>Action needed (2)</button>
+  </div>
+</div>
+
+<div class="day-head">Today</div>
+
+<div class="notif-card unread" data-link-to="P0-M1-S05">
+  <div class="icon-box danger"><span class="material-symbols-rounded">error</span></div>
+  <div class="body">
+    <div class="title">2 transactions need your action</div>
+    <div class="desc">Rina Kalita (PMJJBY) and Geeta Devi (PMSBY) were rejected. Tap to see reasons and fix.</div>
+    <div class="time"><span class="material-symbols-rounded" style="font-size:12px;">schedule</span> 2 hours ago · Aggregated</div>
+  </div>
+</div>
+
+<div class="notif-card unread" data-link-to="P1-M2-S07">
+  <div class="icon-box info"><span class="material-symbols-rounded">campaign</span></div>
+  <div class="body">
+    <div class="title">New message from Sandeep (NGO Admin)</div>
+    <div class="desc">"January performance review — please prepare your Sakhi count" + 1 photo</div>
+    <div class="time"><span class="material-symbols-rounded" style="font-size:12px;">schedule</span> 3 hours ago</div>
+  </div>
+</div>
+
+<div class="day-head">Yesterday</div>
+
+<div class="notif-card unread">
+  <div class="icon-box success"><span class="material-symbols-rounded">check_circle</span></div>
+  <div class="body">
+    <div class="title">3 transactions approved by NGO</div>
+    <div class="desc">Pushpa Kanwar, Monalisha SHG and Fatema Begum — receipts ready to send</div>
+    <div class="time"><span class="material-symbols-rounded" style="font-size:12px;">schedule</span> Yesterday 18:24 · Aggregated</div>
+  </div>
+</div>
+
+<div class="notif-card">
+  <div class="icon-box warning"><span class="material-symbols-rounded">schedule</span></div>
+  <div class="body">
+    <div class="title">January window closes in 5 days</div>
+    <div class="desc">12 transactions pending submission. Submit before 15 Feb to be counted in January.</div>
+    <div class="time"><span class="material-symbols-rounded" style="font-size:12px;">schedule</span> Yesterday 09:00</div>
+  </div>
+</div>
+
+<div class="day-head">Earlier this week</div>
+
+<div class="notif-card">
+  <div class="icon-box info"><span class="material-symbols-rounded">badge</span></div>
+  <div class="body">
+    <div class="title">You earned a "Top Performer" badge for December</div>
+    <div class="desc">37 linkages · ₹3,840 income · 142 beneficiaries reached. View on profile.</div>
+    <div class="time"><span class="material-symbols-rounded" style="font-size:12px;">schedule</span> 3 days ago</div>
+  </div>
+</div>
+
+<div class="notif-card">
+  <div class="icon-box info"><span class="material-symbols-rounded">menu_book</span></div>
+  <div class="body">
+    <div class="title">3 new training videos in your Training Kit</div>
+    <div class="desc">PMJJBY refresher (4 min) · KCC walkthrough (8 min) · Bhamashah scheme update (5 min)</div>
+    <div class="time"><span class="material-symbols-rounded" style="font-size:12px;">schedule</span> 4 days ago</div>
+  </div>
+</div>
+
+<div style="padding: var(--space-5) var(--space-4); font-size: 12px; color: var(--ink-500); text-align: center; line-height: 1.5;">
+  We aggregate notifications by type — never one per record.<br>
+  Quiet hours: 9:30 pm to 7:00 am.
+</div>
+
+</body>
+</html>

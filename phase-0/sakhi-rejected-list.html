@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=375, initial-scale=1" />
+<title>Sakhi — All rejected transactions</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script>
+<style>
+  body { width: 375px; min-height: 812px; background: var(--surface-1); }
+  .filter-strip-m { padding: var(--space-3) var(--space-4); display: flex; gap: 6px; background: var(--surface-0); border-bottom: 1px solid var(--surface-3); overflow-x: auto; }
+  .chip-m { padding: 6px 12px; background: var(--surface-2); border-radius: var(--radius-full); font-size: 12px; font-weight: var(--w-medium); color: var(--ink-700); white-space: nowrap; }
+  .chip-m.active { background: var(--brand-primary); color: white; }
+  .reject-list { padding: var(--space-3) var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); padding-bottom: 80px; }
+  .reject-card {
+    background: var(--surface-0); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4);
+    box-shadow: var(--shadow-sm);
+    border-left: 4px solid var(--status-danger);
+  }
+  .reject-card.resubmitted { border-left-color: var(--status-success); }
+  .reject-card .head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .reject-card .ben { font-size: 14px; font-weight: var(--w-semibold); color: var(--ink-900); }
+  .reject-card .date { font-size: 11px; color: var(--ink-500); }
+  .reject-card .reason { font-size: 12px; color: var(--ink-700); line-height: 1.4; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .reject-card .reason .lbl { font-weight: var(--w-semibold); color: var(--status-danger); }
+  .reject-card .footer { display: flex; justify-content: space-between; align-items: center; }
+  .reject-card .scheme-pill { font-size: 10px; padding: 2px 8px; background: var(--surface-2); color: var(--ink-700); border-radius: 4px; font-weight: var(--w-medium); }
+  .reject-card .action-link { font-size: 13px; color: var(--brand-primary); font-weight: var(--w-semibold); display: flex; align-items: center; gap: 4px; }
+  .reject-card .resubmitted-pill { font-size: 11px; padding: 3px 10px; background: var(--status-success-bg); color: var(--status-success-ink); border-radius: var(--radius-full); font-weight: var(--w-semibold); }
+</style>
+</head>
+<body>
+<div class="screen-id-badge">P0-M1-S05</div>
+
+<div class="mobile-statusbar">
+  <span>9:41</span>
+  <span class="right">
+    <span class="material-symbols-rounded">signal_cellular_4_bar</span>
+    <span class="material-symbols-rounded">wifi</span>
+    <span class="material-symbols-rounded">battery_full</span>
+  </span>
+</div>
+
+<div class="mobile-appbar">
+  <button class="icon-btn" data-link-to="P0-M1-S01"><span class="material-symbols-rounded">arrow_back</span></button>
+  <div class="title">Rejected transactions</div>
+  <button class="icon-btn"><span class="material-symbols-rounded">search</span></button>
+</div>
+
+<div class="filter-strip-m">
+  <span class="chip-m active">All (4)</span>
+  <span class="chip-m">Needs fix (2)</span>
+  <span class="chip-m">Resubmitted (2)</span>
+</div>
+
+<div class="reject-list">
+
+  <div class="reject-card">
+    <div class="head">
+      <span class="ben">Rina Kalita</span>
+      <span class="date">3 days ago</span>
+    </div>
+    <div class="reason"><span class="lbl">FO note:</span> Evidence photo is blurred — please re-upload a clearer image showing the passbook.</div>
+    <div class="footer">
+      <span class="scheme-pill">PMJJBY · Insurance</span>
+      <a href="#" data-link-to="P0-M1-S02" class="action-link">Take Action <span class="material-symbols-rounded" style="font-size:14px;">arrow_forward</span></a>
+    </div>
+  </div>
+
+  <div class="reject-card">
+    <div class="head">
+      <span class="ben">Geeta Devi</span>
+      <span class="date">9 days ago</span>
+    </div>
+    <div class="reason"><span class="lbl">NGO note:</span> Remuneration amount mismatch — scheme PMSBY pays ₹436 per beneficiary, not ₹500.</div>
+    <div class="footer">
+      <span class="scheme-pill">PMSBY · Insurance</span>
+      <a href="#" data-link-to="P0-M1-S02" class="action-link">Take Action <span class="material-symbols-rounded" style="font-size:14px;">arrow_forward</span></a>
+    </div>
+  </div>
+
+  <div class="reject-card resubmitted">
+    <div class="head">
+      <span class="ben">Suranjana Das</span>
+      <span class="date">5 days ago</span>
+    </div>
+    <div class="reason"><span style="font-weight:var(--w-semibold);color:var(--status-success);">Re-submitted:</span> Wrong scheme picked — corrected to PMSBY. Waiting for FO approval.</div>
+    <div class="footer">
+      <span class="scheme-pill">PMSBY · Insurance</span>
+      <span class="resubmitted-pill">Pending FO</span>
+    </div>
+  </div>
+
+  <div class="reject-card resubmitted">
+    <div class="head">
+      <span class="ben">Anjali Bora</span>
+      <span class="date">12 days ago</span>
+    </div>
+    <div class="reason"><span style="font-weight:var(--w-semibold);color:var(--status-success);">Approved after fix:</span> KYC document re-uploaded — approved by NGO yesterday.</div>
+    <div class="footer">
+      <span class="scheme-pill">Account opening</span>
+      <span class="resubmitted-pill">Approved</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

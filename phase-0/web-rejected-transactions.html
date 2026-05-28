@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Rejected Transactions — admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script>
+<style>
+  body { width: 1440px; min-height: 900px; background: var(--surface-1); display: grid; grid-template-columns: var(--web-sidebar-width) 1fr; grid-template-rows: var(--web-topbar-height) 1fr; grid-template-areas: "side top" "side main"; }
+  .topbar-wrap { grid-area: top; }
+  .side-wrap { grid-area: side; }
+  .main-wrap { grid-area: main; padding: var(--space-6); overflow-y: auto; }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); margin-bottom: var(--space-5); }
+  .kpi-row .kpi-card { padding: var(--space-3) var(--space-4); }
+  .kpi-row .kpi-card .label { font-size: 11px; font-weight: var(--w-semibold); text-transform: uppercase; letter-spacing: 0.04em; }
+  .kpi-row .kpi-card .value { font-size: 22px; }
+  .scheme-tag { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: var(--radius-sm); font-weight: var(--w-medium); }
+  .scheme-tag.scheme { background: rgba(26, 62, 119, 0.1); color: var(--chart-1); }
+  .scheme-tag.services { background: rgba(0, 176, 240, 0.1); color: var(--chart-4); }
+</style>
+</head>
+<body>
+<div class="screen-id-badge">P0-M1-S04</div>
+
+<div class="topbar-wrap">
+  <div class="web-topbar">
+    <div class="brand">Mein Pragati</div>
+    <div class="crisil-mark">A CRISIL Foundation initiative</div>
+    <div class="right">
+      <div class="refresh-badge"><span class="material-symbols-rounded">schedule</span> Last refreshed 09:38</div>
+      <div class="avatar avatar-sm">SS</div>
+    </div>
+  </div>
+</div>
+
+<div class="side-wrap">
+  <div class="web-sidebar" style="height: calc(100vh - var(--web-topbar-height));">
+    <div class="user-block">
+      <div class="avatar">SS</div>
+      <div><div class="name">Sandeep Singh</div><div class="role">NGO Partner — SeSTA</div></div>
+    </div>
+    <nav>
+      <a class="nav-item"><span class="material-symbols-rounded">dashboard</span> Dashboard</a>
+      <a class="nav-item" data-link-to="P1-M16-S01"><span class="material-symbols-rounded">bar_chart</span> Sakhi Transactions</a>
+      <a class="nav-item active"><span class="material-symbols-rounded">error</span> Rejected &amp; Action Taken <span style="margin-left:auto;background:var(--status-danger);color:white;padding:2px 6px;border-radius:var(--radius-full);font-size:11px;font-weight:var(--w-bold);">12</span></a>
+      <a class="nav-item"><span class="material-symbols-rounded">groups</span> Household Resilience</a>
+      <a class="nav-item"><span class="material-symbols-rounded">person</span> FO Details</a>
+      <a class="nav-item"><span class="material-symbols-rounded">people</span> Sakhi Details</a>
+      <a class="nav-item"><span class="material-symbols-rounded">event_note</span> Reports</a>
+      <a class="nav-item" data-link-to="P1-M2-S01"><span class="material-symbols-rounded">forum</span> Messages</a>
+    </nav>
+  </div>
+</div>
+
+<div class="main-wrap">
+
+  <div class="page-header">
+    <div class="title-block">
+      <div class="title">Rejected Transactions &amp; Action Taken</div>
+      <div class="subtitle">Track what was rejected, by whom, and whether the Sakhi has fixed and resubmitted</div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-secondary"><span class="material-symbols-rounded">download</span> Export</button>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="icon-circle"><span class="material-symbols-rounded">flag</span></div>
+      <div><div class="label">Total rejected</div><div class="value">28</div><div class="sub">last 60 days</div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="icon-circle" style="background:var(--status-warning-bg);color:var(--status-warning);"><span class="material-symbols-rounded">schedule</span></div>
+      <div><div class="label">Awaiting Sakhi</div><div class="value">12</div><div class="sub">5 over a week old</div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="icon-circle" style="background:var(--status-success-bg);color:var(--status-success);"><span class="material-symbols-rounded">refresh</span></div>
+      <div><div class="label">Resubmitted</div><div class="value">14</div><div class="sub">avg 2.3 days to fix</div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="icon-circle" style="background:var(--status-danger-bg);color:var(--status-danger);"><span class="material-symbols-rounded">block</span></div>
+      <div><div class="label">Window expired</div><div class="value">2</div><div class="sub">cannot be resubmitted</div></div>
+    </div>
+  </div>
+
+  <div class="filter-strip" style="background:var(--surface-0);padding:var(--space-3) var(--space-4);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);margin-bottom:var(--space-4);">
+    <span style="font-size:12px;color:var(--ink-500);font-weight:var(--w-semibold);text-transform:uppercase;letter-spacing:0.05em;">Filter</span>
+    <button class="filter-chip active">All</button>
+    <button class="filter-chip">Awaiting Sakhi</button>
+    <button class="filter-chip">Resubmitted</button>
+    <button class="filter-chip">Window expired</button>
+    <button class="filter-chip add"><span class="material-symbols-rounded">add</span> FO</button>
+    <button class="filter-chip add"><span class="material-symbols-rounded">add</span> Reject reason</button>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Beneficiary</th>
+          <th>Scheme</th>
+          <th>Sakhi · FO</th>
+          <th>Rejected on</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th>Age</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Rina Kalita</strong></td>
+          <td><span class="scheme-tag scheme">Scheme</span> PMJJBY</td>
+          <td><div>Sumitra Devi</div><div style="font-size:11px;color:var(--ink-500);">Dhaniram Deka</div></td>
+          <td class="num">13 Jan 2026</td>
+          <td>Evidence photo blurred</td>
+          <td><span class="pill pill-warning"><span class="dot"></span> Awaiting Sakhi</span></td>
+          <td>3 days</td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td><strong>Geeta Devi</strong></td>
+          <td><span class="scheme-tag scheme">Scheme</span> PMSBY</td>
+          <td><div>Sumitra Devi</div><div style="font-size:11px;color:var(--ink-500);">Dhaniram Deka</div></td>
+          <td class="num">9 Jan 2026</td>
+          <td>Remuneration amount mismatch</td>
+          <td><span class="pill pill-warning"><span class="dot"></span> Awaiting Sakhi</span></td>
+          <td>9 days</td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td><strong>Suranjana Das</strong></td>
+          <td><span class="scheme-tag services">Services</span> KCC</td>
+          <td><div>Sumitra Devi</div><div style="font-size:11px;color:var(--ink-500);">Dhaniram Deka</div></td>
+          <td class="num">7 Jan 2026</td>
+          <td>Wrong scheme</td>
+          <td><span class="pill pill-success"><span class="dot"></span> Resubmitted</span></td>
+          <td>11 days</td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td><strong>Anjali Bora</strong></td>
+          <td><span class="scheme-tag services">Services</span> Account opening</td>
+          <td><div>Suranjana Das</div><div style="font-size:11px;color:var(--ink-500);">Dhaniram Deka</div></td>
+          <td class="num">6 Jan 2026</td>
+          <td>KYC document missing</td>
+          <td><span class="pill pill-success"><span class="dot"></span> Resubmitted &amp; approved</span></td>
+          <td>12 days</td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td><strong>Fatema Begum</strong></td>
+          <td><span class="scheme-tag scheme">Scheme</span> APY</td>
+          <td><div>Tara Bora</div><div style="font-size:11px;color:var(--ink-500);">Surya Bora</div></td>
+          <td class="num">27 Dec 2025</td>
+          <td>Annual income field empty</td>
+          <td><span class="pill pill-danger"><span class="dot"></span> Window expired</span></td>
+          <td>22 days</td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <div class="info">Showing 1–5 of 28</div>
+      <div class="pages"><button class="active">1</button><button>2</button><button>3</button></div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

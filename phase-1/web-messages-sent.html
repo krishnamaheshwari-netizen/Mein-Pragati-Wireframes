@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Messages — Sent history</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script>
+<style>
+  body { width: 1440px; min-height: 900px; background: var(--surface-1); display: grid; grid-template-columns: var(--web-sidebar-width) 1fr; grid-template-rows: var(--web-topbar-height) 1fr; grid-template-areas: "side top" "side main"; }
+  .topbar-wrap { grid-area: top; } .side-wrap { grid-area: side; } .main-wrap { grid-area: main; padding: var(--space-6); overflow-y: auto; }
+  .read-bar { height: 6px; background: var(--surface-2); border-radius: var(--radius-full); overflow: hidden; width: 100px; }
+  .read-bar .fill { height: 100%; background: var(--status-success); }
+</style>
+</head>
+<body>
+<div class="screen-id-badge">P1-M2-S02</div>
+
+<div class="topbar-wrap"><div class="web-topbar"><div class="brand">Mein Pragati</div><div class="crisil-mark">A CRISIL Foundation initiative</div><div class="right"><div class="avatar avatar-sm">SS</div></div></div></div>
+
+<div class="side-wrap">
+  <div class="web-sidebar" style="height: calc(100vh - var(--web-topbar-height));">
+    <div class="user-block"><div class="avatar">SS</div><div><div class="name">Sandeep Singh</div><div class="role">NGO Partner — SeSTA</div></div></div>
+    <nav>
+      <a class="nav-item"><span class="material-symbols-rounded">dashboard</span> Dashboard</a>
+      <a class="nav-item" data-link-to="P1-M16-S01"><span class="material-symbols-rounded">bar_chart</span> Sakhi Transactions</a>
+      <a class="nav-item active"><span class="material-symbols-rounded">forum</span> Messages</a>
+    </nav>
+  </div>
+</div>
+
+<div class="main-wrap">
+
+  <div class="page-header">
+    <div class="title-block"><div class="title">Messages</div><div class="subtitle">Broadcast to multiple FOs or Sakhis at once · Photo attachments allowed</div></div>
+    <div class="actions">
+      <button class="btn btn-primary" data-link-to="P1-M2-S01"><span class="material-symbols-rounded">add</span> New message</button>
+    </div>
+  </div>
+
+  <div class="tabs" style="margin-bottom: var(--space-4);">
+    <div class="tab" data-link-to="P1-M2-S01">Compose</div>
+    <div class="tab active">Sent <span style="margin-left:4px;background:var(--brand-primary);color:white;padding:1px 8px;border-radius:var(--radius-full);font-size:11px;">42</span></div>
+    <div class="tab">Drafts <span style="margin-left:4px;background:var(--surface-2);color:var(--ink-500);padding:1px 8px;border-radius:var(--radius-full);font-size:11px;">3</span></div>
+    <div class="tab">Scheduled <span style="margin-left:4px;background:var(--surface-2);color:var(--ink-500);padding:1px 8px;border-radius:var(--radius-full);font-size:11px;">1</span></div>
+  </div>
+
+  <div class="filter-strip" style="background:var(--surface-0);padding:var(--space-3) var(--space-4);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);margin-bottom:var(--space-4);">
+    <span style="font-size:12px;color:var(--ink-500);font-weight:var(--w-semibold);text-transform:uppercase;letter-spacing:0.05em;">Filter</span>
+    <button class="filter-chip active">All</button>
+    <button class="filter-chip">To FOs</button>
+    <button class="filter-chip">To Sakhis</button>
+    <button class="filter-chip">With photo</button>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Sent at</th>
+          <th>Subject</th>
+          <th>To</th>
+          <th>Recipients</th>
+          <th>Read</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="num">28 Jan · 09:14</td>
+          <td><strong>January performance review — please prepare your Sakhi count</strong><div style="font-size:11px;color:var(--ink-500);margin-top:2px;">📎 1 photo · 72 words</div></td>
+          <td><span class="pill pill-brand">FOs</span></td>
+          <td>5 FOs (reaches 105 Sakhis)</td>
+          <td><div style="display:flex;gap:6px;align-items:center;"><div class="read-bar"><div class="fill" style="width:80%;"></div></div><span style="font-size:11px;color:var(--ink-500);">4/5</span></div></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button><button class="icon-btn"><span class="material-symbols-rounded">edit</span></button><button class="icon-btn"><span class="material-symbols-rounded">delete</span></button></td>
+        </tr>
+        <tr>
+          <td class="num">26 Jan · 18:42</td>
+          <td><strong>Updated FHC counselling script — please use from next session</strong><div style="font-size:11px;color:var(--ink-500);margin-top:2px;">📎 2 photos · 145 words</div></td>
+          <td><span class="pill pill-brand">Sakhis</span></td>
+          <td>248 Sakhis</td>
+          <td><div style="display:flex;gap:6px;align-items:center;"><div class="read-bar"><div class="fill" style="width:62%;"></div></div><span style="font-size:11px;color:var(--ink-500);">153/248</span></div></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button><button class="icon-btn"><span class="material-symbols-rounded">edit</span></button><button class="icon-btn"><span class="material-symbols-rounded">delete</span></button></td>
+        </tr>
+        <tr>
+          <td class="num">22 Jan · 14:08</td>
+          <td><strong>Republic Day SSM — schedule confirmation</strong><div style="font-size:11px;color:var(--ink-500);margin-top:2px;">No attachment · 89 words</div></td>
+          <td><span class="pill pill-brand">FOs</span></td>
+          <td>12 FOs</td>
+          <td><div style="display:flex;gap:6px;align-items:center;"><div class="read-bar"><div class="fill" style="width:100%;"></div></div><span style="font-size:11px;color:var(--ink-500);">12/12</span></div></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+        <tr>
+          <td class="num">15 Jan · 11:30</td>
+          <td><strong>Welcome to January cycle — targets &amp; expectations</strong><div style="font-size:11px;color:var(--ink-500);margin-top:2px;">📎 1 photo · 105 words</div></td>
+          <td><span class="pill pill-brand">FOs+Sakhis</span></td>
+          <td>12 FOs + 248 Sakhis</td>
+          <td><div style="display:flex;gap:6px;align-items:center;"><div class="read-bar"><div class="fill" style="width:92%;"></div></div><span style="font-size:11px;color:var(--ink-500);">239/260</span></div></td>
+          <td><button class="icon-btn"><span class="material-symbols-rounded">visibility</span></button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <div class="info">Showing 1–10 of 42</div>
+      <div class="pages"><button class="active">1</button><button>2</button><button>3</button><button>4</button></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

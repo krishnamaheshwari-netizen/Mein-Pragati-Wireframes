@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=375, initial-scale=1" />
+<title>Today's Plan — Sakhi action centre</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script>
+<style>
+  body { width: 375px; min-height: 812px; background: var(--surface-1); position: relative; }
+  .content { padding-bottom: 90px; }
+
+  /* Hero */
+  .hero-card {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-700) 100%);
+    color: white;
+    padding: var(--space-5) var(--space-4) var(--space-6);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card::after {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 140px; height: 140px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+  }
+  .hero-card .greeting { font-size: 13px; opacity: 0.85; }
+  .hero-card .date { font-size: 13px; opacity: 0.7; margin-top: 2px; }
+  .hero-card .big-number {
+    font-size: 44px;
+    font-weight: var(--w-bold);
+    line-height: 1;
+    margin: var(--space-3) 0 var(--space-2);
+  }
+  .hero-card .subtitle { font-size: 14px; opacity: 0.95; }
+
+  .offline-strip {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px var(--space-4);
+    background: var(--ink-900);
+    color: white;
+    font-size: 11px;
+  }
+  .offline-strip .left { display: flex; align-items: center; gap: 6px; }
+  .offline-strip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--status-success); }
+  .offline-strip .right { color: rgba(255,255,255,0.7); }
+
+  /* Task category groups */
+  .category-section { margin-top: var(--space-4); padding: 0 var(--space-4); }
+  .category-section .head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: var(--space-2);
+  }
+  .category-section .head .title-row {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .category-section .head .title {
+    font-size: 13px; font-weight: var(--w-semibold);
+    color: var(--ink-900);
+  }
+  .category-section .head .count {
+    background: var(--surface-2);
+    color: var(--ink-700);
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: var(--w-bold);
+  }
+  .category-section.urgent .head .count {
+    background: var(--status-danger);
+    color: white;
+  }
+  .category-section .head .clear-cta {
+    font-size: 11px;
+    color: var(--brand-primary);
+    font-weight: var(--w-semibold);
+  }
+
+  .task-card {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .task-card.urgent { border-left: 4px solid var(--status-danger); }
+  .task-card.due-soon { border-left: 4px solid var(--status-warning); }
+  .task-card.normal { border-left: 4px solid var(--brand-primary); }
+  .task-card.gentle { border-left: 4px solid var(--ink-300); }
+
+  .task-row {
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    border-top: 1px solid var(--surface-3);
+  }
+  .task-row:first-of-type { border-top: none; }
+  .task-row .icon {
+    width: 36px; height: 36px;
+    border-radius: var(--radius-md);
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .task-row .icon.danger { background: var(--status-danger-bg); color: var(--status-danger); }
+  .task-row .icon.warning { background: var(--status-warning-bg); color: var(--status-warning); }
+  .task-row .icon.brand { background: var(--brand-primary-50); color: var(--brand-primary); }
+  .task-row .icon.info { background: var(--status-info-bg); color: var(--status-info); }
+  .task-row .body { flex: 1; min-width: 0; }
+  .task-row .body .title-line { font-size: 13px; font-weight: var(--w-semibold); color: var(--ink-900); margin-bottom: 2px; }
+  .task-row .body .sub-line { font-size: 11px; color: var(--ink-500); }
+  .task-row .arrow { color: var(--ink-300); }
+
+  /* Window banner */
+  .window-banner {
+    margin: var(--space-4);
+    padding: var(--space-3);
+    background: var(--status-warning-bg);
+    color: var(--status-warning-ink);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 12px;
+    font-weight: var(--w-medium);
+  }
+  .window-banner .material-symbols-rounded { color: var(--status-warning); font-size: 18px; }
+
+  /* Bottom bar */
+  .bottom-feedback {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    height: 48px;
+    background: var(--surface-0);
+    border-top: 1px solid var(--surface-3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: var(--w-semibold);
+    color: var(--brand-primary);
+    z-index: 10;
+  }
+
+  /* FAB — quick-capture menu */
+  .fab-wrap { position: fixed; right: var(--space-4); bottom: 64px; z-index: 20; }
+  .fab-menu {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    margin-bottom: var(--space-2);
+    width: 220px;
+  }
+  .fab-menu .menu-item {
+    display: flex; gap: var(--space-3); align-items: center;
+    padding: 12px var(--space-3);
+    border-top: 1px solid var(--surface-3);
+    font-size: 13px; color: var(--ink-900); font-weight: var(--w-medium);
+  }
+  .fab-menu .menu-item:first-child { border-top: none; }
+  .fab-menu .menu-item .material-symbols-rounded { color: var(--brand-primary); font-size: 18px; }
+
+  /* Bottom nav */
+  .bottom-nav-fixed {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 56px;
+    background: var(--surface-0);
+    border-top: 1px solid var(--surface-3);
+    display: flex;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+<div class="screen-id-badge">DHW-1</div>
+
+<div class="mobile-statusbar">
+  <span>9:41</span>
+  <span class="right">
+    <span class="material-symbols-rounded">signal_cellular_4_bar</span>
+    <span class="material-symbols-rounded">wifi</span>
+    <span class="material-symbols-rounded">battery_full</span>
+  </span>
+</div>
+
+<!-- App bar -->
+<div class="mobile-appbar">
+  <div class="avatar avatar-sm" data-link-to="P0-M1-S01">SD</div>
+  <div class="flex-1">
+    <div style="font-size: 11px; color: var(--ink-500);">Today's Plan</div>
+    <div style="font-size: 15px; font-weight: var(--w-semibold); line-height: 1.2;">Sumitra Devi</div>
+  </div>
+  <button class="icon-btn" data-link-to="DHW-2" aria-label="Sync"><span class="material-symbols-rounded">sync</span></button>
+  <button class="icon-btn" aria-label="Notifications"><span class="material-symbols-rounded">notifications</span></button>
+</div>
+
+<!-- Offline / sync strip -->
+<div class="offline-strip">
+  <div class="left">
+    <span class="dot"></span>
+    <span>Online · Last sync 09:14</span>
+  </div>
+  <div class="right" data-link-to="DHW-2">5 records pending →</div>
+</div>
+
+<div class="content">
+
+  <!-- Hero with today's count -->
+  <div class="hero-card">
+    <div class="greeting">Good morning, Sumitra</div>
+    <div class="date">Wed, 28 May · Week of meetings in Bahjani</div>
+    <div class="big-number">8 things</div>
+    <div class="subtitle">to do today · most urgent: 2 rejected transactions need a fix</div>
+  </div>
+
+  <!-- Window banner -->
+  <div class="window-banner">
+    <span class="material-symbols-rounded">schedule</span>
+    <span>January window closes in 3 days · 12 transactions pending submission</span>
+  </div>
+
+  <!-- URGENT: Rejected -->
+  <div class="category-section urgent">
+    <div class="head">
+      <div class="title-row">
+        <span class="material-symbols-rounded" style="font-size: 18px; color: var(--status-danger);">error</span>
+        <span class="title">Needs your action</span>
+      </div>
+      <span class="count">2</span>
+    </div>
+    <div class="task-card urgent">
+      <div class="task-row" data-link-to="P0-M1-S01">
+        <div class="icon danger"><span class="material-symbols-rounded">edit_note</span></div>
+        <div class="body">
+          <div class="title-line">Rina Kalita · PMJJBY rejected</div>
+          <div class="sub-line">"Evidence photo is blurred — please re-upload" · 5 days ago</div>
+        </div>
+        <span class="material-symbols-rounded arrow">chevron_right</span>
+      </div>
+      <div class="task-row" data-link-to="P0-M1-S01">
+        <div class="icon danger"><span class="material-symbols-rounded">edit_note</span></div>
+        <div class="body">
+          <div class="title-line">Geeta Devi · PMSBY rejected</div>
+          <div class="sub-line">"Remuneration amount mismatch" · 9 days ago</div>
+        </div>
+        <span class="material-symbols-rounded arrow">chevron_right</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DUE SOON -->
+  <div class="category-section">
+    <div class="head">
+      <div class="title-row">
+        <span class="material-symbols-rounded" style="font-size: 18px; color: var(--status-warning);">schedule</span>
+        <span class="title">Pending submissions</span>
+      </div>
+      <span class="count">3</span>
+    </div>
+    <div class="task-card due-soon">
+      <div class="task-row">
+        <div class="icon warning"><span class="material-symbols-rounded">badge</span></div>
+        <div class="body">
+          <div class="title-line">3 transactions to submit for FO approval</div>
+          <div class="sub-line">Anjali Bora · Fatema Begum · Aarti Bhargav</div>
+        </div>
+        <span class="material-symbols-rounded arrow">chevron_right</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- COUNSELLING -->
+  <div class="category-section">
+    <div class="head">
+      <div class="title-row">
+        <span class="material-symbols-rounded" style="font-size: 18px; color: var(--brand-primary);">favorite</span>
+        <span class="title">Financial Health counselling due</span>
+      </div>
+      <span class="count">1</span>
+    </div>
+    <div class="task-card normal">
+      <div class="task-row">
+        <div class="icon brand"><span class="material-symbols-rounded">monitor_heart</span></div>
+        <div class="body">
+          <div class="title-line">FHC follow-up · Monalisha SHG (12 members)</div>
+          <div class="sub-line">3-month re-assessment due · Last score 76</div>
+        </div>
+        <span class="material-symbols-rounded arrow">chevron_right</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MESSAGES -->
+  <div class="category-section">
+    <div class="head">
+      <div class="title-row">
+        <span class="material-symbols-rounded" style="font-size: 18px; color: var(--status-info);">forum</span>
+        <span class="title">Unread messages</span>
+      </div>
+      <span class="count">2</span>
+    </div>
+    <div class="task-card normal">
+      <div class="task-row" data-link-to="P1-M2-S07">
+        <div class="icon info"><span class="material-symbols-rounded">campaign</span></div>
+        <div class="body">
+          <div class="title-line">2 broadcasts from Dhaniram (FO) and Sandeep (NGO)</div>
+          <div class="sub-line">January review reminder · FHC script update</div>
+        </div>
+        <span class="material-symbols-rounded arrow">chevron_right</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Suggested -->
+  <div class="category-section">
+    <div class="head">
+      <div class="title-row">
+        <span class="material-symbols-rounded" style="font-size: 18px; color: var(--ink-500);">tips_and_updates</span>
+        <span class="title">Suggested today</span>
+      </div>
+    </div>
+    <div class="task-card gentle">
+      <div class="task-row" data-link-to="P3-M11-S01">
+        <div class="icon" style="background: var(--surface-2); color: var(--ink-700);"><span class="material-symbols-rounded">savings</span></div>
+        <div class="body">
+          <div class="title-line">Update My Budget for yesterday</div>
+          <div class="sub-line">You haven't logged 27 Jan · 1 income, 2 expenses suggested</div>
+        </div>
+        <span class="material-symbols-rounded arrow">chevron_right</span>
+      </div>
+      <div class="task-row" data-link-to="P1-M10-S01">
+        <div class="icon" style="background: var(--surface-2); color: var(--ink-700);"><span class="material-symbols-rounded">analytics</span></div>
+        <div class="body">
+          <div class="title-line">Look at your January dashboard</div>
+          <div class="sub-line">You're 28% above income target · best month so far</div>
+        </div>
+        <span class="material-symbols-rounded arrow">chevron_right</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bottom bar -->
+<div class="bottom-feedback">
+  <span class="material-symbols-rounded" style="font-size: 16px; margin-right: 6px;">feedback</span>
+  Feedback
+</div>
+
+<!-- Quick-capture FAB (showing the open menu state) -->
+<div class="fab-wrap">
+  <div class="fab-menu">
+    <div class="menu-item"><span class="material-symbols-rounded">add_circle</span> New Transaction</div>
+    <div class="menu-item"><span class="material-symbols-rounded">person_add</span> New Beneficiary</div>
+    <div class="menu-item"><span class="material-symbols-rounded">link</span> Update Linkage</div>
+    <div class="menu-item"><span class="material-symbols-rounded">monitor_heart</span> FHC counselling</div>
+  </div>
+  <a href="#" class="btn-fab" aria-label="Quick add" style="margin-left: auto; display: flex;">
+    <span class="material-symbols-rounded">close</span>
+  </a>
+</div>
+
+</body>
+</html>

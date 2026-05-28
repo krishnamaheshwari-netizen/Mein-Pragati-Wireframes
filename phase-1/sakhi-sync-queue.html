@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=375, initial-scale=1" />
+<title>Sync Queue visibility</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script>
+<style>
+  body { width: 375px; min-height: 812px; background: var(--surface-1); }
+  .content { padding-bottom: 100px; }
+
+  .hero-card {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-700) 100%);
+    color: white;
+    padding: var(--space-5) var(--space-4);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card::after {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 140px; height: 140px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+  }
+  .hero-card .status-label { font-size: 11px; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.05em; font-weight: var(--w-semibold); }
+  .hero-card .status-row { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+  .hero-card .status-row .pulse {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--status-success);
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
+  }
+  .hero-card .big-status { font-size: 26px; font-weight: var(--w-bold); }
+  .hero-card .meta-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin-top: var(--space-4); }
+  .hero-card .meta-row .item .lbl { font-size: 10px; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.05em; font-weight: var(--w-semibold); }
+  .hero-card .meta-row .item .val { font-size: 18px; font-weight: var(--w-bold); margin-top: 2px; }
+
+  /* Tabs */
+  .qtabs {
+    display: flex;
+    background: var(--surface-0);
+    border-bottom: 1px solid var(--surface-3);
+  }
+  .qtabs .tab {
+    flex: 1;
+    padding: var(--space-3);
+    text-align: center;
+    font-size: 13px;
+    font-weight: var(--w-medium);
+    color: var(--ink-500);
+    border-bottom: 2px solid transparent;
+  }
+  .qtabs .tab.active { color: var(--brand-primary); border-bottom-color: var(--brand-primary); font-weight: var(--w-semibold); }
+  .qtabs .badge { display: inline-block; margin-left: 4px; background: var(--surface-2); color: var(--ink-500); padding: 1px 6px; border-radius: var(--radius-full); font-size: 10px; font-weight: var(--w-bold); }
+  .qtabs .tab.active .badge { background: var(--brand-primary); color: white; }
+
+  /* Queue list */
+  .queue-section { padding: var(--space-3) var(--space-4) 0; }
+  .queue-section .head {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-500);
+    font-weight: var(--w-semibold);
+    margin-bottom: 8px;
+  }
+  .queue-card {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    margin-bottom: var(--space-3);
+  }
+  .queue-row {
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    border-top: 1px solid var(--surface-3);
+  }
+  .queue-row:first-of-type { border-top: none; }
+  .queue-row .icon {
+    width: 36px; height: 36px;
+    border-radius: var(--radius-md);
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .queue-row .icon.success { background: var(--status-success-bg); color: var(--status-success); }
+  .queue-row .icon.warning { background: var(--status-warning-bg); color: var(--status-warning); }
+  .queue-row .icon.danger { background: var(--status-danger-bg); color: var(--status-danger); }
+  .queue-row .icon.info { background: var(--status-info-bg); color: var(--status-info); }
+  .queue-row .body { flex: 1; min-width: 0; }
+  .queue-row .body .title-line { font-size: 13px; font-weight: var(--w-semibold); color: var(--ink-900); margin-bottom: 2px; }
+  .queue-row .body .sub-line { font-size: 11px; color: var(--ink-500); }
+  .queue-row .retry-btn {
+    padding: 4px 10px;
+    background: var(--surface-2);
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    color: var(--brand-primary);
+    font-weight: var(--w-semibold);
+  }
+  .queue-row .status-text {
+    font-size: 11px;
+    font-weight: var(--w-medium);
+  }
+  .queue-row .status-text.uploading { color: var(--status-info); }
+  .queue-row .status-text.queued { color: var(--ink-500); }
+  .queue-row .status-text.failed { color: var(--status-danger); }
+
+  .progress-bar {
+    height: 3px;
+    background: var(--surface-2);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-top: 6px;
+  }
+  .progress-bar .fill {
+    height: 100%;
+    background: var(--status-info);
+    border-radius: var(--radius-full);
+  }
+
+  /* Bottom action */
+  .bottom-action {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--surface-0);
+    border-top: 1px solid var(--surface-3);
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    gap: var(--space-2);
+    z-index: 10;
+  }
+  .bottom-action .btn { flex: 1; }
+</style>
+</head>
+<body>
+<div class="screen-id-badge">DHW-2</div>
+
+<div class="mobile-statusbar">
+  <span>9:41</span>
+  <span class="right">
+    <span class="material-symbols-rounded">signal_cellular_4_bar</span>
+    <span class="material-symbols-rounded">wifi</span>
+    <span class="material-symbols-rounded">battery_full</span>
+  </span>
+</div>
+
+<div class="mobile-appbar">
+  <button class="icon-btn" data-link-to="DHW-1"><span class="material-symbols-rounded">arrow_back</span></button>
+  <div class="title">Sync status</div>
+  <button class="icon-btn"><span class="material-symbols-rounded">more_vert</span></button>
+</div>
+
+<div class="content">
+
+  <!-- Hero status -->
+  <div class="hero-card">
+    <div class="status-label">Sync status</div>
+    <div class="status-row">
+      <span class="pulse"></span>
+      <span class="big-status">All caught up — almost</span>
+    </div>
+    <div class="meta-row">
+      <div class="item">
+        <div class="lbl">Last sync</div>
+        <div class="val">09:14 AM</div>
+      </div>
+      <div class="item">
+        <div class="lbl">Pending</div>
+        <div class="val">5 records</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="qtabs">
+    <div class="tab active">To server <span class="badge">5</span></div>
+    <div class="tab">From server <span class="badge">0</span></div>
+    <div class="tab">History</div>
+  </div>
+
+  <!-- Currently uploading -->
+  <div class="queue-section">
+    <div class="head">Uploading now (2)</div>
+    <div class="queue-card">
+      <div class="queue-row">
+        <div class="icon info"><span class="material-symbols-rounded">image</span></div>
+        <div class="body">
+          <div class="title-line">Evidence photo · Anjali Bora</div>
+          <div class="sub-line">PMJJBY transaction · 1.2 MB</div>
+          <div class="progress-bar"><div class="fill" style="width: 64%;"></div></div>
+        </div>
+        <span class="status-text uploading">64%</span>
+      </div>
+      <div class="queue-row">
+        <div class="icon info"><span class="material-symbols-rounded">badge</span></div>
+        <div class="body">
+          <div class="title-line">Beneficiary transaction · Fatema Begum</div>
+          <div class="sub-line">Awareness session · created 09:38</div>
+          <div class="progress-bar"><div class="fill" style="width: 22%;"></div></div>
+        </div>
+        <span class="status-text uploading">Waiting</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Queued -->
+  <div class="queue-section">
+    <div class="head">Queued (2)</div>
+    <div class="queue-card">
+      <div class="queue-row">
+        <div class="icon info"><span class="material-symbols-rounded">person_add</span></div>
+        <div class="body">
+          <div class="title-line">New beneficiary · Aarti Bhargav</div>
+          <div class="sub-line">Ajeetgarh · created 08:22</div>
+        </div>
+        <span class="status-text queued">Queued</span>
+      </div>
+      <div class="queue-row">
+        <div class="icon info"><span class="material-symbols-rounded">favorite</span></div>
+        <div class="body">
+          <div class="title-line">FHC counselling · Manalisha SHG</div>
+          <div class="sub-line">Initial score 76 · 8 fields</div>
+        </div>
+        <span class="status-text queued">Queued</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Failed — needs retry -->
+  <div class="queue-section">
+    <div class="head" style="color: var(--status-danger);">Failed — tap to retry (1)</div>
+    <div class="queue-card">
+      <div class="queue-row">
+        <div class="icon danger"><span class="material-symbols-rounded">cloud_off</span></div>
+        <div class="body">
+          <div class="title-line">Evidence photo · Pushpa Kanwar</div>
+          <div class="sub-line">Network timed out · 3 attempts</div>
+        </div>
+        <button class="retry-btn">Retry</button>
+      </div>
+    </div>
+    <div style="font-size: 11px; color: var(--ink-500); margin-top: 6px; padding: 0 var(--space-2);">
+      Retry tries automatically every 5 min. Sync now if you have a stronger connection.
+    </div>
+  </div>
+
+  <!-- Recent successful -->
+  <div class="queue-section">
+    <div class="head">Synced just now</div>
+    <div class="queue-card">
+      <div class="queue-row">
+        <div class="icon success"><span class="material-symbols-rounded">check</span></div>
+        <div class="body">
+          <div class="title-line">3 transactions synced</div>
+          <div class="sub-line">Rina K · Geeta D · Monalisha SHG · at 09:14</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bottom action -->
+<div class="bottom-action">
+  <button class="btn btn-secondary">Force full re-sync</button>
+  <button class="btn btn-primary"><span class="material-symbols-rounded">sync</span> Sync now</button>
+</div>
+
+</body>
+</html>

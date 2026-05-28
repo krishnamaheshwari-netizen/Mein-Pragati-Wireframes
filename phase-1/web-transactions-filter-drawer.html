@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Transactions — Filter drawer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script>
+<style>
+  body { width: 1440px; min-height: 900px; background: var(--surface-1); position: relative; }
+  .backdrop { position: absolute; inset: 0; background: rgba(15, 20, 25, 0.4); }
+  .drawer { position: absolute; right: 0; top: 0; bottom: 0; width: 480px; background: var(--surface-0); box-shadow: -8px 0 24px rgba(0,0,0,0.15); display: flex; flex-direction: column; }
+  .drawer-head { padding: var(--space-5); border-bottom: 1px solid var(--surface-3); display: flex; justify-content: space-between; align-items: center; }
+  .drawer-head h2 { margin: 0; font-size: 18px; font-weight: var(--w-semibold); }
+  .drawer-body { flex: 1; overflow-y: auto; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-5); }
+  .filter-section h4 { margin: 0 0 var(--space-2); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-500); font-weight: var(--w-semibold); }
+  .chip-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+  .multi-chip { padding: 8px 14px; background: var(--surface-2); border-radius: var(--radius-full); font-size: 13px; color: var(--ink-700); font-weight: var(--w-medium); cursor: pointer; transition: background var(--t-fast); }
+  .multi-chip.active { background: var(--brand-primary); color: white; }
+  .date-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+  .preset-row { display: flex; gap: 6px; margin-top: 8px; }
+  .preset-chip { padding: 4px 10px; background: var(--surface-1); border: 1px solid var(--ink-100); border-radius: 4px; font-size: 11px; color: var(--ink-700); font-weight: var(--w-medium); cursor: pointer; }
+  .preset-chip:hover { background: var(--surface-2); }
+  .save-preset {
+    margin-top: 6px;
+    padding: 10px 14px;
+    background: var(--brand-primary-50);
+    border: 1px dashed var(--brand-primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    color: var(--brand-primary);
+    font-size: 13px;
+    font-weight: var(--w-medium);
+    cursor: pointer;
+  }
+  .drawer-foot { padding: var(--space-4) var(--space-5); border-top: 1px solid var(--surface-3); display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); }
+  /* Mock the page in background */
+  .page-back { padding: var(--space-6); opacity: 0.6; pointer-events: none; }
+</style>
+</head>
+<body>
+<div class="screen-id-badge">P1-M16-S02</div>
+
+<!-- Background page (faded) -->
+<div class="page-back">
+  <div style="background:var(--surface-0);border-radius:var(--radius-lg);padding:var(--space-5);box-shadow:var(--shadow-sm);height:600px;">
+    <div style="height:24px;background:var(--surface-2);width:200px;border-radius:4px;margin-bottom:var(--space-4);"></div>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:var(--space-4);">
+      <div style="height:16px;background:var(--surface-2);border-radius:4px;"></div>
+      <div style="height:16px;background:var(--surface-2);border-radius:4px;"></div>
+      <div style="height:16px;background:var(--surface-2);border-radius:4px;"></div>
+      <div style="height:16px;background:var(--surface-2);border-radius:4px;"></div>
+      <div style="height:16px;background:var(--surface-2);border-radius:4px;"></div>
+      <div style="height:16px;background:var(--surface-2);border-radius:4px;"></div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" data-link-to="P1-M16-S01"></div>
+
+<div class="drawer">
+  <div class="drawer-head">
+    <h2>More filters</h2>
+    <button class="icon-btn" data-link-to="P1-M16-S01"><span class="material-symbols-rounded">close</span></button>
+  </div>
+
+  <div class="drawer-body">
+
+    <div class="filter-section">
+      <h4>Saved presets</h4>
+      <div class="preset-row">
+        <span class="preset-chip">★ My pending queue</span>
+        <span class="preset-chip">★ January KCC linkages</span>
+        <span class="preset-chip">★ Barpeta district only</span>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4>District</h4>
+      <div class="chip-grid">
+        <span class="multi-chip active">Barpeta</span>
+        <span class="multi-chip active">Nalbari</span>
+        <span class="multi-chip">Kamrup</span>
+        <span class="multi-chip">Morigaon</span>
+        <span class="multi-chip">Goalpara</span>
+        <span class="multi-chip">Darrang</span>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Block</h4>
+      <div class="chip-grid">
+        <span class="multi-chip active">Bhabanipur</span>
+        <span class="multi-chip active">Sorbhog</span>
+        <span class="multi-chip active">Bahjani</span>
+        <span class="multi-chip">Hajo</span>
+        <span class="multi-chip">Mayong</span>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Scheme (multi-select)</h4>
+      <div class="chip-grid">
+        <span class="multi-chip active">PMJJBY</span>
+        <span class="multi-chip active">PMSBY</span>
+        <span class="multi-chip active">APY</span>
+        <span class="multi-chip">PMJDY</span>
+        <span class="multi-chip">KCC</span>
+        <span class="multi-chip">Bhamashah</span>
+        <span class="multi-chip">Ujjwala</span>
+        <span class="multi-chip">Shramik card</span>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Status</h4>
+      <div class="chip-grid">
+        <span class="multi-chip active">Pending by FO</span>
+        <span class="multi-chip active">Pending by NGO</span>
+        <span class="multi-chip active">Approved</span>
+        <span class="multi-chip">Rejected by FO</span>
+        <span class="multi-chip">Rejected by NGO</span>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Date range</h4>
+      <div class="date-row">
+        <div>
+          <label style="font-size:11px;color:var(--ink-500);">Meeting from</label>
+          <input type="date" value="2026-01-01" style="width:100%;padding:8px;border:1px solid var(--ink-100);border-radius:var(--radius-md);font-size:13px;" />
+        </div>
+        <div>
+          <label style="font-size:11px;color:var(--ink-500);">Meeting to</label>
+          <input type="date" value="2026-01-31" style="width:100%;padding:8px;border:1px solid var(--ink-100);border-radius:var(--radius-md);font-size:13px;" />
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h4>Beneficiary</h4>
+      <input type="search" placeholder="Search name or mobile number…" style="width:100%;padding:10px var(--space-3);border:1px solid var(--ink-100);border-radius:var(--radius-md);font-size:13px;" />
+    </div>
+
+    <div class="save-preset" style="margin-top:auto;">
+      <span class="material-symbols-rounded">bookmark_add</span>
+      Save these as a preset
+    </div>
+
+  </div>
+
+  <div class="drawer-foot">
+    <button class="btn btn-tertiary">Reset all</button>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-secondary" data-link-to="P1-M16-S01">Cancel</button>
+      <button class="btn btn-primary" data-link-to="P1-M16-S01">Apply filters (8)</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

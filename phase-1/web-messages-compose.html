@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Messages — Compose (NGO admin)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<style>
+  body { width: 1440px; min-height: 900px; background: var(--surface-1); display: grid; grid-template-columns: var(--web-sidebar-width) 1fr; grid-template-rows: var(--web-topbar-height) 1fr; grid-template-areas: "side top" "side main"; }
+  .topbar-wrap { grid-area: top; }
+  .side-wrap { grid-area: side; }
+  .main-wrap { grid-area: main; padding: var(--space-6); overflow-y: auto; }
+
+  .compose-layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: var(--space-5);
+    height: calc(100vh - 200px);
+  }
+
+  .recipients-pane {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .recipients-pane .pane-head { padding: var(--space-4); border-bottom: 1px solid var(--surface-3); }
+  .recipients-pane .pane-head h3 { margin: 0 0 var(--space-3); font-size: 15px; font-weight: var(--w-semibold); }
+  .recipients-pane .tabs { border-bottom: none; padding: 0; }
+  .recipients-pane .search-row {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--surface-3);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .recipients-pane .search-row .field-input {
+    flex: 1; padding: 6px var(--space-3);
+    background: var(--surface-1);
+    border: none;
+    font-size: 13px;
+    border-radius: var(--radius-md);
+  }
+  .recipients-pane .quick-actions {
+    display: flex; gap: 6px;
+    padding: 10px var(--space-4);
+    border-bottom: 1px solid var(--surface-3);
+    flex-wrap: wrap;
+  }
+  .recipients-pane .quick-actions button {
+    padding: 4px 10px;
+    background: var(--surface-2);
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    color: var(--ink-700);
+    font-weight: var(--w-medium);
+  }
+  .recipients-pane .list {
+    flex: 1; overflow-y: auto;
+  }
+  .recipients-pane .summary {
+    padding: 10px var(--space-4);
+    background: var(--brand-primary-50);
+    color: var(--brand-primary);
+    font-size: 12px;
+    font-weight: var(--w-semibold);
+    border-top: 1px solid var(--brand-primary-100);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .compose-pane {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .compose-pane .pane-head {
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--surface-3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .compose-pane .compose-body { padding: var(--space-4); flex: 1; overflow-y: auto; }
+  .compose-pane textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: var(--space-3);
+    border: 1px solid var(--ink-100);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+  }
+  .compose-pane textarea:focus { outline: none; border-color: var(--brand-primary); box-shadow: 0 0 0 3px var(--brand-primary-50); }
+  .compose-pane .word-counter {
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--ink-500);
+    margin-top: 6px;
+  }
+  .compose-pane .word-counter .over { color: var(--status-danger); font-weight: var(--w-semibold); }
+  .compose-pane .attachment-row {
+    margin-top: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    background: var(--surface-1);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: var(--space-3);
+  }
+  .compose-pane .attached-photo {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, #FCE4E4, #FFCDD2);
+    border-radius: var(--radius-sm);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--brand-primary);
+    flex-shrink: 0;
+  }
+  .compose-pane .footer-bar {
+    padding: var(--space-4);
+    border-top: 1px solid var(--surface-3);
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--surface-1);
+  }
+  .compose-pane .footer-bar .left-options { display: flex; gap: var(--space-2); align-items: center; }
+  .compose-pane .footer-bar .right-actions { display: flex; gap: var(--space-2); }
+
+  /* Schedule toggle */
+  .toggle-row {
+    display: flex; align-items: center; gap: var(--space-2);
+    font-size: 13px; color: var(--ink-700);
+  }
+  .toggle {
+    width: 36px; height: 20px;
+    background: var(--ink-100);
+    border-radius: var(--radius-full);
+    position: relative;
+    cursor: pointer;
+  }
+  .toggle::after {
+    content: ''; position: absolute;
+    top: 2px; left: 2px;
+    width: 16px; height: 16px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: var(--shadow-sm);
+    transition: left var(--t-fast);
+  }
+  .toggle.on { background: var(--brand-primary); }
+  .toggle.on::after { left: 18px; }
+</style>
+<script src="../shared/wireframe-nav.js" defer></script>
+</head>
+<body>
+
+<div class="screen-id-badge">P1-M2-S01</div>
+
+<!-- Top bar -->
+<div class="topbar-wrap">
+  <div class="web-topbar">
+    <div class="brand">Mein Pragati</div>
+    <div class="crisil-mark">A CRISIL Foundation initiative</div>
+    <div class="right">
+      <div class="refresh-badge"><span class="material-symbols-rounded">schedule</span> Last refreshed 09:38</div>
+      <button class="icon-btn"><span class="material-symbols-rounded">notifications</span></button>
+      <div class="avatar avatar-sm">SS</div>
+    </div>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<div class="side-wrap">
+  <div class="web-sidebar" style="height: calc(100vh - var(--web-topbar-height));">
+    <div class="user-block">
+      <div class="avatar">SS</div>
+      <div>
+        <div class="name">Sandeep Singh</div>
+        <div class="role">NGO Partner — SeSTA</div>
+      </div>
+    </div>
+    <nav>
+      <a class="nav-item" data-link-to="P4-M15-S01"><span class="material-symbols-rounded">dashboard</span> Dashboard</a>
+      <a class="nav-item" data-link-to="P1-M16-S01"><span class="material-symbols-rounded">bar_chart</span> Sakhi Transactions</a>
+      <a class="nav-item"><span class="material-symbols-rounded">groups</span> Household Resilience</a>
+      <a class="nav-item"><span class="material-symbols-rounded">person</span> FO Details</a>
+      <a class="nav-item"><span class="material-symbols-rounded">apartment</span> Centre Details</a>
+      <a class="nav-item"><span class="material-symbols-rounded">people</span> Sakhi Details</a>
+      <a class="nav-item"><span class="material-symbols-rounded">currency_rupee</span> Expense</a>
+      <a class="nav-item"><span class="material-symbols-rounded">event_note</span> Reports</a>
+      <a class="nav-item"><span class="material-symbols-rounded">chat</span> Feedback</a>
+      <a class="nav-item active"><span class="material-symbols-rounded">forum</span> Messages</a>
+    </nav>
+    <div class="pinned">
+      <a class="nav-item"><span class="material-symbols-rounded">settings</span> Setting</a>
+      <a class="nav-item"><span class="material-symbols-rounded">logout</span> Logout</a>
+    </div>
+  </div>
+</div>
+
+<div class="main-wrap">
+
+  <div class="page-header">
+    <div class="title-block">
+      <div class="title">Messages</div>
+      <div class="subtitle">Broadcast to multiple FOs or Sakhis at once · Photo attachments allowed</div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-secondary"><span class="material-symbols-rounded">history</span> Sent history</button>
+      <button class="btn btn-primary"><span class="material-symbols-rounded">add</span> New message</button>
+    </div>
+  </div>
+
+  <div class="tabs" style="margin-bottom: var(--space-4);">
+    <div class="tab active">Compose</div>
+    <div class="tab">Sent <span style="margin-left: 4px; background: var(--surface-2); color: var(--ink-500); padding: 1px 8px; border-radius: var(--radius-full); font-size: 11px;">42</span></div>
+    <div class="tab">Drafts <span style="margin-left: 4px; background: var(--surface-2); color: var(--ink-500); padding: 1px 8px; border-radius: var(--radius-full); font-size: 11px;">3</span></div>
+    <div class="tab">Scheduled <span style="margin-left: 4px; background: var(--surface-2); color: var(--ink-500); padding: 1px 8px; border-radius: var(--radius-full); font-size: 11px;">1</span></div>
+  </div>
+
+  <div class="compose-layout">
+
+    <!-- Left: recipients pane -->
+    <div class="recipients-pane">
+      <div class="pane-head">
+        <h3>Recipients</h3>
+        <div class="tabs">
+          <div class="tab active">FOs <span style="margin-left: 4px; color: var(--ink-500); font-size: 11px;">(12)</span></div>
+          <div class="tab">Sakhis <span style="margin-left: 4px; color: var(--ink-500); font-size: 11px;">(248)</span></div>
+        </div>
+      </div>
+      <div class="search-row">
+        <span class="material-symbols-rounded" style="color: var(--ink-500); font-size: 18px;">search</span>
+        <input class="field-input" placeholder="Search FO by name, block…" />
+      </div>
+      <div class="quick-actions">
+        <button>Select all</button>
+        <button>Select Barpeta</button>
+        <button>Select Nalbari</button>
+        <button>Clear</button>
+      </div>
+      <div class="list">
+        <div class="checkbox-row checked"><span class="checkbox"></span><div class="avatar avatar-sm" style="background: var(--brand-primary-50); color: var(--brand-primary);">DD</div><div class="flex-1"><div style="font-size: 13px; font-weight: var(--w-semibold);">Dhaniram Deka</div><div style="font-size: 11px; color: var(--ink-500);">Morigaon · 18 Sakhis</div></div></div>
+        <div class="checkbox-row checked"><span class="checkbox"></span><div class="avatar avatar-sm">RK</div><div class="flex-1"><div style="font-size: 13px; font-weight: var(--w-semibold);">Ramen Kalita</div><div style="font-size: 11px; color: var(--ink-500);">Barpeta · 22 Sakhis</div></div></div>
+        <div class="checkbox-row checked"><span class="checkbox"></span><div class="avatar avatar-sm">PD</div><div class="flex-1"><div style="font-size: 13px; font-weight: var(--w-semibold);">Pranab Das</div><div style="font-size: 11px; color: var(--ink-500);">Nalbari · 25 Sakhis</div></div></div>
+        <div class="checkbox-row"><span class="checkbox"></span><div class="avatar avatar-sm">RK</div><div class="flex-1"><div style="font-size: 13px; font-weight: var(--w-semibold);">Rajesh Kumar</div><div style="font-size: 11px; color: var(--ink-500);">Sikar · 14 Sakhis</div></div></div>
+        <div class="checkbox-row checked"><span class="checkbox"></span><div class="avatar avatar-sm">JM</div><div class="flex-1"><div style="font-size: 13px; font-weight: var(--w-semibold);">Jugnu Medhi</div><div style="font-size: 11px; color: var(--ink-500);">Kamrup · 19 Sakhis</div></div></div>
+        <div class="checkbox-row"><span class="checkbox"></span><div class="avatar avatar-sm">AK</div><div class="flex-1"><div style="font-size: 13px; font-weight: var(--w-semibold);">Anjali Kumari</div><div style="font-size: 11px; color: var(--ink-500);">Dausa · 11 Sakhis</div></div></div>
+        <div class="checkbox-row checked"><span class="checkbox"></span><div class="avatar avatar-sm">SB</div><div class="flex-1"><div style="font-size: 13px; font-weight: var(--w-semibold);">Surya Bora</div><div style="font-size: 11px; color: var(--ink-500);">Darrang · 21 Sakhis</div></div></div>
+        <div class="checkbox-row"><span class="checkbox"></span><div class="avatar avatar-sm">VK</div><div class="flex-1"><div style="font-size: 13px; font-weight: var(--w-semibold);">Vinod Khan</div><div style="font-size: 11px; color: var(--ink-500);">Alwar · 16 Sakhis</div></div></div>
+      </div>
+      <div class="summary">
+        <span>5 FOs selected · reaches 105 Sakhis</span>
+        <a href="#" style="color: var(--brand-primary);">Review</a>
+      </div>
+    </div>
+
+    <!-- Right: compose pane -->
+    <div class="compose-pane">
+      <div class="pane-head">
+        <div>
+          <h3 style="margin: 0; font-size: 15px; font-weight: var(--w-semibold);">New broadcast message</h3>
+          <div style="font-size: 12px; color: var(--ink-500); margin-top: 2px;">Reaches 5 FOs · 105 Sakhis indirectly</div>
+        </div>
+        <button class="btn btn-tertiary btn-sm"><span class="material-symbols-rounded">delete</span> Discard</button>
+      </div>
+
+      <div class="compose-body">
+        <div class="field">
+          <label class="label">Subject <span style="font-size: 11px; color: var(--ink-300);">(optional)</span></label>
+          <input type="text" placeholder="e.g. January performance review meeting" value="January performance review — please prepare your Sakhi count" />
+        </div>
+
+        <div class="field">
+          <label class="label">Message <span class="req">*</span></label>
+          <textarea placeholder="Type your message here. Maximum 200 words.">Namaste,
+
+This is a reminder that we have the January performance review on the 5th of February at the Morigaon zonal office. Please prepare your Sakhi counts (active, exit, GSE enrolled, exam certified) and ensure all pending transactions are approved or rejected before the meeting.
+
+The agenda is attached. Bring your phones and the printed budget diary samples from your top 3 Sakhis.
+
+— Sandeep, NGO Coordinator</textarea>
+          <div class="word-counter">
+            <span>72 of 200 words</span>
+            <span>Auto-saved 2 minutes ago</span>
+          </div>
+        </div>
+
+        <div class="attachment-row">
+          <div class="attached-photo"><span class="material-symbols-rounded">image</span></div>
+          <div class="flex-1">
+            <div style="font-size: 13px; font-weight: var(--w-semibold);">january-review-agenda.jpg</div>
+            <div style="font-size: 11px; color: var(--ink-500);">1.2 MB · added just now</div>
+          </div>
+          <button class="btn btn-tertiary btn-sm"><span class="material-symbols-rounded">close</span></button>
+        </div>
+
+        <div style="margin-top: var(--space-4); padding: var(--space-3); border: 1px dashed var(--ink-100); border-radius: var(--radius-md); display: flex; gap: var(--space-3); align-items: center; cursor: pointer;">
+          <span class="material-symbols-rounded" style="color: var(--ink-500);">add_a_photo</span>
+          <div>
+            <div style="font-size: 13px; font-weight: var(--w-medium);">Add another photo</div>
+            <div style="font-size: 11px; color: var(--ink-500);">Photo attachments only · up to 4 photos · 2 MB each</div>
+          </div>
+        </div>
+
+        <div class="toggle-row" style="margin-top: var(--space-4);">
+          <span class="toggle"></span>
+          <span>Schedule send</span>
+          <span style="color: var(--ink-500); margin-left: var(--space-2);">— Off (sends immediately)</span>
+        </div>
+      </div>
+
+      <div class="footer-bar">
+        <div class="left-options">
+          <span style="font-size: 12px; color: var(--ink-500);">CRISIL admin can see this once sent</span>
+        </div>
+        <div class="right-actions">
+          <button class="btn btn-tertiary">Save as draft</button>
+          <button class="btn btn-secondary">Preview</button>
+          <button class="btn btn-primary"><span class="material-symbols-rounded">send</span> Send to 5 FOs</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

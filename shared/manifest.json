@@ -1,0 +1,1537 @@
+{
+  "project": "CRISIL Mein Pragati — Revamp Wireframes",
+  "version": "1.2",
+  "updated": "2026-05-28",
+  "phases": [
+    {
+      "id": 0,
+      "name": "Stabilise",
+      "weeks": "1-3",
+      "color": "#DC2626",
+      "description": "P0 fixes, sync rebuild, security rotation, KT package."
+    },
+    {
+      "id": 1,
+      "name": "Foundation",
+      "weeks": "4-10",
+      "color": "#D97706",
+      "description": "Messages, Rejected loop, Transactions list, Feedback chat, Sakhi dashboard, Sync."
+    },
+    {
+      "id": 2,
+      "name": "Workflow",
+      "weeks": "11-16",
+      "color": "#2563EB",
+      "description": "Attendance, Best Activities, Bulk onboarding, Approval window, Training Records, Reports."
+    },
+    {
+      "id": 3,
+      "name": "Sakhi & Beneficiary",
+      "weeks": "17-22",
+      "color": "#7C3AED",
+      "description": "My Budget, Beneficiary Receipts, Badges, Training Videos."
+    },
+    {
+      "id": 4,
+      "name": "Strategic",
+      "weeks": "23-26+",
+      "color": "#16A34A",
+      "description": "SHG/Cluster modelling, Programme Mgmt cockpit, SROI, Data archive."
+    }
+  ],
+  "screens": [
+    {
+      "id": "P0-M1-S01",
+      "phase": 0,
+      "sprint": 1,
+      "module": "M-1",
+      "moduleName": "Rejected Transaction Loop",
+      "title": "Sakhi Home with Rejected Transactions card",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-0/sakhi-home-rejected.html",
+      "status": "built",
+      "purpose": "Make the rejected transactions visible to the Sakhi on her home screen, with reason and Take Action CTA. Convergent fix for I-5 + SA-4.",
+      "features": [
+        "New Rejected Transactions card on home, below Transaction Details",
+        "Counter strip on Transaction Details: Approved (5) / Pending (10) / Rejected (2)",
+        "Latest 3 rejections with reason snippet + Take Action link",
+        "Tap row → opens rejection detail with edit + resubmit"
+      ],
+      "lookAndFeel": [
+        "4px left border in danger red for scanability",
+        "Status pills use the three-colour grammar (green/yellow/red)",
+        "Material Symbols Rounded icons throughout"
+      ],
+      "addresses": [
+        "I-5",
+        "SA-4"
+      ],
+      "assumptions": [],
+      "existingReference": "03_ui_inventory.md §2.7 (Home Screen)",
+      "flow": [
+        "DHW-1",
+        "P1-M10-S01",
+        "P1-M2-S07"
+      ]
+    },
+    {
+      "id": "P1-M10-S01",
+      "phase": 1,
+      "sprint": 5,
+      "module": "M-10",
+      "moduleName": "Sakhi Dashboard Redesign",
+      "title": "Sakhi Dashboard — tabular layout",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-1/sakhi-dashboard-tabular.html",
+      "status": "built",
+      "purpose": "Replace chart-heavy dashboard with tabular layouts the field can read at a glance. Strong rural-UX win.",
+      "features": [
+        "Income card (renamed from Remuneration) with Schemes/Services filter + date range",
+        "Awareness card with beneficiary count + date range",
+        "Overall Transaction Status — 3-col table (S.No / Type / Number)",
+        "Best Performing + Worst Performing — 3-col tables (S.No / Name / Income)",
+        "Target Status — 2-col table (Target / Achieved) with month picker"
+      ],
+      "lookAndFeel": [
+        "Tables preferred over charts (literacy-aware)",
+        "Only one chart kept — Income bar — because money over time is intuitive",
+        "Filter chips above each card, lightweight"
+      ],
+      "addresses": [
+        "SA-2"
+      ],
+      "assumptions": [],
+      "existingReference": "03_ui_inventory.md §2.19 (Dashboard)",
+      "flow": [
+        "P0-M1-S01"
+      ]
+    },
+    {
+      "id": "P1-M16-S01",
+      "phase": 1,
+      "sprint": 4,
+      "module": "M-16",
+      "moduleName": "Sakhi Transactions List",
+      "title": "Sakhi Transactions list — new filters + columns",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-1/web-sakhi-transactions.html",
+      "status": "built",
+      "purpose": "Optimise the workhorse screen. Default list = last 2 months approved/rejected + all pending. Multi-choice filters. Beneficiary filter. New Remuneration + Evidence columns.",
+      "features": [
+        "Default window: last 2 months approved/rejected + all pending",
+        "Multi-choice filter chips: District, Block, Scheme, Purpose, FO, Status",
+        "Beneficiary autocomplete (keyed by mobile number)",
+        "New columns: Remuneration ₹, Evidence thumbnail (click to enlarge)",
+        "Last refreshed badge top-right"
+      ],
+      "lookAndFeel": [
+        "Filter chips wrap, Reset link to clear all",
+        "Evidence thumbnails 32×32 with click-to-enlarge",
+        "Status pills standardised across roles"
+      ],
+      "addresses": [
+        "NGO-1",
+        "NGO-9"
+      ],
+      "assumptions": [
+        "Status pill copy unified across roles (resolves drift between Admin/NGO variants)"
+      ],
+      "existingReference": "03_ui_inventory.md §1.5 (Sakhi Transactions list)",
+      "flow": [
+        "P1-M2-S01"
+      ]
+    },
+    {
+      "id": "P1-M2-S01",
+      "phase": 1,
+      "sprint": 3,
+      "module": "M-2",
+      "moduleName": "Messages broadcast",
+      "title": "Messages — Compose (NGO admin)",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-1/web-messages-compose.html",
+      "status": "built",
+      "purpose": "NGO admin broadcasts to FOs and/or Sakhis. Convergent module for NGO-7 + NGO-10 + FO-3 + CR-3.",
+      "features": [
+        "Recipient role tabs: FOs / Sakhis",
+        "Multi-select checklist of recipients with search + select-all-in-district",
+        "Compose pane: 200-word body with live counter, photo attachment",
+        "Send / Save draft / Delete actions",
+        "Schedule send option"
+      ],
+      "lookAndFeel": [
+        "Familiar email-compose pattern for trust",
+        "Photo-only attachments (narrower than original SOW per Dhwani feedback 2)"
+      ],
+      "addresses": [
+        "NGO-7",
+        "NGO-10",
+        "FO-3",
+        "CR-3"
+      ],
+      "assumptions": [
+        "C-1: NGO Admin → Sakhi messaging is included (recommended). Flag visible on canvas."
+      ],
+      "existingReference": "New module — no existing equivalent in admin",
+      "flow": [
+        "P1-M16-S01"
+      ]
+    },
+    {
+      "id": "P1-M2-S07",
+      "phase": 1,
+      "sprint": 3,
+      "module": "M-2",
+      "moduleName": "Messages broadcast",
+      "title": "Messages — Inbox (Sakhi)",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-1/sakhi-messages-inbox.html",
+      "status": "built",
+      "purpose": "Sakhi reads broadcasts from FO and NGO admin in one inbox.",
+      "features": [
+        "Tile below Training Kit on home (label: Messages)",
+        "Two tabs: All / Unread",
+        "Sender badge clearly distinguishes FO vs NGO Admin",
+        "Photo preview thumbnail when attached",
+        "Unread bold; tap to mark read"
+      ],
+      "lookAndFeel": [
+        "Card-row layout, 64px row height for easy thumb tap",
+        "Sender name + role badge on every row"
+      ],
+      "addresses": [
+        "NGO-10",
+        "FO-3"
+      ],
+      "assumptions": [
+        "C-1: includes NGO Admin sender role"
+      ],
+      "existingReference": "New screen",
+      "flow": [
+        "DHW-1"
+      ]
+    },
+    {
+      "id": "P2-M3-S01",
+      "phase": 2,
+      "sprint": 6,
+      "module": "M-3",
+      "moduleName": "Attendance",
+      "title": "Mark Attendance (FO)",
+      "role": "FO",
+      "platform": "mobile",
+      "src": "phase-2/fo-attendance.html",
+      "status": "built",
+      "purpose": "FO marks today's attendance with one tap. Location is captured on submit.",
+      "features": [
+        "Mark Attendance action top-right of FO home",
+        "Location permission prompt before submit",
+        "After mark: state changes to 'Marked at HH:MM, Village X', disabled",
+        "Toast confirmation with location pin"
+      ],
+      "lookAndFeel": [
+        "One-tap action — fewest possible steps",
+        "Clear today-only constraint communicated in copy",
+        "Location consent explicit, not implicit"
+      ],
+      "addresses": [
+        "FO-1"
+      ],
+      "assumptions": [
+        "No back-fill (today-only). No leave flow at v1."
+      ],
+      "existingReference": "New top-right action; integrates with existing FO home from 03_ui_inventory.md §2.7",
+      "flow": []
+    },
+    {
+      "id": "P2-M4-S01",
+      "phase": 2,
+      "sprint": 7,
+      "module": "M-4",
+      "moduleName": "Bulk Onboarding",
+      "title": "Bulk Sakhi Onboarding — Step 1: Scope",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-2/web-bulk-sakhi.html",
+      "status": "built",
+      "purpose": "NGO admin onboards Sakhis in bulk via templated CSV. Replaces the FO's mobile create-Sakhi path (NGO-5).",
+      "features": [
+        "4-step stepper: Scope → Download Template → Upload CSV → Validate → Commit",
+        "Step 1: State / District / Block / FO autocompletes (cascading)",
+        "Geo-scoped — NGO sees only assigned states/districts",
+        "Village master sheet linked alongside template download"
+      ],
+      "lookAndFeel": [
+        "Stepper communicates progress and irreversibility",
+        "Each step clearly bounded — no skipping",
+        "Validation results inline with row-level errors"
+      ],
+      "addresses": [
+        "NGO-5",
+        "NGO-8",
+        "FO-7"
+      ],
+      "assumptions": [
+        "C-3: migration plan — mobile FO Create Sakhi removed and replaced with Messages-request pattern"
+      ],
+      "existingReference": "New module",
+      "flow": [
+        "P1-M16-S01"
+      ]
+    },
+    {
+      "id": "P3-M11-S01",
+      "phase": 3,
+      "sprint": 9,
+      "module": "M-11",
+      "moduleName": "My Budget",
+      "title": "My Budget — Sakhi personal finance",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-3/sakhi-my-budget.html",
+      "status": "built",
+      "purpose": "Sakhi tracks her own monthly income (auto-Mein-Pragati + manual) and expenses. Computes savings.",
+      "features": [
+        "Tile beside Dashboard / Beneficiary Details on home",
+        "Month tabs: This Month / Last Month / This Year",
+        "Three summary cards: Income / Expense / Savings",
+        "Day-wise list grouped by date",
+        "Add entry FAB → Income or Expense"
+      ],
+      "lookAndFeel": [
+        "No charts — simple totals + day-wise list per SOW",
+        "Income from Mein Pragati auto-tagged",
+        "Plus/minus colour grammar (green for in, red for out)"
+      ],
+      "addresses": [
+        "SA-3"
+      ],
+      "assumptions": [
+        "Category list shown is placeholder — pending Biswajit. Flag visible on canvas."
+      ],
+      "existingReference": "New module",
+      "flow": [
+        "DHW-1"
+      ]
+    },
+    {
+      "id": "P3-M8-S01",
+      "phase": 3,
+      "sprint": 10,
+      "module": "M-8",
+      "moduleName": "Beneficiary Receipts",
+      "title": "Beneficiary Receipt — printable template",
+      "role": "Beneficiary",
+      "platform": "web",
+      "src": "phase-3/beneficiary-receipt.html",
+      "status": "built",
+      "purpose": "Auto-generated receipt for the beneficiary after each approved transaction. Tangible artefact in her language.",
+      "features": [
+        "A6-sized printable layout (1 receipt per page)",
+        "Mein Pragati + CRISIL Foundation header",
+        "Beneficiary name + father/husband + village",
+        "Transaction date + scheme/service + amount",
+        "Sakhi name + signature line",
+        "QR code linking to verification page",
+        "Localised in beneficiary language (Hindi shown as sample)"
+      ],
+      "lookAndFeel": [
+        "Print-optimised — simple structure, large readable typography",
+        "Suitable for thermal printing if a Sakhi has access to a Bluetooth printer",
+        "PDF download and SMS-share also available from the same template"
+      ],
+      "addresses": [
+        "A-C1"
+      ],
+      "assumptions": [
+        "Q-2: Wireframe builds printable + SMS link + IVR-readable text. Three channels, one template."
+      ],
+      "existingReference": "New artefact",
+      "flow": [
+        "P1-M16-S01"
+      ]
+    },
+    {
+      "id": "P4-M5-S01",
+      "phase": 4,
+      "sprint": 12,
+      "module": "M-5",
+      "moduleName": "SHG / Cluster modelling",
+      "title": "SHG entity list — admin",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-4/web-shg-list.html",
+      "status": "built",
+      "purpose": "Promote SHG to a first-class entity. Replaces the free-text instritution_name column. Unlocks A-B3/A-B4/A-B5 (SHG-SRLM, SHG-RF, SHG-VO).",
+      "features": [
+        "New 'SHGs' module in sidebar",
+        "Table: SHG Name / Village / Federation/VO / Members / Sakhi / SRLM linked / RF received / Resilience avg",
+        "Status pills for SRLM/RF (linked vs not)",
+        "Filter strip with multi-choice geo + linkage status",
+        "Action: View detail, Edit, Merge (for duplicates from migration)"
+      ],
+      "lookAndFeel": [
+        "Standard admin table with the new SHG-specific columns",
+        "Resilience score uses the existing colour band",
+        "Migration banner visible until legacy free-text data is reconciled"
+      ],
+      "addresses": [
+        "A-B3",
+        "A-B4",
+        "A-B5",
+        "CR-11"
+      ],
+      "assumptions": [
+        "Q-1: Cluster modelled separately from Centre"
+      ],
+      "existingReference": "New module — replaces free-text beneficiary.instritution_name",
+      "flow": [
+        "P4-M6-S01"
+      ]
+    },
+    {
+      "id": "P4-M6-S01",
+      "phase": 4,
+      "sprint": 12,
+      "module": "M-6",
+      "moduleName": "Programme Management",
+      "title": "Programme Management cockpit (CRISIL admin)",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-4/web-pm-cockpit.html",
+      "status": "built",
+      "purpose": "Multi-NGO partner cockpit. Surfaces existing MoU / Phase / Target tables as a coherent project-management view.",
+      "features": [
+        "Landing KPIs: Total IPs / Active MoUs / Disbursed YTD / Milestones on-track vs at-risk",
+        "Milestone Achievement heatmap (rows = IPs, cols = milestones, cell = status)",
+        "Activity Timeline (Gantt-style) per IP",
+        "Tranche Release & Disbursement tracker",
+        "Per-IP drilldown"
+      ],
+      "lookAndFeel": [
+        "Heatmap is the signature view — quick visual scan of partner health",
+        "Status colour grammar consistent: green = on-track, yellow = at-risk, red = missed",
+        "Top filters: NGO, Geography, Period"
+      ],
+      "addresses": [
+        "A-C4a",
+        "A-C4b",
+        "A-C4c"
+      ],
+      "assumptions": [],
+      "existingReference": "New module — surfaces existing mou, mou_phase_mapper, mou_target, milestone, target tables",
+      "flow": [
+        "P4-M5-S01"
+      ]
+    },
+    {
+      "id": "DHW-1",
+      "phase": 1,
+      "sprint": 2,
+      "module": "DHW-1",
+      "moduleName": "Today's Plan — Sakhi action centre",
+      "title": "Sakhi Today's Plan home (action centre)",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-1/sakhi-todays-plan.html",
+      "status": "built",
+      "purpose": "Aggregate every pending action a Sakhi has into a prioritised list. Net-new Dhwani-proposed home screen.",
+      "features": [
+        "Hero card: 'You have 8 things to do today'",
+        "Urgent section: rejected transactions (with 'Take Action')",
+        "Pending submissions counter",
+        "FHC counselling due",
+        "Unread messages aggregated",
+        "Suggested today (data quality nudges)",
+        "Window-closing banner",
+        "Online + sync queue strip at top",
+        "Quick-capture FAB menu (Transaction / Beneficiary / Linkage / FHC)"
+      ],
+      "lookAndFeel": [
+        "Brand-red hero with action count",
+        "Severity-coded section borders (red urgent, amber soon, brand normal, grey gentle)",
+        "Each task row has a clear 'why this matters' sub-line"
+      ],
+      "addresses": [
+        "Dhwani-proposed",
+        "addresses action-overwhelm pain"
+      ],
+      "assumptions": [
+        "Replaces current tile-grid home — needs A/B with field"
+      ],
+      "existingReference": "Today: 03_ui_inventory.md §2.7 Home Screen is a tile grid + banner carousel. Today's Plan replaces or augments it.",
+      "flow": [
+        "P0-M1-S01",
+        "DHW-2",
+        "P3-M11-S01",
+        "P1-M10-S01"
+      ]
+    },
+    {
+      "id": "DHW-2",
+      "phase": 1,
+      "sprint": 5,
+      "module": "DHW-2",
+      "moduleName": "Sync Queue visibility",
+      "title": "Sakhi/FO Sync queue with retry",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-1/sakhi-sync-queue.html",
+      "status": "built",
+      "purpose": "Show exactly which records are queued, uploading, or failed. Retry individual records. Replaces the opaque 'syncing...' screen and removes the cache-clear workaround.",
+      "features": [
+        "Hero status: connected / pending count / last sync time",
+        "Tabs: To server · From server · History",
+        "Sections: Uploading now · Queued · Failed (with retry button)",
+        "Per-record progress bars",
+        "Bottom actions: Sync now · Force full re-sync"
+      ],
+      "lookAndFeel": [
+        "Brand-red hero with pulsing online dot",
+        "Clear status colour per row (info=uploading, neutral=queued, danger=failed, success=done)",
+        "Helper text below failed: 'Retries every 5 min automatically'"
+      ],
+      "addresses": [
+        "Dhwani-proposed",
+        "I-2",
+        "Play Store sync complaints"
+      ],
+      "assumptions": [],
+      "existingReference": "Today: sync is a Lottie animation with a single status string. No record-level visibility.",
+      "flow": [
+        "DHW-1"
+      ]
+    },
+    {
+      "id": "P2-M4-S06",
+      "phase": 2,
+      "sprint": 7,
+      "module": "M-4",
+      "moduleName": "Mobile FO Create Sakhi removed",
+      "title": "FO — Create Sakhi removed (banner)",
+      "role": "FO",
+      "platform": "mobile",
+      "src": "phase-2/p2-m4-s06.html",
+      "status": "built",
+      "purpose": "Soft-landing communication for FOs whose ability to create Sakhis from mobile has been moved to the NGO admin web flow. Sakhi onboarding now sits with the NGO admin.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P2-M18-S01",
+      "phase": 2,
+      "sprint": 8,
+      "module": "M-18",
+      "moduleName": "Approval window",
+      "title": "Sakhi — Create transaction (window-aware)",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-2/p2-m18-s01.html",
+      "status": "built",
+      "purpose": "Create-transaction form with date picker that visibly greys out dates outside the 15-day approval window for the current cycle. A banner explains the window state and time remaining.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P2-M18-S02",
+      "phase": 2,
+      "sprint": 8,
+      "module": "M-18",
+      "moduleName": "Approval window",
+      "title": "Sakhi — Window closing banner",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-2/p2-m18-s02.html",
+      "status": "built",
+      "purpose": "Home banner that shows the days remaining in the current 15-day approval window. Becomes more urgent as cutoff approaches.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P2-FO2-S01",
+      "phase": 2,
+      "sprint": 8,
+      "module": "FO-2",
+      "moduleName": "Training Records",
+      "title": "FO — Training Records list",
+      "role": "FO",
+      "platform": "mobile",
+      "src": "phase-2/p2-fo2-s01.html",
+      "status": "built",
+      "purpose": "FO views past monthly training sessions she submitted, with approval status from NGO admin. Tile to add a new session.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P2-FO2-S02",
+      "phase": 2,
+      "sprint": 8,
+      "module": "FO-2",
+      "moduleName": "Training Records",
+      "title": "FO — Add training record",
+      "role": "FO",
+      "platform": "mobile",
+      "src": "phase-2/p2-fo2-s02.html",
+      "status": "built",
+      "purpose": "FO captures the details of a monthly training session she conducted: date, agenda, participants, photos. Submitted to NGO admin for approval.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P2-FO2-S03",
+      "phase": 2,
+      "sprint": 8,
+      "module": "FO-2",
+      "moduleName": "Training Records",
+      "title": "NGO — Training Records approval queue",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-2/p2-fo2-s03.html",
+      "status": "built",
+      "purpose": "NGO admin queue of FO training sessions awaiting review. Each row has FO, topic, photos, attendance, date and inline approve/reject.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P2-FO9-S01",
+      "phase": 2,
+      "sprint": 8,
+      "module": "FO-9",
+      "moduleName": "Active Sakhi monthly view",
+      "title": "FO — Active Sakhis (monthly view)",
+      "role": "FO",
+      "platform": "mobile",
+      "src": "phase-2/p2-fo9-s01.html",
+      "status": "built",
+      "purpose": "FO sees her assigned Sakhis with January counts: linkages, awareness, transactions. Month picker at the top. Tap to drill into individual Sakhi performance.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P2-M14-S01",
+      "phase": 2,
+      "sprint": 8,
+      "module": "M-14",
+      "moduleName": "Reports expansion",
+      "title": "Reports — FO tab (new)",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-2/p2-m14-s01.html",
+      "status": "built",
+      "purpose": "Reports module gains a new FO tab parallel to Sakhi. Shows per-FO aggregate metrics with the same period selector applied to monthly/quarterly/half-yearly.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P2-M14-S03",
+      "phase": 2,
+      "sprint": 8,
+      "module": "M-14",
+      "moduleName": "Reports expansion",
+      "title": "Reports — User Dump download",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-2/p2-m14-s03.html",
+      "status": "built",
+      "purpose": "CSV export of user roster for HR / audit / capacity-planning. Admin picks scope (state/district/block/role/active status) then downloads.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "DHW-4",
+      "phase": 2,
+      "sprint": 6,
+      "module": "DHW-4",
+      "moduleName": "Photo evidence quality check",
+      "title": "Photo evidence quality check — concept",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-2/dhw-4.html",
+      "status": "built",
+      "purpose": "On-device quality check on every evidence photo before it leaves the device. Catches blur, darkness, low resolution. Forces a retake instead of getting rejected later.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "DHW-6",
+      "phase": 2,
+      "sprint": 7,
+      "module": "DHW-6",
+      "moduleName": "Saved filter presets",
+      "title": "Saved filter presets",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-2/dhw-6.html",
+      "status": "built",
+      "purpose": "A management screen for the saved filter presets that show up in the Transactions filter drawer. Reorder, rename, delete, share with team.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P3-M11-S02",
+      "phase": 3,
+      "sprint": 9,
+      "module": "M-11",
+      "moduleName": "My Budget",
+      "title": "My Budget — Add income",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-3/p3-m11-s02.html",
+      "status": "built",
+      "purpose": "Quick income entry. Choose date, source, category, amount. Mein Pragati earnings are auto-pulled — manual entry is for other income (e.g. tailoring, dairy, gifts).",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P3-M11-S03",
+      "phase": 3,
+      "sprint": 9,
+      "module": "M-11",
+      "moduleName": "My Budget",
+      "title": "My Budget — Add expense",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-3/p3-m11-s03.html",
+      "status": "built",
+      "purpose": "Quick expense entry. Pick a category from icons, enter amount and a note. Categories shown are a placeholder — final list pending from Biswajit.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P3-M11-S05",
+      "phase": 3,
+      "sprint": 9,
+      "module": "M-11",
+      "moduleName": "My Budget",
+      "title": "My Budget — Month summary",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-3/p3-m11-s05.html",
+      "status": "built",
+      "purpose": "End-of-month roll-up. Shows total in, total out, savings, category breakdown. Simple table — no charts per SOW.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P3-M8-S02",
+      "phase": 3,
+      "sprint": 10,
+      "module": "M-8",
+      "moduleName": "Beneficiary Receipts",
+      "title": "Sakhi — Generate receipt (after approval)",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-3/p3-m8-s02.html",
+      "status": "built",
+      "purpose": "After NGO approval, the Sakhi sees a \"Generate Receipt\" CTA on the approved transaction. Shows beneficiary, transaction details, and lets her pick a delivery channel.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P3-FO6-S01",
+      "phase": 3,
+      "sprint": 11,
+      "module": "FO-6",
+      "moduleName": "Badges",
+      "title": "FO — Badges & leaderboard",
+      "role": "FO",
+      "platform": "mobile",
+      "src": "phase-3/p3-fo6-s01.html",
+      "status": "built",
+      "purpose": "FO sees badges they have earned and a state-internal leaderboard. Refreshed monthly on the 5th from previous-month performance.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P3-FO6-S03",
+      "phase": 3,
+      "sprint": 11,
+      "module": "FO-6",
+      "moduleName": "Badges",
+      "title": "Admin — Badge criteria configuration",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-3/p3-fo6-s03.html",
+      "status": "built",
+      "purpose": "Admin defines the badge taxonomy. Each badge has a name, a criteria expression, a recipient type (FO or Sakhi), a refresh schedule, a visibility scope.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P3-M13-S01",
+      "phase": 3,
+      "sprint": 11,
+      "module": "M-13",
+      "moduleName": "Training Kit videos",
+      "title": "Training Kit — videos (mobile)",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-3/p3-m13-s01.html",
+      "status": "built",
+      "purpose": "Sakhi/FO Training Kit extended with video content. Card grid mixes PDF cards (existing) and video cards (new — with play icon + duration).",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P3-M13-S03",
+      "phase": 3,
+      "sprint": 11,
+      "module": "M-13",
+      "moduleName": "Training Kit videos",
+      "title": "Admin — Upload training video",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-3/p3-m13-s03.html",
+      "status": "built",
+      "purpose": "Admin uploads a training video, picks the scheme/state, attaches caption files for each supported language, and publishes to the field.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "DHW-7",
+      "phase": 3,
+      "sprint": 10,
+      "module": "DHW-7",
+      "moduleName": "Profile completion meter",
+      "title": "Profile completion meter — concept",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-3/dhw-7.html",
+      "status": "built",
+      "purpose": "Track completeness of Sakhi and FO profiles (GSE date, exam cert, photo, batch year, etc.). Surfacing gaps gives admin a data-hygiene lever without nagging.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P4-M5-S02",
+      "phase": 4,
+      "sprint": 12,
+      "module": "M-5",
+      "moduleName": "SHG entity",
+      "title": "SHG detail — Manalisha SHG",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-4/p4-m5-s02.html",
+      "status": "built",
+      "purpose": "Full SHG profile. Replaces the free-text institution name with structured fields: federation/VO, SRLM linkage, RF receipt, member list, assigned Sakhi.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P4-M5-S05",
+      "phase": 4,
+      "sprint": 12,
+      "module": "M-5",
+      "moduleName": "Cluster",
+      "title": "Cluster list (admin)",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-4/p4-m5-s05.html",
+      "status": "built",
+      "purpose": "Cluster modelling (separate from Centre — Q-1 in implementation plan). Shows clusters with their FO and member count.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P4-M5-S08",
+      "phase": 4,
+      "sprint": 12,
+      "module": "M-5",
+      "moduleName": "SHG migration",
+      "title": "SHG migration tool — free-text → entity",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-4/p4-m5-s08.html",
+      "status": "built",
+      "purpose": "One-time admin utility to resolve legacy free-text \"institution_name\" values into formal SHG entities. Fuzzy-matches with confidence score; admin confirms or rejects each match.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P4-M6-S04",
+      "phase": 4,
+      "sprint": 12,
+      "module": "M-6",
+      "moduleName": "Programme Mgmt",
+      "title": "Tranche release tracker",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-4/p4-m6-s04.html",
+      "status": "built",
+      "purpose": "Detailed tranche tracker per IP. Shows planned schedule, released amounts, due dates, late warnings.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P4-M7-S02",
+      "phase": 4,
+      "sprint": 13,
+      "module": "M-7",
+      "moduleName": "SROI",
+      "title": "Social Value dashboard (SROI)",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-4/p4-m7-s02.html",
+      "status": "built",
+      "purpose": "SROI dashboard. Shows total social value created across geographies, NGOs, time. Tied to the coefficient master defined separately.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P4-M7-S01",
+      "phase": 4,
+      "sprint": 13,
+      "module": "M-7",
+      "moduleName": "SROI Coefficient Master",
+      "title": "SROI coefficient master",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-4/p4-m7-s01.html",
+      "status": "built",
+      "purpose": "Admin maintains the coefficient table that feeds the SROI dashboard. Each scheme has a coefficient, a source, a last-updated date.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P4-M7-S03",
+      "phase": 4,
+      "sprint": 13,
+      "module": "M-7",
+      "moduleName": "SROI Sakhi card",
+      "title": "Sakhi — Social value card",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-4/p4-m7-s03.html",
+      "status": "built",
+      "purpose": "Motivational view for the Sakhi: how much social value her own approved linkages have created. Personal, in her language.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P4-M15-S01",
+      "phase": 4,
+      "sprint": 13,
+      "module": "M-15",
+      "moduleName": "Dashboard cards",
+      "title": "Dashboard — new KPI cards",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-4/p4-m15-s01.html",
+      "status": "built",
+      "purpose": "The main admin dashboard with the new KPI cards added from CR-4, CR-9, CR-10, A-B1, A-B2. Visually communicates which cards are net-new vs preserved from the current dashboard.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P4-M19-S01",
+      "phase": 4,
+      "sprint": 13,
+      "module": "M-19",
+      "moduleName": "Data archiving",
+      "title": "Data archive — request",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-4/p4-m19-s01.html",
+      "status": "built",
+      "purpose": "Admin requests a year of transactions to be archived. The data remains queryable on-demand but no longer slows down live dashboards.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "DHW-8",
+      "phase": 4,
+      "sprint": 12,
+      "module": "DHW-8",
+      "moduleName": "Audit trail",
+      "title": "Audit trail viewer",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-4/dhw-8.html",
+      "status": "built",
+      "purpose": "Searchable audit log of all field-level edits across the system. Filter by entity type, user, date range, action. Click any row for before/after diff.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P3-FO6-S02",
+      "phase": 3,
+      "sprint": 11,
+      "module": "FO-6",
+      "moduleName": "Badges",
+      "title": "Sakhi — Badges & leaderboard",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-3/p3-fo6-s02.html",
+      "status": "built",
+      "purpose": "Sakhi-side version of the badge gallery. Sees her own state-internal leaderboard ranking + her own earned badges.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P4-M5-S06",
+      "phase": 4,
+      "sprint": 12,
+      "module": "M-5",
+      "moduleName": "SHG dropdown on beneficiary form",
+      "title": "Beneficiary form — SHG dropdown (new)",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-4/p4-m5-s06.html",
+      "status": "built",
+      "purpose": "The Sakhi's add-beneficiary form now references SHG as a real entity. Replaces the free-text \"Institution name\" with a structured search-select.",
+      "features": [],
+      "lookAndFeel": [],
+      "addresses": [],
+      "assumptions": [],
+      "existingReference": ""
+    },
+    {
+      "id": "P0-M1-S02",
+      "phase": 0,
+      "sprint": 1,
+      "module": "M-1",
+      "moduleName": "Rejected loop",
+      "title": "Sakhi: Rejected detail (edit+resubmit)",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-0/sakhi-rejected-detail.html",
+      "status": "built",
+      "purpose": "Sakhi opens a rejected transaction, sees the FO/NGO reason in a red banner, edits the flagged field (typically evidence photo), and resubmits — the approval chain is NOT reset."
+    },
+    {
+      "id": "P0-M1-S03",
+      "phase": 0,
+      "sprint": 1,
+      "module": "M-1",
+      "moduleName": "Rejected loop",
+      "title": "FO: Action-Taken tracking view",
+      "role": "FO",
+      "platform": "mobile",
+      "src": "phase-0/fo-action-taken.html",
+      "status": "built",
+      "purpose": "FO sees rejections she has raised against her Sakhis, with action status: awaiting Sakhi, resubmitted, window expired. Counter strip at top."
+    },
+    {
+      "id": "P0-M1-S04",
+      "phase": 0,
+      "sprint": 1,
+      "module": "M-1",
+      "moduleName": "Rejected loop",
+      "title": "Admin/NGO: Rejected & Action-Taken module",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-0/web-rejected-transactions.html",
+      "status": "built",
+      "purpose": "Web admin dashboard for all rejected transactions across the NGO, with reason, status, and age. Convergent fix for CR-8 + FO-8."
+    },
+    {
+      "id": "P0-M1-S05",
+      "phase": 0,
+      "sprint": 1,
+      "module": "M-1",
+      "moduleName": "Rejected loop",
+      "title": "Sakhi: All rejected list",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-0/sakhi-rejected-list.html",
+      "status": "built",
+      "purpose": "Sakhi sees every rejection she has + their action status. Tap any to open the fix-and-resubmit detail screen."
+    },
+    {
+      "id": "P1-M9-S01",
+      "phase": 1,
+      "sprint": 2,
+      "module": "M-9",
+      "moduleName": "Notification matrix",
+      "title": "Admin: Notification matrix",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-1/web-notification-matrix.html",
+      "status": "built",
+      "purpose": "Admin manages which events trigger which channels (push/SMS/email/IVR) for each role. Visible flag on the placeholder event list."
+    },
+    {
+      "id": "P1-M9-S02",
+      "phase": 1,
+      "sprint": 2,
+      "module": "M-9",
+      "moduleName": "Notification matrix",
+      "title": "Sakhi: Notifications (aggregated)",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-1/sakhi-notifications.html",
+      "status": "built",
+      "purpose": "Sakhi notifications inbox — aggregated by type (not per-record). Per rural-UX recommendation to avoid notification storms."
+    },
+    {
+      "id": "P1-M2-S02",
+      "phase": 1,
+      "sprint": 3,
+      "module": "M-2",
+      "moduleName": "Messages",
+      "title": "Messages: Sent history (NGO)",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-1/web-messages-sent.html",
+      "status": "built",
+      "purpose": "NGO sees past broadcasts, who they went to, read percentages. Edit/delete actions per row."
+    },
+    {
+      "id": "P1-M2-S03",
+      "phase": 1,
+      "sprint": 3,
+      "module": "M-2",
+      "moduleName": "Messages",
+      "title": "Messages: Admin view-only",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-1/web-messages-admin-view.html",
+      "status": "built",
+      "purpose": "CRISIL admin sees every broadcast from every NGO. View-only — no compose / edit. Filter by NGO."
+    },
+    {
+      "id": "P1-M2-S04",
+      "phase": 1,
+      "sprint": 3,
+      "module": "M-2",
+      "moduleName": "Messages",
+      "title": "FO: Messages inbox",
+      "role": "FO",
+      "platform": "mobile",
+      "src": "phase-1/fo-messages-inbox.html",
+      "status": "built",
+      "purpose": "FO inbox with Received and Sent tabs. Forward-to-my-Sakhis is a primary action."
+    },
+    {
+      "id": "P1-M2-S05",
+      "phase": 1,
+      "sprint": 3,
+      "module": "M-2",
+      "moduleName": "Messages",
+      "title": "FO: Message detail",
+      "role": "FO",
+      "platform": "mobile",
+      "src": "phase-1/fo-message-detail.html",
+      "status": "built",
+      "purpose": "FO reads an NGO broadcast in full. Can mark unread or forward to assigned Sakhis."
+    },
+    {
+      "id": "P1-M2-S06",
+      "phase": 1,
+      "sprint": 3,
+      "module": "M-2",
+      "moduleName": "Messages",
+      "title": "FO: Compose message (to Sakhis)",
+      "role": "FO",
+      "platform": "mobile",
+      "src": "phase-1/fo-message-compose.html",
+      "status": "built",
+      "purpose": "FO writes a broadcast for all her assigned Sakhis. 200-word limit, one photo, optional subject. Voice-input shortcut."
+    },
+    {
+      "id": "P1-M2-S08",
+      "phase": 1,
+      "sprint": 3,
+      "module": "M-2",
+      "moduleName": "Messages",
+      "title": "Sakhi: Message detail",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-1/sakhi-message-detail.html",
+      "status": "built",
+      "purpose": "Sakhi reads a broadcast with sender info, body, attachments. Read receipt back to sender. Replies disabled (broadcast — use Feedback for chat)."
+    },
+    {
+      "id": "P1-M16-S02",
+      "phase": 1,
+      "sprint": 4,
+      "module": "M-16",
+      "moduleName": "Transactions list",
+      "title": "Transactions: Filter drawer",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-1/web-transactions-filter-drawer.html",
+      "status": "built",
+      "purpose": "Multi-select filter drawer for Sakhi Transactions list. District/Block/Scheme/Status multi-pills, date range, beneficiary search, saved presets."
+    },
+    {
+      "id": "P1-M17-S01",
+      "phase": 1,
+      "sprint": 4,
+      "module": "M-17",
+      "moduleName": "Feedback chat",
+      "title": "Feedback chat (Read/Action-taken/Pending)",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-1/web-feedback-chat.html",
+      "status": "built",
+      "purpose": "NGO chat with Sakhis and FOs. Each message has sender name + timestamp + status (Read / Action Taken / Pending) that the admin updates inline."
+    },
+    {
+      "id": "P1-M17-S02",
+      "phase": 1,
+      "sprint": 4,
+      "module": "M-17",
+      "moduleName": "Feedback chat",
+      "title": "Feedback list (with status column)",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-1/web-feedback-list.html",
+      "status": "built",
+      "purpose": "Roll-up view of all feedback threads with status, sender role, last update by. KPI cards for pending vs action-taken counts."
+    },
+    {
+      "id": "DHW-3",
+      "phase": 1,
+      "sprint": 2,
+      "module": "DHW-3",
+      "moduleName": "Voice input",
+      "title": "Voice-to-text on remarks (concept)",
+      "role": "Sakhi",
+      "platform": "mobile",
+      "src": "phase-1/dhwani-voice-input.html",
+      "status": "built",
+      "purpose": "On-device speech-to-text in Hindi/Assamese on any free-text field. Recording sheet with live transcript and audio visualisation."
+    },
+    {
+      "id": "P2-M3-S03",
+      "phase": 2,
+      "sprint": 6,
+      "module": "M-3",
+      "moduleName": "Attendance",
+      "title": "Attendance: FO list (NGO web)",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-2/web-attendance-list.html",
+      "status": "built",
+      "purpose": "NGO admin sees all FOs with attendance %, days present this month, last marked. Below-80% FOs flagged."
+    },
+    {
+      "id": "P2-M3-S04",
+      "phase": 2,
+      "sprint": 6,
+      "module": "M-3",
+      "moduleName": "Attendance",
+      "title": "Attendance: Per-FO calendar",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-2/web-attendance-calendar.html",
+      "status": "built",
+      "purpose": "Month grid per FO. Each cell shows Present / Absent / Off with marked timestamp. Click a day for location and device detail."
+    },
+    {
+      "id": "P2-M12-S01",
+      "phase": 2,
+      "sprint": 6,
+      "module": "M-12",
+      "moduleName": "Best Activities",
+      "title": "FO: Best Activities list",
+      "role": "FO",
+      "platform": "mobile",
+      "src": "phase-2/fo-best-activities-list.html",
+      "status": "built",
+      "purpose": "FO views her own uploaded Best Activities (stories + photos of standout work by her Sakhis)."
+    },
+    {
+      "id": "P2-M12-S02",
+      "phase": 2,
+      "sprint": 6,
+      "module": "M-12",
+      "moduleName": "Best Activities",
+      "title": "FO: Add Best Activity",
+      "role": "FO",
+      "platform": "mobile",
+      "src": "phase-2/fo-best-activity-add.html",
+      "status": "built",
+      "purpose": "Photo + title + 500-word story + optional Sakhi/Beneficiary tag. Auto-attaches location. Voice-input shortcut available."
+    },
+    {
+      "id": "P2-M12-S03",
+      "phase": 2,
+      "sprint": 6,
+      "module": "M-12",
+      "moduleName": "Best Activities",
+      "title": "Admin gallery (Best Activities)",
+      "role": "Admin",
+      "platform": "web",
+      "src": "phase-2/web-best-activities-gallery.html",
+      "status": "built",
+      "purpose": "Admin sees all activities as a card gallery. Filter by region, date, FO. Download for case studies."
+    },
+    {
+      "id": "P2-M4-S02",
+      "phase": 2,
+      "sprint": 7,
+      "module": "M-4",
+      "moduleName": "Bulk onboarding",
+      "title": "Bulk Sakhi — Step 2 Download & Upload",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-2/web-bulk-sakhi-step2.html",
+      "status": "built",
+      "purpose": "NGO admin downloads the templated CSV (pre-filled with scope) + village master sheet, fills the data offline, then drops the file back to upload."
+    },
+    {
+      "id": "P2-M4-S03",
+      "phase": 2,
+      "sprint": 7,
+      "module": "M-4",
+      "moduleName": "Bulk onboarding",
+      "title": "Bulk Sakhi — Step 3 Validate",
+      "role": "NGO",
+      "platform": "web",
+      "src": "phase-2/web-bulk-sakhi-step3.html",
+      "status": "built",
+      "purpose": "Server validates the uploaded CSV row by row. Pass / Warn / Fail per row with inline error message. Bulk fixes for common patterns."
+    }
+  ],
+  "plannedScreens": [
+    {
+      "id": "P2-M3-S02",
+      "phase": 2,
+      "module": "M-3",
+      "title": "FO: Location permission prompt",
+      "role": "FO",
+      "platform": "mobile"
+    },
+    {
+      "id": "P2-M4-S04",
+      "phase": 2,
+      "module": "M-4",
+      "title": "Bulk Sakhi — Confirm + commit",
+      "role": "NGO",
+      "platform": "web"
+    },
+    {
+      "id": "P2-M4-S05",
+      "phase": 2,
+      "module": "M-4",
+      "title": "Bulk FO Onboarding",
+      "role": "NGO",
+      "platform": "web"
+    },
+    {
+      "id": "P2-M14-S02",
+      "phase": 2,
+      "module": "M-14",
+      "title": "Reports — Quarterly/Half-yearly selector",
+      "role": "Admin",
+      "platform": "web"
+    },
+    {
+      "id": "P3-M11-S04",
+      "phase": 3,
+      "module": "M-11",
+      "title": "My Budget — Day-wise list",
+      "role": "Sakhi",
+      "platform": "mobile"
+    },
+    {
+      "id": "P3-M8-S03",
+      "phase": 3,
+      "module": "M-8",
+      "title": "Sakhi: Receipt preview + share",
+      "role": "Sakhi",
+      "platform": "mobile"
+    },
+    {
+      "id": "P3-FO6-S04",
+      "phase": 3,
+      "module": "FO-6",
+      "title": "Admin: Leaderboard report",
+      "role": "Admin",
+      "platform": "web"
+    },
+    {
+      "id": "P3-M13-S02",
+      "phase": 3,
+      "module": "M-13",
+      "title": "Mobile: Video player overlay",
+      "role": "Sakhi",
+      "platform": "mobile"
+    },
+    {
+      "id": "P4-M5-S03",
+      "phase": 4,
+      "module": "M-5",
+      "title": "Admin: SHG-Sakhi assignment",
+      "role": "Admin",
+      "platform": "web"
+    },
+    {
+      "id": "P4-M5-S04",
+      "phase": 4,
+      "module": "M-5",
+      "title": "Admin: SRLM/VO/Federation masters",
+      "role": "Admin",
+      "platform": "web"
+    },
+    {
+      "id": "P4-M5-S07",
+      "phase": 4,
+      "module": "M-5",
+      "title": "FO: SHG performance view",
+      "role": "FO",
+      "platform": "mobile"
+    },
+    {
+      "id": "P4-M6-S02",
+      "phase": 4,
+      "module": "M-6",
+      "title": "Admin: Milestone heatmap per IP",
+      "role": "Admin",
+      "platform": "web"
+    },
+    {
+      "id": "P4-M6-S03",
+      "phase": 4,
+      "module": "M-6",
+      "title": "Admin: Activity Timeline (Gantt)",
+      "role": "Admin",
+      "platform": "web"
+    },
+    {
+      "id": "P4-M6-S05",
+      "phase": 4,
+      "module": "M-6",
+      "title": "Admin: IP detail drilldown",
+      "role": "Admin",
+      "platform": "web"
+    }
+  ],
+  "roleGroups": [
+    {
+      "id": "Sakhi",
+      "name": "Sakhi",
+      "platform": "mobile",
+      "color": "#D6002A",
+      "description": "Frontline cadre — mobile only"
+    },
+    {
+      "id": "FO",
+      "name": "Field Officer (Mitra)",
+      "platform": "mobile",
+      "color": "#1A3E77",
+      "description": "Supervisor on the ground — mobile only"
+    },
+    {
+      "id": "NGO",
+      "name": "NGO Partner",
+      "platform": "web",
+      "color": "#D6002A",
+      "description": "SeSTA, RGVN, RBKS, GVT, Grameen Sahara — web admin"
+    },
+    {
+      "id": "Admin",
+      "name": "CRISIL Admin",
+      "platform": "web",
+      "color": "#0F1419",
+      "description": "CRISIL Foundation HQ — web admin"
+    },
+    {
+      "id": "Beneficiary",
+      "name": "Beneficiary",
+      "platform": "multi",
+      "color": "#7C3AED",
+      "description": "The rural woman this is all for — receipts, IVR, SMS"
+    }
+  ]
+}

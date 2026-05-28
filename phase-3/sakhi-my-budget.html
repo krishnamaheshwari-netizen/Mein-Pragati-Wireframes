@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=375, initial-scale=1" />
+<title>My Budget — Sakhi personal finance</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script>
+<style>
+  body { width: 375px; min-height: 812px; background: var(--surface-1); position: relative; }
+  .content { padding-bottom: 120px; }
+
+  /* Hero — simple */
+  .savings-hero {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-700) 100%);
+    color: white;
+    padding: var(--space-5) var(--space-4) var(--space-6);
+    position: relative;
+    overflow: hidden;
+  }
+  .savings-hero::after {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 140px; height: 140px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+  }
+  .savings-hero .month { font-size: 12px; opacity: 0.85; }
+  .savings-hero .label-row {
+    font-size: 13px;
+    opacity: 0.92;
+    margin-top: 4px;
+  }
+  .savings-hero .big {
+    font-size: 40px;
+    font-weight: var(--w-bold);
+    margin: 6px 0 var(--space-2);
+    line-height: 1;
+  }
+  .savings-hero .sub { font-size: 13px; opacity: 0.85; }
+
+  /* Two-card summary — smaller, side by side */
+  .summary-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4) 0;
+    margin-top: -16px;
+    position: relative;
+    z-index: 2;
+  }
+  .summary-card {
+    background: var(--surface-0);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+  }
+  .summary-card .lbl {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-500);
+    font-weight: var(--w-semibold);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .summary-card .lbl .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .summary-card.income .dot { background: var(--status-success); }
+  .summary-card.expense .dot { background: var(--status-danger); }
+  .summary-card .amount {
+    font-size: 20px;
+    font-weight: var(--w-bold);
+    color: var(--ink-900);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Recent entries section */
+  .section-head {
+    padding: var(--space-5) var(--space-4) var(--space-2);
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .section-head .title {
+    font-size: 14px;
+    font-weight: var(--w-semibold);
+    color: var(--ink-900);
+  }
+  .section-head .view-all {
+    font-size: 12px;
+    color: var(--brand-primary);
+    font-weight: var(--w-semibold);
+  }
+
+  .entry-list {
+    background: var(--surface-0);
+    margin: 0 var(--space-4);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .entry {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--surface-3);
+  }
+  .entry:last-child { border-bottom: none; }
+  .entry .icon-box {
+    width: 36px; height: 36px;
+    border-radius: var(--radius-md);
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .entry.income .icon-box { background: var(--status-success-bg); color: var(--status-success); }
+  .entry.expense .icon-box { background: var(--status-danger-bg); color: var(--status-danger); }
+  .entry .info { flex: 1; min-width: 0; }
+  .entry .name {
+    font-size: 14px;
+    font-weight: var(--w-medium);
+    color: var(--ink-900);
+  }
+  .entry .meta {
+    font-size: 11px;
+    color: var(--ink-500);
+    margin-top: 2px;
+  }
+  .entry .amount {
+    font-size: 15px;
+    font-weight: var(--w-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+  .entry.income .amount { color: var(--status-success); }
+  .entry.expense .amount { color: var(--status-danger); }
+
+  /* Bottom action bar — two large buttons */
+  .bottom-actions {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--surface-0);
+    border-top: 1px solid var(--surface-3);
+    padding: var(--space-3) var(--space-4);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    z-index: 10;
+  }
+  .bottom-actions .big-btn {
+    padding: 14px var(--space-3);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: var(--w-semibold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .bottom-actions .big-btn.income {
+    background: var(--status-success);
+    color: white;
+  }
+  .bottom-actions .big-btn.expense {
+    background: var(--surface-0);
+    color: var(--status-danger);
+    border: 1.5px solid var(--status-danger);
+  }
+  .bottom-actions .big-btn .material-symbols-rounded { font-size: 20px; }
+</style>
+</head>
+<body>
+<div class="screen-id-badge">P3-M11-S01</div>
+
+<div class="mobile-statusbar">
+  <span>9:41</span>
+  <span class="right">
+    <span class="material-symbols-rounded">signal_cellular_4_bar</span>
+    <span class="material-symbols-rounded">wifi</span>
+    <span class="material-symbols-rounded">battery_full</span>
+  </span>
+</div>
+
+<div class="mobile-appbar">
+  <button class="icon-btn" data-link-to="DHW-1"><span class="material-symbols-rounded">arrow_back</span></button>
+  <div class="title">My Budget</div>
+</div>
+
+<div class="content">
+
+  <!-- Hero -->
+  <div class="savings-hero">
+    <div class="month">January 2026</div>
+    <div class="label-row">You saved this month</div>
+    <div class="big">₹ 2,180</div>
+    <div class="sub">Keep it up — you're on track</div>
+  </div>
+
+  <!-- Two summary cards floating on hero edge -->
+  <div class="summary-row">
+    <div class="summary-card income">
+      <div class="lbl"><span class="dot"></span> Earned</div>
+      <div class="amount">₹ 3,840</div>
+    </div>
+    <div class="summary-card expense">
+      <div class="lbl"><span class="dot"></span> Spent</div>
+      <div class="amount">₹ 1,660</div>
+    </div>
+  </div>
+
+  <!-- Recent entries — simple, short list -->
+  <div class="section-head">
+    <span class="title">Recent</span>
+    <a href="#" class="view-all">View all</a>
+  </div>
+
+  <div class="entry-list">
+    <div class="entry income">
+      <div class="icon-box"><span class="material-symbols-rounded">badge</span></div>
+      <div class="info">
+        <div class="name">Mein Pragati earning</div>
+        <div class="meta">Today · APY linkage</div>
+      </div>
+      <div class="amount">+ 1,400</div>
+    </div>
+    <div class="entry expense">
+      <div class="icon-box"><span class="material-symbols-rounded">restaurant</span></div>
+      <div class="info">
+        <div class="name">Food &amp; groceries</div>
+        <div class="meta">Today · Local market</div>
+      </div>
+      <div class="amount">− 200</div>
+    </div>
+    <div class="entry income">
+      <div class="icon-box"><span class="material-symbols-rounded">badge</span></div>
+      <div class="info">
+        <div class="name">Mein Pragati earning</div>
+        <div class="meta">Yesterday · KCC linkage</div>
+      </div>
+      <div class="amount">+ 720</div>
+    </div>
+    <div class="entry expense">
+      <div class="icon-box"><span class="material-symbols-rounded">directions_bus</span></div>
+      <div class="info">
+        <div class="name">Bus fare</div>
+        <div class="meta">Yesterday · To zonal office</div>
+      </div>
+      <div class="amount">− 80</div>
+    </div>
+    <div class="entry expense">
+      <div class="icon-box"><span class="material-symbols-rounded">school</span></div>
+      <div class="info">
+        <div class="name">School fees</div>
+        <div class="meta">25 Jan · Monthly</div>
+      </div>
+      <div class="amount">− 800</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bottom action bar -->
+<div class="bottom-actions">
+  <button class="big-btn income">
+    <span class="material-symbols-rounded">add</span>
+    Add Income
+  </button>
+  <button class="big-btn expense">
+    <span class="material-symbols-rounded">add</span>
+    Add Expense
+  </button>
+</div>
+
+</body>
+</html>

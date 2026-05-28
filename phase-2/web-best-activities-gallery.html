@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><title>Best Activities — admin gallery</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" /><link rel="stylesheet" href="../shared/components.css" />
+<script src="../shared/wireframe-nav.js" defer></script>
+<style>body{width:1440px;min-height:900px;background:var(--surface-1);display:grid;grid-template-columns:var(--web-sidebar-width) 1fr;grid-template-rows:var(--web-topbar-height) 1fr;grid-template-areas:"side top" "side main";}.topbar-wrap{grid-area:top;}.side-wrap{grid-area:side;}.main-wrap{grid-area:main;padding:var(--space-6);overflow-y:auto;}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-3);}
+.activity-card{background:var(--surface-0);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden;display:flex;flex-direction:column;}
+.activity-card .photo{height:160px;display:flex;align-items:center;justify-content:center;color:var(--brand-primary);}
+.activity-card .photo.style1{background:linear-gradient(135deg,#FCE4E4,#FFCDD2);}
+.activity-card .photo.style2{background:linear-gradient(135deg,#E0F2FE,#BAE6FD);color:var(--chart-4);}
+.activity-card .photo.style3{background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:var(--status-warning);}
+.activity-card .photo.style4{background:linear-gradient(135deg,#DCFCE7,#BBF7D0);color:var(--status-success);}
+.activity-card .photo.style5{background:linear-gradient(135deg,#EDE9FE,#DDD6FE);color:#7C3AED;}
+.activity-card .body{padding:var(--space-3) var(--space-4);flex:1;display:flex;flex-direction:column;}
+.activity-card .title{font-size:14px;font-weight:var(--w-semibold);color:var(--ink-900);margin-bottom:6px;line-height:1.3;}
+.activity-card .desc{font-size:12px;color:var(--ink-500);line-height:1.45;flex:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.activity-card .meta{font-size:11px;color:var(--ink-500);margin-top:var(--space-3);padding-top:var(--space-2);border-top:1px solid var(--surface-3);display:flex;justify-content:space-between;}
+</style></head>
+<body>
+<div class="screen-id-badge">P2-M12-S03</div>
+
+<div class="topbar-wrap"><div class="web-topbar"><div class="brand">Mein Pragati</div><div class="crisil-mark">A CRISIL Foundation initiative · Admin</div><div class="right"><div class="avatar avatar-sm">MV</div></div></div></div>
+
+<div class="side-wrap">
+  <div class="web-sidebar" style="height: calc(100vh - var(--web-topbar-height));">
+    <div class="user-block"><div class="avatar">MV</div><div><div class="name">Maya Vengurlekar</div><div class="role">CRISIL Foundation · Admin</div></div></div>
+    <nav>
+      <a class="nav-item" data-link-to="P4-M6-S01"><span class="material-symbols-rounded">space_dashboard</span> Programme</a>
+      <a class="nav-item"><span class="material-symbols-rounded">dashboard</span> Dashboard</a>
+      <a class="nav-item" data-link-to="P4-M5-S01"><span class="material-symbols-rounded">diversity_3</span> SHGs</a>
+      <a class="nav-item active"><span class="material-symbols-rounded">photo_library</span> Best Activities</a>
+      <a class="nav-item" data-link-to="P1-M16-S01"><span class="material-symbols-rounded">bar_chart</span> Sakhi Transactions</a>
+    </nav>
+  </div>
+</div>
+
+<div class="main-wrap">
+  <div class="page-header">
+    <div class="title-block"><div class="title">Best Activities</div><div class="subtitle">Stories and photos shared by FOs from the field · 142 entries · 312 photos</div></div>
+    <div class="actions"><button class="btn btn-secondary"><span class="material-symbols-rounded">download</span> Export selected</button></div>
+  </div>
+
+  <div class="filter-strip" style="background:var(--surface-0);padding:var(--space-3) var(--space-4);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);margin-bottom:var(--space-4);">
+    <span style="font-size:12px;color:var(--ink-500);font-weight:var(--w-semibold);text-transform:uppercase;letter-spacing:0.05em;">Filter</span>
+    <button class="filter-chip active">All</button>
+    <button class="filter-chip">Assam</button>
+    <button class="filter-chip">Rajasthan</button>
+    <button class="filter-chip">This month</button>
+    <button class="filter-chip">This quarter</button>
+    <button class="filter-chip add"><span class="material-symbols-rounded">add</span> FO</button>
+    <button class="filter-chip add"><span class="material-symbols-rounded">add</span> Tag</button>
+  </div>
+
+  <div class="gallery">
+
+    <div class="activity-card">
+      <div class="photo style1"><span class="material-symbols-rounded" style="font-size:48px;">storefront</span></div>
+      <div class="body">
+        <div class="title">Tea business now hires 4 women</div>
+        <div class="desc">Suranjana started with a ₹5,000 MFI loan after our second FHC session. Packs 30 kg/month, trains 3 SHG members.</div>
+        <div class="meta"><span>Dhaniram · Kamrup</span><span>3d ago</span></div>
+      </div>
+    </div>
+
+    <div class="activity-card">
+      <div class="photo style2"><span class="material-symbols-rounded" style="font-size:48px;">groups</span></div>
+      <div class="body">
+        <div class="title">SSM at Bahjani — 38 linkages in a day</div>
+        <div class="desc">Republic Day Social Security Mela. SBI, LIC, APY counters present. Highest single-day count this quarter.</div>
+        <div class="meta"><span>Dhaniram · Barpeta</span><span>5d ago</span></div>
+      </div>
+    </div>
+
+    <div class="activity-card">
+      <div class="photo style3"><span class="material-symbols-rounded" style="font-size:48px;">emoji_events</span></div>
+      <div class="body">
+        <div class="title">Monalisha SHG hits ₹1 lakh savings</div>
+        <div class="desc">12 members, started 2023 with ₹50/week. Now leveraging it for collective farming inputs.</div>
+        <div class="meta"><span>Dhaniram · Kamrup</span><span>2w ago</span></div>
+      </div>
+    </div>
+
+    <div class="activity-card">
+      <div class="photo style4"><span class="material-symbols-rounded" style="font-size:48px;">spa</span></div>
+      <div class="body">
+        <div class="title">Eri silk rearing pilot — 8 families</div>
+        <div class="desc">Loom upgradation funded via NABARD livelihood programme. First batch sold at Guwahati expo.</div>
+        <div class="meta"><span>Pranab · Nalbari</span><span>3w ago</span></div>
+      </div>
+    </div>
+
+    <div class="activity-card">
+      <div class="photo style5"><span class="material-symbols-rounded" style="font-size:48px;">school</span></div>
+      <div class="body">
+        <div class="title">Aarti's daughter cleared 10th std</div>
+        <div class="desc">First girl in her family to pass. Aarti credits Budget Diary helping her save for tuition fees.</div>
+        <div class="meta"><span>Kavita · Sikar</span><span>1mo ago</span></div>
+      </div>
+    </div>
+
+    <div class="activity-card">
+      <div class="photo style1"><span class="material-symbols-rounded" style="font-size:48px;">handshake</span></div>
+      <div class="body">
+        <div class="title">PMJJBY enrollment camp — RBI partnership</div>
+        <div class="desc">Joint camp with RBI's CFL team. 86 enrollments in 4 hours. Bank reps came to the village.</div>
+        <div class="meta"><span>Vinod · Alwar</span><span>1mo ago</span></div>
+      </div>
+    </div>
+
+    <div class="activity-card">
+      <div class="photo style2"><span class="material-symbols-rounded" style="font-size:48px;">agriculture</span></div>
+      <div class="body">
+        <div class="title">KCC loan helped buy 2 cows</div>
+        <div class="desc">Runamoni took a ₹40k Kisan Credit loan. Now sells 6L milk/day. After previous cattle insurance learning.</div>
+        <div class="meta"><span>Pranab · Morigaon</span><span>1mo ago</span></div>
+      </div>
+    </div>
+
+    <div class="activity-card">
+      <div class="photo style4"><span class="material-symbols-rounded" style="font-size:48px;">volunteer_activism</span></div>
+      <div class="body">
+        <div class="title">Sakhi covers vehicle insurance for SHG bus</div>
+        <div class="desc">First time the SHG transport asset was insured. Sakhi explained PMSBY-like coverage for vehicles.</div>
+        <div class="meta"><span>Surya · Darrang</span><span>2mo ago</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="text-align:center;margin-top:var(--space-5);">
+    <button class="btn btn-secondary">Load 24 more</button>
+  </div>
+</div>
+
+</body>
+</html>

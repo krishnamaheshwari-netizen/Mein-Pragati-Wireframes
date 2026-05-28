@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=375, initial-scale=1" />
+<title>Sakhi Dashboard — Tabular layout</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<link rel="stylesheet" href="../shared/tokens.css" />
+<link rel="stylesheet" href="../shared/components.css" />
+<style>
+  body { width: 375px; min-height: 812px; background: var(--surface-1); }
+  .dashboard-content { padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-4); padding-bottom: 80px; }
+
+  .card-compact { padding: var(--space-3) var(--space-4); }
+  .card-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-3); }
+  .card-title { font-size: 14px; font-weight: var(--w-semibold); color: var(--ink-900); }
+  .card-sub { font-size: 11px; color: var(--ink-500); margin-top: 2px; }
+
+  .card-filters {
+    display: flex; gap: 6px; margin-bottom: var(--space-3); flex-wrap: wrap;
+  }
+  .mini-chip {
+    padding: 4px 10px;
+    background: var(--surface-2);
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    color: var(--ink-700);
+    font-weight: var(--w-medium);
+  }
+  .mini-chip.active { background: var(--brand-primary); color: white; }
+
+  /* Income card with bar graph */
+  .income-total { font-size: 28px; font-weight: var(--w-bold); color: var(--ink-900); line-height: 1; }
+  .income-sub { font-size: 12px; color: var(--ink-500); margin-top: 4px; }
+  .bar-graph {
+    display: flex; align-items: flex-end; gap: 6px;
+    height: 80px; margin-top: var(--space-3);
+    padding: 0 4px;
+  }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .bar-col .bars { width: 100%; display: flex; gap: 2px; align-items: flex-end; height: 60px; }
+  .bar-col .bar { flex: 1; border-radius: 2px 2px 0 0; }
+  .bar-col .bar.scheme { background: var(--chart-1); }
+  .bar-col .bar.services { background: var(--chart-4); }
+  .bar-col .month-label { font-size: 9px; color: var(--ink-500); font-weight: var(--w-medium); }
+  .legend-row { display: flex; gap: var(--space-3); margin-top: var(--space-2); padding-top: var(--space-2); border-top: 1px solid var(--surface-3); }
+  .legend-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--ink-700); }
+  .legend-item .swatch { width: 8px; height: 8px; border-radius: 2px; }
+
+  /* Mini tables */
+  .mini-table { width: 100%; border-collapse: collapse; }
+  .mini-table th {
+    text-align: left; padding: 8px 4px;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em;
+    color: var(--ink-500); font-weight: var(--w-semibold);
+    border-bottom: 1px solid var(--surface-3);
+  }
+  .mini-table th.num { text-align: right; }
+  .mini-table td {
+    padding: 10px 4px;
+    font-size: 13px;
+    color: var(--ink-900);
+    border-bottom: 1px solid var(--surface-3);
+  }
+  .mini-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .mini-table tbody tr:last-child td { border-bottom: none; }
+  .mini-table td .scheme-tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+    color: var(--ink-700);
+    margin-right: 4px;
+    font-weight: var(--w-medium);
+  }
+  .mini-table td .scheme-tag.scheme { background: rgba(26, 62, 119, 0.1); color: var(--chart-1); }
+  .mini-table td .scheme-tag.services { background: rgba(0, 176, 240, 0.1); color: var(--chart-4); }
+  .mini-table td .scheme-tag.awareness { background: rgba(213, 56, 20, 0.1); color: var(--chart-3); }
+
+  /* Big number cards */
+  .big-number-card {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+  }
+  .big-number-card .label-top { font-size: 11px; text-transform: uppercase; color: var(--ink-500); letter-spacing: 0.05em; font-weight: var(--w-semibold); }
+  .big-number-card .number { font-size: 36px; font-weight: var(--w-bold); color: var(--ink-900); line-height: 1; margin-top: 6px; }
+  .big-number-card .sub-line { font-size: 11px; color: var(--ink-500); margin-top: 6px; }
+</style>
+<script src="../shared/wireframe-nav.js" defer></script>
+</head>
+<body>
+<div class="screen-id-badge">P1-M10-S01</div>
+
+<div class="mobile-statusbar">
+  <span>9:41</span>
+  <span class="right">
+    <span class="material-symbols-rounded">signal_cellular_4_bar</span>
+    <span class="material-symbols-rounded">wifi</span>
+    <span class="material-symbols-rounded">battery_full</span>
+  </span>
+</div>
+
+<div class="mobile-appbar">
+  <button class="icon-btn" data-link-to="P0-M1-S01"><span class="material-symbols-rounded">arrow_back</span></button>
+  <div class="title">Dashboard</div>
+  <button class="icon-btn"><span class="material-symbols-rounded">refresh</span></button>
+</div>
+
+<div class="dashboard-content">
+
+  <!-- Quick month selector -->
+  <div class="seg-control" style="align-self: stretch; display: flex;">
+    <button>This Year</button>
+    <button class="active">This Month</button>
+    <button>Last Month</button>
+  </div>
+
+  <!-- INCOME — only chart kept; bar graph -->
+  <div class="card card-compact">
+    <div class="card-title-row">
+      <div>
+        <div class="card-title">Income</div>
+        <div class="card-sub">From Mein Pragati Only</div>
+      </div>
+      <div class="card-filters" style="margin: 0;">
+        <span class="mini-chip">Schemes</span>
+        <span class="mini-chip">Services</span>
+        <span class="mini-chip active">Both</span>
+      </div>
+    </div>
+    <div class="income-total">₹ 3,840</div>
+    <div class="income-sub">This month · ₹ 1,150 above target</div>
+
+    <div class="bar-graph">
+      <div class="bar-col"><div class="bars"><div class="bar scheme" style="height: 20%"></div><div class="bar services" style="height: 15%"></div></div><div class="month-label">Aug</div></div>
+      <div class="bar-col"><div class="bars"><div class="bar scheme" style="height: 35%"></div><div class="bar services" style="height: 20%"></div></div><div class="month-label">Sep</div></div>
+      <div class="bar-col"><div class="bars"><div class="bar scheme" style="height: 50%"></div><div class="bar services" style="height: 25%"></div></div><div class="month-label">Oct</div></div>
+      <div class="bar-col"><div class="bars"><div class="bar scheme" style="height: 30%"></div><div class="bar services" style="height: 30%"></div></div><div class="month-label">Nov</div></div>
+      <div class="bar-col"><div class="bars"><div class="bar scheme" style="height: 45%"></div><div class="bar services" style="height: 38%"></div></div><div class="month-label">Dec</div></div>
+      <div class="bar-col"><div class="bars"><div class="bar scheme" style="height: 80%"></div><div class="bar services" style="height: 60%"></div></div><div class="month-label">Jan</div></div>
+    </div>
+    <div class="legend-row">
+      <div class="legend-item"><span class="swatch" style="background: var(--chart-1)"></span> Scheme</div>
+      <div class="legend-item"><span class="swatch" style="background: var(--chart-4)"></span> Services</div>
+    </div>
+  </div>
+
+  <!-- AWARENESS — big number card -->
+  <div class="big-number-card">
+    <div class="label-top">Awareness — Beneficiaries Reached</div>
+    <div class="number">142</div>
+    <div class="sub-line">This month · 86 reached last month</div>
+  </div>
+
+  <!-- OVERALL TRANSACTION STATUS — tabular (per SOW: replace pie with table) -->
+  <div class="card card-compact">
+    <div class="card-title-row">
+      <div class="card-title">Overall Transaction Status</div>
+      <span class="mini-chip">Jan 2026</span>
+    </div>
+    <table class="mini-table">
+      <thead>
+        <tr>
+          <th style="width: 32px;">#</th>
+          <th>Type</th>
+          <th class="num">Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><span class="scheme-tag scheme">Scheme</span> Insurance + Pension</td><td class="num">18</td></tr>
+        <tr><td>2</td><td><span class="scheme-tag services">Services</span> KYC + Account opening</td><td class="num">12</td></tr>
+        <tr><td>3</td><td><span class="scheme-tag awareness">Awareness</span> Financial literacy</td><td class="num">7</td></tr>
+        <tr><td colspan="2" style="font-weight: var(--w-semibold);">Total</td><td class="num" style="font-weight: var(--w-bold);">37</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- BEST PERFORMING — tabular -->
+  <div class="card card-compact">
+    <div class="card-title-row">
+      <div>
+        <div class="card-title">Best Performing</div>
+        <div class="card-sub">By income generated · This month</div>
+      </div>
+      <div class="card-filters" style="margin: 0;">
+        <span class="mini-chip active">Schemes</span>
+        <span class="mini-chip">Services</span>
+      </div>
+    </div>
+    <table class="mini-table">
+      <thead>
+        <tr>
+          <th style="width: 28px;">#</th>
+          <th>Scheme</th>
+          <th class="num">Income</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>APY · Atal Pension Yojana</td><td class="num">₹ 1,400</td></tr>
+        <tr><td>2</td><td>PMJJBY · Life insurance</td><td class="num">₹ 980</td></tr>
+        <tr><td>3</td><td>KCC · Kisan Credit Card</td><td class="num">₹ 720</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- WORST PERFORMING — tabular -->
+  <div class="card card-compact">
+    <div class="card-title-row">
+      <div>
+        <div class="card-title">Worst Performing</div>
+        <div class="card-sub">Schemes with low income · This month</div>
+      </div>
+      <div class="card-filters" style="margin: 0;">
+        <span class="mini-chip active">Schemes</span>
+        <span class="mini-chip">Services</span>
+      </div>
+    </div>
+    <table class="mini-table">
+      <thead>
+        <tr>
+          <th style="width: 28px;">#</th>
+          <th>Scheme</th>
+          <th class="num">Income</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Bhamashah · State scheme</td><td class="num">₹ 60</td></tr>
+        <tr><td>2</td><td>PMSBY · Accident insurance</td><td class="num">₹ 80</td></tr>
+        <tr><td>3</td><td>Ujjwala · LPG connection</td><td class="num">₹ 120</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TARGET STATUS — tabular -->
+  <div class="card card-compact">
+    <div class="card-title-row">
+      <div>
+        <div class="card-title">Target Status</div>
+        <div class="card-sub">Monthly linkage target</div>
+      </div>
+      <span class="mini-chip active">Jan 2026</span>
+    </div>
+    <table class="mini-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="num">Target</th>
+          <th class="num">Achieved</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Linkages</td><td class="num">30</td><td class="num" style="color: var(--status-success); font-weight: var(--w-semibold);">37</td></tr>
+        <tr><td>Income</td><td class="num">₹ 3,000</td><td class="num" style="color: var(--status-success); font-weight: var(--w-semibold);">₹ 3,840</td></tr>
+        <tr><td>Beneficiaries reached</td><td class="num">120</td><td class="num" style="color: var(--status-success); font-weight: var(--w-semibold);">142</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top: var(--space-3); padding: var(--space-2) var(--space-3); background: var(--status-success-bg); border-radius: var(--radius-md); font-size: 12px; color: var(--status-success-ink); display: flex; align-items: center; gap: 6px;">
+      <span class="material-symbols-rounded" style="font-size: 16px;">check_circle</span>
+      All three targets exceeded this month.
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
