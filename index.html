@@ -2601,13 +2601,33 @@ window.viewWireframe = function(screenId) {
         </button>
       </div>
       <div class="giscus-container">
-        <div style="font-size:11px;color:var(--ink-500);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em;font-weight:600;">Or comment via GitHub (online)</div>
-        <div id="giscus-${currentScreenId}" style="font-size:12px;color:var(--ink-500);font-style:italic;padding:var(--space-3);background:var(--surface-1);border-radius:var(--radius-md);">
-          giscus comments load here once configured (see README — needs <code style="background:white;padding:1px 4px;border-radius:3px;">repo + repoId + categoryId</code> in this page).
-        </div>
+        <div style="font-size:11px;color:var(--ink-500);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em;font-weight:600;">Or comment via GitHub (signed-in, threaded)</div>
+        <div id="giscus-host"></div>
       </div>
     `;
     meta.appendChild(section);
+
+    // Mount giscus dynamically — each screen gets its own thread via data-term
+    const giscusHost = section.querySelector('#giscus-host');
+    if (giscusHost && currentScreenId) {
+      const s = document.createElement('script');
+      s.src = 'https://giscus.app/client.js';
+      s.setAttribute('data-repo', 'krishnamaheshwari-netizen/Mein-Pragati-Wireframes');
+      s.setAttribute('data-repo-id', 'R_kgDOSqQZZQ');
+      s.setAttribute('data-category', 'Wireframe-Comments');
+      s.setAttribute('data-category-id', 'DIC_kwDOSqQZZc4C-AwP');
+      s.setAttribute('data-mapping', 'specific');
+      s.setAttribute('data-term', 'screen-' + currentScreenId);
+      s.setAttribute('data-strict', '0');
+      s.setAttribute('data-reactions-enabled', '1');
+      s.setAttribute('data-emit-metadata', '0');
+      s.setAttribute('data-input-position', 'top');
+      s.setAttribute('data-theme', 'light');
+      s.setAttribute('data-lang', 'en');
+      s.crossOrigin = 'anonymous';
+      s.async = true;
+      giscusHost.appendChild(s);
+    }
   }
 
   function escapeHtml(s) {
@@ -2703,27 +2723,9 @@ window.viewWireframe = function(screenId) {
 })();
 </script>
 
-<!-- ===== giscus (GitHub Discussions comments) =====
-     To enable: visit https://giscus.app/, configure for your repo, copy the
-     data-repo, data-repo-id, data-category, data-category-id values, then
-     uncomment the script below.
-<script src="https://giscus.app/client.js"
-        data-repo="dhwani-ris/crisil-mein-pragati-wireframes"
-        data-repo-id="REPLACE_ME"
-        data-category="Wireframe feedback"
-        data-category-id="REPLACE_ME"
-        data-mapping="specific"
-        data-term="P0-M1-S01"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="light"
-        data-lang="en"
-        crossorigin="anonymous"
-        async>
-</script>
--->
+<!-- giscus is mounted dynamically per screen by injectCommentUI() above —
+     each wireframe gets its own GitHub Discussion thread via data-term="screen-<id>" -->
+
 
 </body>
 </html>
