@@ -974,18 +974,17 @@
   }
   .feedback-fab .count-badge:empty { display: none; }
 
-  /* Backdrop */
-  .feedback-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 20, 25, 0.4);
-    backdrop-filter: blur(2px);
-    z-index: 1001;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 200ms ease;
+  /* Backdrop disabled — drawer shifts content instead of overlaying.
+     Kept the element so close-on-outside-click could be re-enabled later. */
+  .feedback-backdrop { display: none; }
+
+  /* When drawer is open, push page content to the left so the wireframe canvas
+     stays visible side-by-side with the drawer */
+  body { transition: padding-right 240ms ease; }
+  body.feedback-drawer-open { padding-right: 380px; }
+  @media (max-width: 1100px) {
+    body.feedback-drawer-open { padding-right: 0; } /* on small screens, drawer overlays */
   }
-  .feedback-backdrop.open { opacity: 1; pointer-events: auto; }
 
   /* Drawer */
   .feedback-drawer {
@@ -993,7 +992,7 @@
     top: 0;
     right: 0;
     height: 100vh;
-    width: min(420px, 95vw);
+    width: min(380px, 95vw);
     background: var(--surface-0);
     box-shadow: -8px 0 30px rgba(0, 0, 0, 0.18);
     z-index: 1002;
@@ -1001,6 +1000,7 @@
     transition: transform 240ms ease;
     display: flex;
     flex-direction: column;
+    border-left: 1px solid var(--surface-3);
   }
   .feedback-drawer.open { transform: translateX(0); }
   .feedback-drawer__header {
@@ -2951,6 +2951,20 @@ window.viewWireframe = function(screenId) {
     <div id="feedback-drawer-context" class="feedback-drawer__context">
       <strong>General feedback</strong> on the wireframes
     </div>
+    <div style="margin-top: 8px; display: flex; gap: 12px; font-size: 12px;">
+      <a href="https://github.com/krishnamaheshwari-netizen/Mein-Pragati-Wireframes/discussions"
+         target="_blank" rel="noopener"
+         style="color: var(--brand-primary); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; font-weight: var(--w-medium);">
+        <span class="material-symbols-rounded" style="font-size: 14px;">open_in_new</span>
+        See all on GitHub
+      </a>
+      <a href="https://github.com/apps/giscus"
+         target="_blank" rel="noopener"
+         style="color: var(--ink-500); text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+        <span class="material-symbols-rounded" style="font-size: 14px;">help</span>
+        Install giscus app
+      </a>
+    </div>
   </div>
 
   <div class="feedback-tabs" role="tablist">
@@ -3126,20 +3140,19 @@ window.viewWireframe = function(screenId) {
     paneQuick.classList.add('active');
     paneGithub.classList.remove('active');
     reviewerNameEl.textContent = localStorage.getItem(REVIEWER_KEY) || 'Reviewer';
-    backdrop.classList.add('open');
     drawer.classList.add('open');
+    document.body.classList.add('feedback-drawer-open');
     drawer.setAttribute('aria-hidden', 'false');
     setTimeout(() => textInput.focus(), 280);
   }
   function close() {
-    backdrop.classList.remove('open');
     drawer.classList.remove('open');
+    document.body.classList.remove('feedback-drawer-open');
     drawer.setAttribute('aria-hidden', 'true');
   }
 
   fab.addEventListener('click', open);
   closeBtn.addEventListener('click', close);
-  backdrop.addEventListener('click', close);
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && drawer.classList.contains('open')) close();
   });
