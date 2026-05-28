@@ -89,17 +89,19 @@
   #view-whats-new { height: calc(100vh - 56px); overflow-y: auto; padding: 0; }
   #view-whats-new .page-wrap { max-width: 1240px; margin: 0 auto; padding: var(--space-5); }
 
-  /* Wireframes view uses the existing nav-app grid */
+  /* Wireframes view: 3-row × 3-col grid filling viewport below the top toggle bar */
   #view-wireframes { height: calc(100vh - 56px); }
-  .nav-app {
+  #view-wireframes.active {
     display: grid;
     grid-template-columns: 320px 1fr 360px;
-    grid-template-rows: 56px 1fr;
+    grid-template-rows: 64px 56px 1fr;
     grid-template-areas:
+      "header  header  header"
       "filters filters filters"
-      "sidebar canvas meta";
-    height: 100%;
+      "sidebar canvas  meta";
+    min-height: 0;
   }
+  /* Children pick up grid-areas via their .nav-* classes below */
 
   /* From whats-new: */
 
@@ -392,19 +394,10 @@
 
   /* From navigator (the existing header/sidebar/canvas styles) */
 
-  /* Navigator-specific layout */
+  /* Lock the viewport so the 3-col grid never scrolls the outer document */
   html, body { height: 100%; overflow: hidden; }
   body { background: var(--surface-1); }
-  .nav-app {
-    display: grid;
-    grid-template-columns: 320px 1fr 360px;
-    grid-template-rows: 64px 56px 1fr;
-    grid-template-areas:
-      "header header header"
-      "filters filters filters"
-      "sidebar canvas meta";
-    height: 100vh;
-  }
+  /* (Grid layout for wireframes mode is defined earlier on #view-wireframes.active) */
 
   /* Header */
   .nav-header {
