@@ -706,9 +706,32 @@
     grid-area: meta;
     background: var(--surface-0);
     border-left: 1px solid var(--surface-3);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .meta-details {
+    flex: 1 1 auto;
     overflow-y: auto;
     padding: var(--space-5);
+    min-height: 0;
   }
+  .meta-comments-pane {
+    flex: 0 0 auto;
+    max-height: 50%;
+    overflow-y: auto;
+    padding: var(--space-4) var(--space-5);
+    border-top: 2px solid var(--surface-3);
+    background: var(--surface-1);
+  }
+  .meta-comments-pane .empty-prompt {
+    font-size: 13px;
+    color: var(--ink-500);
+    font-style: italic;
+    text-align: center;
+    padding: var(--space-3) 0;
+  }
+  .meta-comments-pane .comment-section { margin-top: 0; padding-top: 0; border-top: none; }
   .meta-id {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -1772,11 +1795,16 @@
     </div>
   </main>
 
-  <!-- Meta panel -->
+  <!-- Meta panel: top = scrollable screen details, bottom = always-visible comments -->
   <aside class="nav-meta" id="meta">
-    <div class="no-selection" style="height: auto; padding: var(--space-6) 0;">
-      <span class="material-symbols-rounded">info</span>
-      <div style="font-size: 13px;">Screen details appear here</div>
+    <div class="meta-details" id="meta-details">
+      <div class="no-selection" style="height: auto; padding: var(--space-6) 0;">
+        <span class="material-symbols-rounded">info</span>
+        <div style="font-size: 13px;">Screen details appear here</div>
+      </div>
+    </div>
+    <div class="meta-comments-pane" id="meta-comments">
+      <div class="empty-prompt">Pick any screen to leave feedback</div>
     </div>
   </aside>
 </div>
@@ -2050,9 +2078,11 @@
   // Public-ish for breadcrumb buttons
   window.navigateNext = () => navigate(1);
   window.navigatePrev = () => navigate(-1);
+  // Expose selectScreen so the comment-system IIFE below can hook into it
+  window.selectScreen = selectScreen;
 
   function renderMeta(s) {
-    const meta = document.getElementById('meta');
+    const meta = document.getElementById('meta-details') || document.getElementById('meta');
     const phase = phasesById[s.phase];
     if (s.status === 'planned') {
       meta.innerHTML = `
@@ -2454,9 +2484,11 @@ window.viewWireframe = function(screenId) {
   // Public-ish for breadcrumb buttons
   window.navigateNext = () => navigate(1);
   window.navigatePrev = () => navigate(-1);
+  // Expose selectScreen so the comment-system IIFE below can hook into it
+  window.selectScreen = selectScreen;
 
   function renderMeta(s) {
-    const meta = document.getElementById('meta');
+    const meta = document.getElementById('meta-details') || document.getElementById('meta');
     const phase = phasesById[s.phase];
     if (s.status === 'planned') {
       meta.innerHTML = `
@@ -2562,13 +2594,14 @@ window.viewWireframe = function(screenId) {
     return n || 'Reviewer';
   }
 
-  // Inject comment UI into the metadata panel after a screen is selected
+  // Inject comment UI into the dedicated comments pane after a screen is selected
   function injectCommentUI() {
-    const meta = document.getElementById('meta');
-    if (!meta) return;
+    // Render into the always-visible comments pane (falls back to meta if pane missing)
+    const pane = document.getElementById('meta-comments') || document.getElementById('meta');
+    if (!pane) return;
     if (!currentScreenId) return;
-    const existing = document.getElementById('comment-section');
-    if (existing) existing.remove();
+    // Clear previous content (empty prompt or previous screen's comments)
+    pane.innerHTML = '';
 
     const all = loadComments();
     const items = all[currentScreenId] || [];
@@ -2598,7 +2631,7 @@ window.viewWireframe = function(screenId) {
         <div id="giscus-host"></div>
       </div>
     `;
-    meta.appendChild(section);
+    pane.appendChild(section);
 
     // Mount giscus dynamically — each screen gets its own thread via data-term
     const giscusHost = section.querySelector('#giscus-host');
