@@ -542,11 +542,14 @@
   }
   .tree-screen:hover { background: var(--surface-1); color: var(--ink-900); }
   .tree-screen.active {
-    background: var(--brand-primary-50);
-    color: var(--brand-primary);
-    border-left-color: var(--brand-primary);
+    background: var(--brand-primary);
+    color: white;
+    border-left-color: var(--brand-primary-700);
     font-weight: var(--w-semibold);
+    box-shadow: 0 2px 6px rgba(214, 0, 42, 0.25);
   }
+  .tree-screen.active .id { color: rgba(255, 255, 255, 0.85); }
+  .tree-screen.active .status-dot.built { background: white; }
   .tree-screen .status-dot {
     width: 8px; height: 8px;
     border-radius: var(--radius-full);
@@ -572,7 +575,7 @@
     overflow: hidden;
   }
   .tree-screen .platform-icon { font-size: 14px; color: var(--ink-300); margin-top: 4px; flex-shrink: 0; }
-  .tree-screen.active .platform-icon { color: var(--brand-primary); }
+  .tree-screen.active .platform-icon { color: white; }
 
   /* Canvas */
   .nav-canvas {
@@ -2930,10 +2933,10 @@ window.viewWireframe = function(screenId) {
 <!-- giscus is mounted dynamically per screen by injectCommentUI() above —
      each wireframe gets its own GitHub Discussion thread via data-term="screen-<id>" -->
 
-<!-- ===== Floating Feedback FAB + Drawer (always-visible commenting) ===== -->
-<button id="feedback-fab" class="feedback-fab" aria-label="Open feedback">
+<!-- ===== Floating Comments FAB + Drawer (always-visible commenting) ===== -->
+<button id="feedback-fab" class="feedback-fab" aria-label="Open comments">
   <span class="material-symbols-rounded">forum</span>
-  <span>Feedback</span>
+  <span>Comments</span>
   <span id="feedback-fab-count" class="count-badge"></span>
 </button>
 <div id="feedback-backdrop" class="feedback-backdrop"></div>
@@ -2942,185 +2945,91 @@ window.viewWireframe = function(screenId) {
     <div class="feedback-drawer__title-row">
       <h3 class="feedback-drawer__title">
         <span class="material-symbols-rounded" style="color:var(--brand-primary);">forum</span>
-        Leave feedback
+        Comments
       </h3>
       <button id="feedback-drawer-close" class="feedback-drawer__close" aria-label="Close">
         <span class="material-symbols-rounded">close</span>
       </button>
     </div>
     <div id="feedback-drawer-context" class="feedback-drawer__context">
-      <strong>General feedback</strong> on the wireframes
+      <strong>Pick a screen</strong> to start commenting
     </div>
     <div style="margin-top: 8px; display: flex; gap: 12px; font-size: 12px;">
       <a href="https://github.com/krishnamaheshwari-netizen/Mein-Pragati-Wireframes/discussions"
          target="_blank" rel="noopener"
          style="color: var(--brand-primary); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; font-weight: var(--w-medium);">
         <span class="material-symbols-rounded" style="font-size: 14px;">open_in_new</span>
-        See all on GitHub
+        See all comments
       </a>
-      <a href="https://github.com/apps/giscus"
-         target="_blank" rel="noopener"
-         style="color: var(--ink-500); text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
-        <span class="material-symbols-rounded" style="font-size: 14px;">help</span>
-        Install giscus app
-      </a>
+      <button id="feedback-export-btn" class="export-feedback-btn" style="padding: 2px 6px; font-size: 12px; color: var(--ink-500); background: transparent;">
+        <span class="material-symbols-rounded" style="font-size: 14px;">download</span>
+        Export local notes
+      </button>
     </div>
   </div>
 
-  <div class="feedback-tabs" role="tablist">
-    <button class="feedback-tab active" data-tab="quick" role="tab">Quick comment</button>
-    <button class="feedback-tab" data-tab="github" role="tab">GitHub thread</button>
-  </div>
-
-  <div class="feedback-drawer__body">
-    <div class="pane active" id="feedback-pane-quick">
-      <div id="feedback-quick-list">
-        <div class="feedback-empty">No comments here yet. Be the first.</div>
-      </div>
+  <div class="feedback-drawer__body" id="feedback-drawer-body">
+    <div id="feedback-no-screen" class="feedback-empty" style="padding: 48px 16px;">
+      <div style="font-size: 32px; margin-bottom: 8px;">👈</div>
+      <div style="font-weight: var(--w-semibold); color: var(--ink-700); font-size: 14px; margin-bottom: 4px;">Pick a wireframe to comment</div>
+      <div style="font-size: 12px; color: var(--ink-500);">Click any row in the left sidebar.<br>Comments sync to GitHub Discussions.</div>
     </div>
-    <div class="pane" id="feedback-pane-github">
-      <div id="feedback-giscus-host" style="min-height: 200px;">
-        <div class="feedback-empty">Pick a wireframe screen to load its GitHub Discussion thread.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="feedback-composer" id="feedback-composer">
-    <textarea id="feedback-composer-text" placeholder="What's working? What's not? Any change suggestions…"></textarea>
-    <div class="row">
-      <div class="reviewer-name">
-        Signed as <a id="feedback-reviewer-name" href="javascript:void(0)">Reviewer</a>
-      </div>
-      <div style="display:flex;gap:6px;">
-        <button class="btn btn-tertiary btn-sm" id="feedback-export-btn" title="Download all comments as markdown">
-          <span class="material-symbols-rounded">download</span> Export all
-        </button>
-        <button class="btn btn-primary btn-sm" id="feedback-post-btn">
-          <span class="material-symbols-rounded">send</span> Post
-        </button>
-      </div>
-    </div>
+    <div id="feedback-giscus-host" style="display: none; min-height: 280px;"></div>
   </div>
 </aside>
 
 <script>
-/* Floating Feedback FAB controller — opens a drawer on any page/mode/screen */
+/* Floating Comments FAB controller — DOM-direct screen detection, single comment view */
 (function() {
   const STORAGE_KEY = 'mp_wireframe_comments_v1';
   const REVIEWER_KEY = 'mp_wireframe_reviewer';
+  const GISCUS_REPO = 'krishnamaheshwari-netizen/Mein-Pragati-Wireframes';
+  const GISCUS_REPO_ID = 'R_kgDOSqQZZQ';
+  const GISCUS_CATEGORY = 'Wireframe-Comments';
+  const GISCUS_CATEGORY_ID = 'DIC_kwDOSqQZZc4C-AwP';
 
   const fab        = document.getElementById('feedback-fab');
   const fabCount   = document.getElementById('feedback-fab-count');
-  const backdrop   = document.getElementById('feedback-backdrop');
   const drawer     = document.getElementById('feedback-drawer');
   const closeBtn   = document.getElementById('feedback-drawer-close');
   const context    = document.getElementById('feedback-drawer-context');
-  const tabs       = drawer.querySelectorAll('.feedback-tab');
-  const paneQuick  = document.getElementById('feedback-pane-quick');
-  const paneGithub = document.getElementById('feedback-pane-github');
-  const quickList  = document.getElementById('feedback-quick-list');
+  const noScreen   = document.getElementById('feedback-no-screen');
   const giscusHost = document.getElementById('feedback-giscus-host');
-  const textInput  = document.getElementById('feedback-composer-text');
-  const postBtn    = document.getElementById('feedback-post-btn');
   const exportBtn  = document.getElementById('feedback-export-btn');
-  const reviewerNameEl = document.getElementById('feedback-reviewer-name');
 
-  function load()  { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { return {}; } }
-  function save(d) { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
-  function getReviewer() {
-    let name = localStorage.getItem(REVIEWER_KEY);
-    if (!name) {
-      name = prompt("Your name (so others know who left the feedback):", "Reviewer") || "Reviewer";
-      localStorage.setItem(REVIEWER_KEY, name);
-    }
-    return name;
-  }
-  function setReviewerName() {
-    const newName = prompt("Your name:", localStorage.getItem(REVIEWER_KEY) || "Reviewer");
-    if (newName) {
-      localStorage.setItem(REVIEWER_KEY, newName);
-      reviewerNameEl.textContent = newName;
-    }
-  }
+  function loadLocal()  { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { return {}; } }
   function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-  /* Returns the current context — either a specific screen, or "general" */
-  function getContext() {
-    // window.currentScreenId is set when a screen is selected in wireframes mode
-    const screenId = window._mpCurrentScreenId || null;
-    if (!screenId) return { key: '_general', label: 'General feedback', sub: 'on the wireframes' };
-    // Try to resolve title from manifest
-    let title = screenId;
+  /* DOM-direct: read which sidebar row is .active. No timing dependence. */
+  function getCurrentScreenId() {
+    const active = document.querySelector('.tree-screen.active');
+    return active ? active.dataset.id : null;
+  }
+
+  function resolveTitle(screenId) {
     try {
       const inline = document.getElementById('manifest-inline');
       if (inline) {
         const m = JSON.parse(inline.textContent);
         const s = (m.screens || []).find(x => x.id === screenId);
-        if (s) title = s.title;
+        if (s) return s.title;
+        const p = (m.plannedScreens || []).find(x => x.id === screenId);
+        if (p) return p.title + ' (planned)';
       }
     } catch(e){}
-    return { key: screenId, label: screenId, sub: title };
+    return screenId;
   }
 
-  function updateContextDisplay() {
-    const ctx = getContext();
-    context.innerHTML = `<strong>${esc(ctx.label)}</strong> — ${esc(ctx.sub)}`;
-  }
-
-  function renderQuickList() {
-    const ctx = getContext();
-    const all = load();
-    const items = all[ctx.key] || [];
-    if (items.length === 0) {
-      quickList.innerHTML = `<div class="feedback-empty">No comments here yet. Be the first.</div>`;
-      return;
-    }
-    quickList.innerHTML = items.map((c, i) => `
-      <div style="background:var(--surface-0); border:1px solid var(--surface-3); border-radius: var(--radius-md); padding: 10px 12px; margin-bottom: 8px;">
-        <div style="font-size: 12px; color: var(--ink-700); font-weight: var(--w-semibold);">
-          ${esc(c.who)}
-          <span style="font-weight:normal; color:var(--ink-500); margin-left:6px;">${new Date(c.at).toLocaleString('en-IN', {dateStyle:'medium', timeStyle:'short'})}</span>
-        </div>
-        <div style="font-size: 13px; color: var(--ink-900); margin-top: 4px; white-space: pre-wrap;">${esc(c.text)}</div>
-        <button style="margin-top: 6px; background: none; border: none; color: var(--ink-500); font-size: 11px; cursor: pointer; padding: 0; text-decoration: underline;"
-                data-del="${i}">Remove</button>
-      </div>
-    `).join('');
-    quickList.querySelectorAll('button[data-del]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (!confirm('Remove this comment?')) return;
-        const all2 = load();
-        if (all2[ctx.key]) {
-          all2[ctx.key].splice(parseInt(btn.dataset.del,10), 1);
-          save(all2);
-          renderQuickList();
-          updateFabBadge();
-        }
-      });
-    });
-  }
-
-  function updateFabBadge() {
-    const all = load();
-    const total = Object.values(all).reduce((s, arr) => s + arr.length, 0);
-    fabCount.textContent = total > 0 ? total : '';
-  }
-
-  function mountGiscus() {
-    const ctx = getContext();
+  function mountGiscus(screenId) {
     giscusHost.innerHTML = '';
-    if (ctx.key === '_general') {
-      giscusHost.innerHTML = `<div class="feedback-empty">Pick a wireframe screen to load its GitHub Discussion thread.</div>`;
-      return;
-    }
     const s = document.createElement('script');
     s.src = 'https://giscus.app/client.js';
-    s.setAttribute('data-repo', 'krishnamaheshwari-netizen/Mein-Pragati-Wireframes');
-    s.setAttribute('data-repo-id', 'R_kgDOSqQZZQ');
-    s.setAttribute('data-category', 'Wireframe-Comments');
-    s.setAttribute('data-category-id', 'DIC_kwDOSqQZZc4C-AwP');
+    s.setAttribute('data-repo', GISCUS_REPO);
+    s.setAttribute('data-repo-id', GISCUS_REPO_ID);
+    s.setAttribute('data-category', GISCUS_CATEGORY);
+    s.setAttribute('data-category-id', GISCUS_CATEGORY_ID);
     s.setAttribute('data-mapping', 'specific');
-    s.setAttribute('data-term', 'screen-' + ctx.key);
+    s.setAttribute('data-term', 'screen-' + screenId);
     s.setAttribute('data-strict', '0');
     s.setAttribute('data-reactions-enabled', '1');
     s.setAttribute('data-emit-metadata', '0');
@@ -3132,18 +3041,39 @@ window.viewWireframe = function(screenId) {
     giscusHost.appendChild(s);
   }
 
+  /* Render the drawer for the currently-selected screen (or empty state) */
+  function refreshDrawer() {
+    const screenId = getCurrentScreenId();
+    if (!screenId) {
+      noScreen.style.display = 'block';
+      giscusHost.style.display = 'none';
+      giscusHost.innerHTML = '';
+      context.innerHTML = '<strong>Pick a screen</strong> to start commenting';
+      return;
+    }
+    const title = resolveTitle(screenId);
+    context.innerHTML = `Commenting on <strong>${esc(screenId)}</strong> — ${esc(title)}`;
+    noScreen.style.display = 'none';
+    giscusHost.style.display = 'block';
+    // Only re-mount if the screen has changed since last mount
+    if (giscusHost.dataset.screen !== screenId) {
+      mountGiscus(screenId);
+      giscusHost.dataset.screen = screenId;
+    }
+  }
+
+  function updateFabBadge() {
+    // Show count of localStorage comments as a hint that there's local content
+    const all = loadLocal();
+    const total = Object.values(all).reduce((s, arr) => s + (arr.length || 0), 0);
+    fabCount.textContent = total > 0 ? total : '';
+  }
+
   function open() {
-    updateContextDisplay();
-    renderQuickList();
-    // Reset to Quick tab when opening
-    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === 'quick'));
-    paneQuick.classList.add('active');
-    paneGithub.classList.remove('active');
-    reviewerNameEl.textContent = localStorage.getItem(REVIEWER_KEY) || 'Reviewer';
+    refreshDrawer();
     drawer.classList.add('open');
     document.body.classList.add('feedback-drawer-open');
     drawer.setAttribute('aria-hidden', 'false');
-    setTimeout(() => textInput.focus(), 280);
   }
   function close() {
     drawer.classList.remove('open');
@@ -3157,40 +3087,29 @@ window.viewWireframe = function(screenId) {
     if (e.key === 'Escape' && drawer.classList.contains('open')) close();
   });
 
-  tabs.forEach(t => {
-    t.addEventListener('click', () => {
-      tabs.forEach(x => x.classList.toggle('active', x === t));
-      paneQuick.classList.toggle('active', t.dataset.tab === 'quick');
-      paneGithub.classList.toggle('active', t.dataset.tab === 'github');
-      if (t.dataset.tab === 'github') mountGiscus();
-    });
-  });
-
-  postBtn.addEventListener('click', () => {
-    const text = textInput.value.trim();
-    if (!text) { textInput.focus(); return; }
-    const who = getReviewer();
-    const ctx = getContext();
-    const all = load();
-    if (!all[ctx.key]) all[ctx.key] = [];
-    all[ctx.key].push({ who, text, at: new Date().toISOString() });
-    save(all);
-    textInput.value = '';
-    renderQuickList();
-    updateFabBadge();
-  });
-
-  reviewerNameEl.addEventListener('click', setReviewerName);
+  /* Poll the DOM for the active sidebar row. Catches every kind of selection
+     — sidebar click, deep-link load, Prev/Next buttons, breadcrumb navigation. */
+  let lastSeen = null;
+  setInterval(() => {
+    const cur = getCurrentScreenId();
+    if (cur !== lastSeen) {
+      lastSeen = cur;
+      if (drawer.classList.contains('open')) refreshDrawer();
+    }
+  }, 300);
 
   exportBtn.addEventListener('click', () => {
-    const all = load();
+    const all = loadLocal();
     const reviewer = localStorage.getItem(REVIEWER_KEY) || 'Reviewer';
     const total = Object.values(all).reduce((s, arr) => s + arr.length, 0);
-    if (total === 0) { alert('No comments yet to export.'); return; }
-    let md = `# Mein Pragati Wireframe Feedback\n\n`;
+    if (total === 0) {
+      alert('No local notes to export.\n\nFor live, team-visible comments, use the comment box inside the drawer — those go to GitHub Discussions.');
+      return;
+    }
+    let md = `# Mein Pragati Wireframe Local Notes\n\n`;
     md += `**Reviewer:** ${reviewer}\n`;
     md += `**Exported:** ${new Date().toLocaleString('en-IN')}\n`;
-    md += `**Total:** ${total} comments across ${Object.keys(all).length} threads\n\n---\n\n`;
+    md += `**Total:** ${total} notes across ${Object.keys(all).length} threads\n\n---\n\n`;
     let manifestScreens = [];
     try {
       const inline = document.getElementById('manifest-inline');
@@ -3213,44 +3132,13 @@ window.viewWireframe = function(screenId) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `mp-wireframe-feedback-${new Date().toISOString().slice(0,10)}.md`;
+    a.download = `mp-wireframe-notes-${new Date().toISOString().slice(0,10)}.md`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   });
 
-  /* Listen for screen changes — refresh drawer content if open */
-  const observer = setInterval(() => {
-    if (window._mpCurrentScreenId !== window._mpLastSeenScreenId) {
-      window._mpLastSeenScreenId = window._mpCurrentScreenId;
-      if (drawer.classList.contains('open')) {
-        updateContextDisplay();
-        renderQuickList();
-        // If on GitHub tab, refresh giscus too
-        if (document.querySelector('.feedback-tab[data-tab="github"]').classList.contains('active')) {
-          mountGiscus();
-        }
-      }
-    }
-  }, 400);
-
-  /* Hook into selectScreen to track currentScreenId globally */
-  function hookSelect() {
-    if (typeof window.selectScreen === 'function' && !window._mpSelectHookedForFab) {
-      const orig = window.selectScreen;
-      window.selectScreen = function(id) {
-        window._mpCurrentScreenId = id;
-        orig(id);
-      };
-      window._mpSelectHookedForFab = true;
-    } else if (!window._mpSelectHookedForFab) {
-      setTimeout(hookSelect, 150);
-    }
-  }
-  hookSelect();
-
-  /* Initial render */
   updateFabBadge();
 })();
 </script>
